@@ -1,0 +1,60 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
+#    Updated: 2021/01/06 20:09:37 by earnaud          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME		= miniRT
+CC			= gcc
+OS 				:=	$(shell uname)
+CFLAGS		= -g #-Wall -Wextra -Werror
+OPENGL		= -lmlx -lXext -lX11 -lm
+INCLUDES	= -Iincludes/ -I$(MINILIBX_DIR)
+OBJ_DIR		= obj/
+SRCS_DIR 	= srcs/
+
+ifeq ($(OS), Linux)
+	MINILIBX_DIR = dependencies/mlx_linux
+	OPENGL = -lm -lbsd -lX11 -lXext
+endif
+ifeq ($(OS), Darwin)
+	MINILIBX_DIR = dependencies/mlx_opengl
+	OPENGL = -lz -framework OpenGL -framework AppKit
+endif
+MINILIBX_A_DIR 		=	$(MINILIBX_DIR)/libmlx.a
+
+FILES		= main.c \
+				colors.c
+
+
+SRCS		= $(addprefix $(SRCS_DIR), $(FILES))
+OBJ			= $(SRCS:.c=.o)
+
+all: $(NAME)
+
+$(NAME) : $(OBJ)
+		@echo MiniRT on the way...
+		@$(CC) $(CFLAGS) $(OBJ) $(INCLUDES)\
+		 $(MINILIBX_A_DIR) $(OPENGL) \
+		-o $(NAME)
+		@echo success
+
+dependencies :
+		@make -C $(MINILIBX_DIR)
+
+clean:
+		rm -f $(OBJ)
+		@echo clean done
+		
+fclean: clean
+		rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: clean fclean all re dependencies
