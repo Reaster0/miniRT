@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/01/06 20:09:37 by earnaud          ###   ########.fr        #
+#    Updated: 2021/01/07 15:14:40 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ OPENGL		= -lmlx -lXext -lX11 -lm
 INCLUDES	= -Iincludes/ -I$(MINILIBX_DIR)
 OBJ_DIR		= obj/
 SRCS_DIR 	= srcs/
+NEED		= dependencies/libft
 
 ifeq ($(OS), Linux)
 	MINILIBX_DIR = dependencies/mlx_linux
@@ -38,7 +39,7 @@ OBJ			= $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME) : $(OBJ)
+$(NAME) : $(OBJ) dependencies
 		@echo MiniRT on the way...
 		@$(CC) $(CFLAGS) $(OBJ) $(INCLUDES)\
 		 $(MINILIBX_A_DIR) $(OPENGL) \
@@ -46,14 +47,22 @@ $(NAME) : $(OBJ)
 		@echo success
 
 dependencies :
-		@make -C $(MINILIBX_DIR)
+		@echo building dependencies
+		make -C $(NEED)
+		make -C $(MINILIBX_DIR)
+		@echo dependencies success
 
 clean:
+		make clean -C $(NEED)
+		make clean -C $(MINILIBX_DIR)
 		rm -f $(OBJ)
 		@echo clean done
 		
 fclean: clean
+		make fclean -C $(NEED)
+		rm -f $(MINILIBX_A_DIR)
 		rm -f $(NAME)
+		@echo fclean done
 
 re: fclean all
 
