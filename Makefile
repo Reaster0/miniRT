@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/01/07 15:14:40 by earnaud          ###   ########.fr        #
+#    Updated: 2021/01/07 17:07:52 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ OBJ_DIR		= obj/
 SRCS_DIR 	= srcs/
 NEED		= dependencies/libft
 
+NEEDA		= $(NEED)/*.a
+
 ifeq ($(OS), Linux)
 	MINILIBX_DIR = dependencies/mlx_linux
 	OPENGL = -lm -lbsd -lX11 -lXext
@@ -31,6 +33,7 @@ endif
 MINILIBX_A_DIR 		=	$(MINILIBX_DIR)/libmlx.a
 
 FILES		= main.c \
+				mlx_util.c \
 				colors.c
 
 
@@ -42,7 +45,7 @@ all: $(NAME)
 $(NAME) : $(OBJ) dependencies
 		@echo MiniRT on the way...
 		@$(CC) $(CFLAGS) $(OBJ) $(INCLUDES)\
-		 $(MINILIBX_A_DIR) $(OPENGL) \
+		 $(MINILIBX_A_DIR) $(NEEDA) $(OPENGL) \
 		-o $(NAME)
 		@echo success
 
