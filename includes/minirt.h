@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/07 17:05:05 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/07 18:13:19 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <math.h>
 #include "mlx.h"
 #include "../dependencies/libft/libft.h"
 
@@ -25,6 +26,14 @@ typedef struct s_3d
 	double y;
 	double z;
 } t_3d;
+
+typedef struct s_triangle
+{
+	t_3d x;
+	t_3d y;
+	t_3d z;
+	int trgb;
+} t_triangle;
 
 typedef struct s_data
 {
