@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/07 17:03:29 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/08 18:19:48 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_data new_img(t_vars *vars, int y, int x)
 {
 	t_data img;
 	img.img = mlx_new_image(vars->mlx, x, y);
+	img.height = y;
+	img.width = x;
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 								 &img.endian);
 	return (img);
@@ -39,6 +41,7 @@ int next_frame(t_vars *vars)
 	mlx_destroy_image(vars->mlx, vars->data->img);
 	return (1);
 }
+
 void pixel_square(t_data *data, int y, int x, int sx, int sy, int color)
 {
 	int temp;

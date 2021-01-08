@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/07 18:43:32 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/08 20:07:49 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,22 @@ typedef struct s_3d
 
 typedef struct s_triangle
 {
+	int ax, ay, bx, by, cx, cy;
+} t_triangle;
+
+typedef struct s_2d
+{
+	int y;
+	int x;
+} t_2d;
+
+typedef struct s_triangle3d
+{
 	t_3d x;
 	t_3d y;
 	t_3d z;
 	int trgb;
-} t_triangle;
+} t_triangle3d;
 
 typedef struct s_data
 {
