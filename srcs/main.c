@@ -6,65 +6,86 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/08 21:04:54 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/09 18:42:03 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#define EPSILON 0.000001
 
-int point_triangle(t_2d P, t_triangle triangle)
+float dot_product(t_3d a, t_3d b)
 {
-	double s1 = triangle.cy - triangle.ay;
-	double s2 = triangle.cx - triangle.ax;
-	double s3 = triangle.by - triangle.ay;
-	double s4 = P.y - triangle.ay;
-
-	double w1 = (triangle.ax * s1 + s4 * s2 - P.x * s1) / (s3 * s2 - (triangle.bx - triangle.ax) * s1);
-	double w2 = (s4 - w1 * s3) / s1;
-	return (w1 >= 0 && w2 >= 0 && (w1 + w2) <= 1);
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-void create_img(t_data *img, t_triangle triangle)
+t_3d cross_product(t_3d a, t_3d b)
 {
-	t_2d point;
+	t_3d ret;
+	ret.x = a.y * b.z - a.z * b.y;
+	ret.y = a.z * b.x - a.x * b.z;
+	ret.z = a.x * b.y - a.y * b.x;
+	return (ret);
+}
 
-	point.y = 0;
-	while (point.y <= img->height)
-	{
-		point.x = 0;
-		while (point.x <= img->width)
-		{
-			//if (point_inside_trigon(point, triangle))
-			if (point_triangle(point, triangle))
-			{
-				mlx_pixel_put_fast(img, point.x, point.y, 0x00FF00);
-			}
-			point.x++;
-		}
-		point.y++;
-	}
+t_3d sub_product(t_3d a, t_3d b)
+{
+	t_3d ret;
+	ret.x = a.x - b.x;
+	ret.y = a.y - b.y;
+	ret.z = a.z - b.z;
+	return (ret);
+}
+
+int moller_trumbore(t_3d startpoint, t_3d endpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v)
+{
+	t_3d edge1;
+	t_3d edge2;
+	t_3d tvec;
+	t_3d pvec;
+	t_3d qvec;
+	float det, inv_det;
+
+	edge1 = sub_product(triangle[1], triangle[0]);
+	edge2 = sub_product(triangle[2], triangle[0]);
+
+	pvec = cross_product(endpoint, edge2);
+	det = dot_product(edge1, pvec);
+
+	if (det > -EPSILON && det < EPSILON)
+		return (0);
+	inv_det = 1.0 / det;
+
+	tvec = sub_product(startpoint, triangle[0]);
+	*bary_u = dot_product(tvec, pvec) * inv_det;
+	if (*bary_u < 0.0 || *bary_u > 1.0)
+		return 0;
+
+	*bary_v = dot_product(qvec, tvec) * inv_det;
 }
 
 int main(void)
 {
 	t_vars vars;
 	t_data img;
-	t_triangle triangle;
 
 	int y = 480;
 	int x = 640;
-	triangle.ax = 50;
-	triangle.ay = 50;
-	triangle.bx = 600;
-	triangle.by = 120;
-	triangle.cx = 25;
-	triangle.cy = 300;
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, x, y, "Hello World!");
-	img = new_img(&vars, y, x);
-	create_img(&img, triangle);
-	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
-	//mlx_loop_hook(vars.mlx, next_frame, &vars);
-	mlx_loop(vars.mlx);
+	t_3d triangle[2];
+	triangle[0].x = 120.f;
+	triangle[0].y = 100.f;
+	triangle[0].z = 800.f;
+	triangle[1].x = 420.f;
+	triangle[1].y = 300.f;
+	triangle[1].z = 1.f;
+	triangle[3].x = 200.f;
+	triangle[3].y = 200.f;
+	triangle[3].z = 50.f;
+
+	//vars.mlx = mlx_init();
+	//vars.win = mlx_new_window(vars.mlx, x, y, "Hello World!");
+	//img = new_img(&vars, y, x);
+	//projection(&img, triangle);
+	//mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
+	//mlx_loop(vars.mlx);
 	return (0);
 }
