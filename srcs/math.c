@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/10 15:20:34 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/10 16:24:01 by earnaud          ###   ########.fr       */
+/*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
+/*   Updated: 2021/01/10 17:15:47 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/minirt.h"
 
 float dot_product(t_3d a, t_3d b)
@@ -34,7 +35,7 @@ t_3d sub_product(t_3d a, t_3d b)
 	return (ret);
 }
 
-int moller_trumbore(t_3d startpoint, t_3d endpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v)
+int moller_trumbore(t_3d startpoint, t_3d dirpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v)
 {
 	t_3d edge1;
 	t_3d edge2;
@@ -46,7 +47,7 @@ int moller_trumbore(t_3d startpoint, t_3d endpoint, t_3d *triangle, float *rayt,
 	edge1 = sub_product(triangle[1], triangle[0]);
 	edge2 = sub_product(triangle[2], triangle[0]);
 
-	cross_raydir_edge2 = cross_product(endpoint, edge2);
+	cross_raydir_edge2 = cross_product(dirpoint, edge2);
 	determinent = dot_product(edge1, cross_raydir_edge2);
 
 	//je sais pas pourquoi ni comment ça marche
