@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/09 18:42:20 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/10 16:43:56 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct s_3d
 
 typedef struct s_2d
 {
-	int y;
-	int x;
+	float y;
+	float x;
 } t_2d;
 
 typedef struct s_ray
@@ -70,5 +70,11 @@ void img_adress(t_data *data);
 int next_frame(t_vars *vars);
 void mlx_pixel_put_fast(t_data *data, int x, int y, int color);
 void pixel_square(t_data *data, int y, int x, int sx, int sy, int color);
+
+float dot_product(t_3d a, t_3d b);
+t_3d cross_product(t_3d a, t_3d b);
+t_3d sub_product(t_3d a, t_3d b);
+int moller_trumbore(t_3d startpoint, t_3d endpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v);
+
 
 #endif
