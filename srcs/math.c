@@ -6,11 +6,34 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/10 17:15:47 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/12 18:26:30 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+void normalize(t_3d *vector)
+{
+	float norm;
+	norm = sqrt(vector->x * vector->x + vector->y + vector->y + vector->z * vector->z);
+	vector->x /= norm;
+	vector->y /= norm;
+	vector->z /= norm;
+}
+
+void multiply_v(float a, t_3d *vector)
+{
+	vector->x *= a;
+	vector->y *= a;
+	vector->z *= a;
+}
+
+void divide_v(float a, t_3d *vector)
+{
+	vector->x /= a;
+	vector->y /= a;
+	vector->z /= a;
+}
 
 float dot_product(t_3d a, t_3d b)
 {
