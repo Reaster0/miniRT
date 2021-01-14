@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/12 18:16:31 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/14 17:02:04 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,18 @@ typedef struct s_ray
 {
 	t_3d *startpoint;
 	t_3d *dir;
-	float r;
+	t_3d *forward;
+	t_3d *up;
+	t_3d *right;
+	float h;
+	float w;
 } t_ray;
+
+typedef struct s_sphere
+{
+	t_3d *startpoint;
+	float r;
+} t_sphere;
 
 typedef struct s_data
 {
@@ -75,8 +85,13 @@ void pixel_square(t_data *data, int y, int x, int sx, int sy, int color);
 float dot_product(t_3d a, t_3d b);
 t_3d cross_product(t_3d a, t_3d b);
 t_3d sub_product(t_3d a, t_3d b);
+t_3d add_product(t_3d a, t_3d b);
 int moller_trumbore(t_3d startpoint, t_3d endpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v);
 void normalize(t_3d *vector);
-void multiply_v(float a, t_3d *vector);
+void normalize2d(t_2d *vector);
+t_3d add_v(float a, t_3d vector);
+t_3d multiply_v(float a, t_3d vector);
+t_3d sub_v(float a, t_3d vector);
+t_3d divide_v(float a, t_3d vector);
 
 #endif
