@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/14 17:01:46 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/14 18:05:13 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,45 +21,18 @@ t_3d *new_3d(float x, float y, float z)
 	return (&result);
 }
 
-t_3d getnorm2(t_3d vector)
+void make_ray(t_camera *vector, t_2d point)
 {
-	t_3d result;
-	result.x = vector.x * vector.x;
-	result.y = vector.y * vector.y;
-	result.z = vector.z * vector.z;
-	return (result);
-}
-
-float inter_sphere(t_ray ray, t_sphere sphere)
-{
-	float a;
-	float b;
-	float c;
-	float discriminant;
-	t_3d vector;
-	vector = sub_product(*ray.startpoint, *sphere.startpoint);
-	a = dot_product(*ray.startpoint, *ray.startpoint);
-	b = 2.0 * dot_product(vector, *ray.dir);
-	c = dot_product(vector, vector) - sphere.r * sphere.r;
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
-	{
-		printf("je touche pas \n");
-		return (-1.0);
-	}
-	return ((-b - sqrt(discriminant)) / (2.0 * a));
-}
-
-void make_ray(t_ray *vector, t_2d point)
-{
-	//vector->dir = add_product(multiply_v(point.y * vector->h, vector->up), multiply_v(vector->forward, multiply_v(vector->w, multiply_v(vector->w, add_v(point.x, vector->forward)))));
+	*vector->dir = multiply_v(point.x * vector->w, *vector->right);
+	*vector->dir = add_product(*vector->dir, *vector->forward);
+	*vector->dir = add_product(*vector->dir, multiply_v(point.y * vector->h, *vector->up));
 
 	normalize(vector->dir);
 }
 
-t_ray pcamera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio)
+t_camera pcamera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio)
 {
-	t_ray result;
+	t_camera result;
 	*result.forward = sub_product(target, origin);
 	normalize(result.forward);
 	*result.right = cross_product(*result.forward, upguide);
@@ -85,24 +58,24 @@ void project(t_data *data, t_3d camera, t_2d resolution, t_3d *triangle, int col
 	fov = 25 * M_PI / 180;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
-	t_ray ray;
+	t_camera cam;
 
-	ray = pcamera(camera, *new_3d(0.f, 0.f, -1.f), *new_3d(0.f, 1.f, 0.f), fov, ratio);
+	cam = pcamera(camera, *new_3d(0.f, 1.0f, 0.f), *new_3d(0.f, 0.f, 0.f), fov, ratio);
 
-	while (count.y < resolution.y)
+	while (count.x < resolution.x)
 	{
-		while (count.x < resolution.x)
+		while (count.y < resolution.y)
 		{
 			screen_coord.x = (2.0f * count.x) / resolution.x - 1.0f;
 			screen_coord.y = (-2.0f * count.y) / resolution.y + 1.0f;
-			make_ray(&ray, screen_coord);
+			make_ray(&cam, screen_coord);
 			if (inter_sphere(ray, sphere) > -1.0)
 			{
 				mlx_pixel_put_fast(data, count.x, count.y, color);
 			}
-			count.x++;
+			count.y++;
 		}
-		count.y++;
+		count.x++;
 	}
 }
 

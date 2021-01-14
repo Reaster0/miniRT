@@ -6,11 +6,20 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/14 16:46:07 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/14 18:05:19 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+t_3d getnorm2(t_3d vector)
+{
+	t_3d result;
+	result.x = vector.x * vector.x;
+	result.y = vector.y * vector.y;
+	result.z = vector.z * vector.z;
+	return (result);
+}
 
 void normalize2d(t_2d *vector)
 {
@@ -37,28 +46,32 @@ t_3d multiply_v(float a, t_3d vector)
 	return (vector);
 }
 
-t_3d divide_v(float a, t_3d vector)
+void divide_v(float a, t_3d *vector)
 {
-	vector.x /= a;
-	vector.y /= a;
-	vector.z /= a;
-	return (vector);
+	vector->x /= a;
+	vector->y /= a;
+	vector->z /= a;
 }
 
-t_3d sub_v(float a, t_3d vector)
+void sub_v(float a, t_3d *vector)
 {
-	vector.x -= a;
-	vector.y -= a;
-	vector.z -= a;
-	return (vector);
+	vector->x -= a;
+	vector->y -= a;
+	vector->z -= a;
 }
 
-t_3d add_v(float a, t_3d vector)
+void add_v(float a, t_3d *vector)
 {
-	vector.x += a;
-	vector.y += a;
-	vector.z += a;
-	return (vector);
+	vector->x += a;
+	vector->y += a;
+	vector->z += a;
+}
+
+t_3d multiply_product(t_3d a, t_3d b)
+{
+	a.x *= b.x;
+	a.y *= b.y;
+	a.z *= b.z;
 }
 
 float dot_product(t_3d a, t_3d b)
@@ -90,6 +103,26 @@ t_3d sub_product(t_3d a, t_3d b)
 	ret.y = a.y - b.y;
 	ret.z = a.z - b.z;
 	return (ret);
+}
+
+float inter_sphere(t_ray ray, t_sphere sphere)
+{
+	float a;
+	float b;
+	float c;
+	float discriminant;
+	t_3d vector;
+	vector = sub_product(*ray.startpoint, *sphere.startpoint);
+	a = dot_product(*ray.startpoint, *ray.startpoint);
+	b = 2.0 * dot_product(vector, *ray.dir);
+	c = dot_product(vector, vector) - sphere.r * sphere.r;
+	discriminant = b * b - 4 * a * c;
+	if (discriminant < 0)
+	{
+		printf("je touche pas \n");
+		return (-1.0);
+	}
+	return ((-b - sqrt(discriminant)) / (2.0 * a));
 }
 
 int moller_trumbore(t_3d startpoint, t_3d dirpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v)
