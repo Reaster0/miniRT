@@ -6,19 +6,20 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/14 18:05:19 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/15 18:46:01 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-t_3d getnorm2(t_3d vector)
+float sqr(float number)
 {
-	t_3d result;
-	result.x = vector.x * vector.x;
-	result.y = vector.y * vector.y;
-	result.z = vector.z * vector.z;
-	return (result);
+	return (number * number);
+}
+
+float length2(t_3d point)
+{
+	return (sqr(point.x) + sqr(point.y) + sqr(point.z));
 }
 
 void normalize2d(t_2d *vector)
@@ -105,24 +106,47 @@ t_3d sub_product(t_3d a, t_3d b)
 	return (ret);
 }
 
-float inter_sphere(t_ray ray, t_sphere sphere)
+t_ray calculate(t_ray ray, float t)
+{
+	t_ray temp;
+	t_3d temp2 = multiply_v(t, ray.endpoint);
+	temp = ray;
+	temp.endpoint = temp2;
+	return (temp);
+}
+
+int inter_sphere(t_ray *ray, t_sphere sphere)
 {
 	float a;
 	float b;
 	float c;
 	float discriminant;
-	t_3d vector;
-	vector = sub_product(*ray.startpoint, *sphere.startpoint);
-	a = dot_product(*ray.startpoint, *ray.startpoint);
-	b = 2.0 * dot_product(vector, *ray.dir);
-	c = dot_product(vector, vector) - sphere.r * sphere.r;
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
+	float t1;
+	float t2;
+	t_ray localRay;
+	localRay = *ray;
+	localRay.startpoint = sub_product(localRay.startpoint, sphere.startpoint);
+
+	a = length2(ray->endpoint);
+	b = 2.0 * dot_product(localRay.endpoint, localRay.startpoint);
+	c = length2(localRay.startpoint) - sqr(sphere.r);
+	discriminant = sqr(b) - 4 * a * c;
+	//printf("discriminant =%f\na =%f\nb =%f\nc =%f\n", discriminant, a, b, c);
+	if (discriminant < 0.0f)
+		return (0);
+
+	t1 = (-b - sqrt(discriminant)) / (2 * a);
+	t2 = (-b + sqrt(discriminant)) / (2 * a);
+	if (t1 > 0.0001f && t1 < 1.0e30f)
+		ray->t = t1;
+	else if (t2 > 0.0001f && t2 < 1.0e30f)
+		ray->t = t2;
+	else
 	{
-		printf("je touche pas \n");
-		return (-1.0);
+		return (0);
 	}
-	return ((-b - sqrt(discriminant)) / (2.0 * a));
+	printf("ptn on a trouve une intersection\n");
+	return (1);
 }
 
 int moller_trumbore(t_3d startpoint, t_3d dirpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v)
