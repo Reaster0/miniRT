@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/15 18:46:01 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/18 17:17:38 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ void normalize2d(t_2d *vector)
 
 void normalize(t_3d *vector)
 {
+	//check du cas zero
 	float norm;
+	if (!vector->x && !vector->y && !vector->z)
+		return ();
 	norm = sqrt(vector->x * vector->x + vector->y + vector->y + vector->z * vector->z);
 	vector->x /= norm;
 	vector->y /= norm;
@@ -73,6 +76,7 @@ t_3d multiply_product(t_3d a, t_3d b)
 	a.x *= b.x;
 	a.y *= b.y;
 	a.z *= b.z;
+	return (a);
 }
 
 float dot_product(t_3d a, t_3d b)
