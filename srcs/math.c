@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/18 17:17:38 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/19 14:22:44 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,8 @@ void normalize2d(t_2d *vector)
 
 void normalize(t_3d *vector)
 {
-	//check du cas zero
 	float norm;
-	if (!vector->x && !vector->y && !vector->z)
-		return ();
-	norm = sqrt(vector->x * vector->x + vector->y + vector->y + vector->z * vector->z);
+	norm = sqrt(vector->x * vector->x + vector->y * vector->y + vector->z * vector->z);
 	vector->x /= norm;
 	vector->y /= norm;
 	vector->z /= norm;
@@ -55,6 +52,14 @@ void divide_v(float a, t_3d *vector)
 	vector->x /= a;
 	vector->y /= a;
 	vector->z /= a;
+}
+
+t_3d divide_vr(float a, t_3d vector)
+{
+	vector.x /= a;
+	vector.y /= a;
+	vector.z /= a;
+	return (vector);
 }
 
 void sub_v(float a, t_3d *vector)
@@ -113,10 +118,23 @@ t_3d sub_product(t_3d a, t_3d b)
 t_ray calculate(t_ray ray, float t)
 {
 	t_ray temp;
-	t_3d temp2 = multiply_v(t, ray.endpoint);
 	temp = ray;
-	temp.endpoint = temp2;
+	temp.endpoint = multiply_v(t, ray.endpoint);
 	return (temp);
+}
+
+int inter_plane(t_ray *ray, t_plane plane)
+{
+	float dDotN = dot_product(ray->endpoint, plane.normal);
+
+	if (dDotN == 0.0f)
+		return (0);
+
+	float t = dot_product(sub_product(plane.position, ray->startpoint), divide_vr(dDotN, plane.normal));
+	if (t <= 0.0001f || t >= ray->t)
+		return (0);
+	ray->t = t;
+	return (1);
 }
 
 int inter_sphere(t_ray *ray, t_sphere sphere)
@@ -146,10 +164,7 @@ int inter_sphere(t_ray *ray, t_sphere sphere)
 	else if (t2 > 0.0001f && t2 < 1.0e30f)
 		ray->t = t2;
 	else
-	{
 		return (0);
-	}
-	printf("ptn on a trouve une intersection\n");
 	return (1);
 }
 

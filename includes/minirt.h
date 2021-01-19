@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/15 17:45:13 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/19 12:25:38 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ typedef struct s_camera
 
 typedef struct s_plane
 {
-	t_2d point;
-	t_ray vector;
+	t_3d position;
+	t_3d normal;
 } t_plane;
 
 typedef struct s_sphere
@@ -101,6 +101,7 @@ t_3d sub_product(t_3d a, t_3d b);
 t_3d add_product(t_3d a, t_3d b);
 t_3d multiply_product(t_3d a, t_3d b);
 int moller_trumbore(t_3d startpoint, t_3d endpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v);
+int inter_plane(t_ray *ray, t_plane plane);
 int inter_sphere(t_ray *ray, t_sphere sphere);
 t_ray calculate(t_ray ray, float t);
 void normalize(t_3d *vector);
