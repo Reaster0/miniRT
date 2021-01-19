@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/19 12:25:38 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/19 16:46:17 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_ray
 	t_3d startpoint;
 	t_3d endpoint;
 	float t;
+	int color;
 } t_ray;
 
 typedef struct s_camera
@@ -106,7 +107,7 @@ int inter_sphere(t_ray *ray, t_sphere sphere);
 t_ray calculate(t_ray ray, float t);
 void normalize(t_3d *vector);
 void normalize2d(t_2d *vector);
-void add_v(float a, t_3d *vector);
+t_3d add_v(float a, t_3d vector);
 t_3d multiply_v(float a, t_3d vector);
 void sub_v(float a, t_3d *vector);
 void divide_v(float a, t_3d *vector);

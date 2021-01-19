@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/19 14:26:49 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/19 17:16:07 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,34 @@ t_3d new_3d(float x, float y, float z)
 }
 
 t_ray make_ray(t_camera camera, t_2d point)
-{
+{ //le rayon part toujours en 0.0.1
 	t_ray result;
 	result.startpoint = camera.startpoint;
-	result.endpoint = multiply_v(point.x * camera.w, camera.right);
-	// printf("point.x =%f\n camera.w =%f \ncamera.right.x\n =%f camera right.y =%f\n camera right.z = %f \nand result endpoint.x = =%f\n endpoint.y =%f\n endpoint.z =%f\n", point.x, camera.w, camera.right.x, camera.right.y, camera.right.z, result.endpoint.x, result.endpoint.y, result.endpoint.z);
-	result.endpoint = add_product(result.endpoint, camera.forward);
-	result.endpoint = add_product(result.endpoint, multiply_v(point.y * camera.h, camera.up));
+
+	result.endpoint = camera.forward;
+	result.endpoint.x = point.x * camera.h * camera.right.x;
+	result.endpoint.y = point.y * camera.w * camera.up.y;
+	printf("le resultat de l'operation x=%f\n", point.y * camera.w * camera.up.y);
+	//printf("endpoint\nx=%f\ny=%f\nz=%f\n", result.endpoint.x, result.endpoint.y, result.endpoint.z);
 	normalize(&result.endpoint);
 	result.t = 1.0e30f;
-	//printf("so result.endpoint.x =%f\n result.endpoint.y =%f\n and result.endpoint.z =%f\n", result.endpoint.x, result.endpoint.y, result.endpoint.z);
+
 	return (result);
 }
 
 t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio)
-{
+{ //pensez a fix le cas ou upguide == target
 	t_camera result;
 	result.startpoint = origin;
 	result.forward = sub_product(target, origin);
 	normalize(&result.forward);
 	result.right = cross_product(result.forward, upguide);
 	normalize(&result.right);
+
 	result.up = cross_product(result.right, result.forward);
 	result.h = tan(fov);
 	result.w = result.h * ratio;
-
+	printf("forward = %f\n%f\n%f\nup =%f\n%f\n%f\n", result.forward.x, result.forward.y, result.forward.z, result.up.x, result.up.y, result.up.z);
 	return (result);
 }
 
@@ -59,7 +62,7 @@ void project(t_data *data, t_3d camera, t_2d resolution, t_3d *triangle, int col
 	t_2d bary;
 
 	t_sphere sphere;
-	sphere.startpoint = new_3d(0.0f, 1.0f, 0.0f);
+	sphere.startpoint = new_3d(0.0f, 0.0f, 2.0f);
 	sphere.r = 1.0f;
 
 	t_plane plane;
@@ -70,11 +73,11 @@ void project(t_data *data, t_3d camera, t_2d resolution, t_3d *triangle, int col
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
-	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 1.f, 0.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
+	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 0.f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
 	t_ray ray;
 
-	count.x = 1;
-	count.y = 1;
+	count.x = 1.0f;
+	count.y = 1.0f;
 	while (count.x < resolution.x)
 	{
 		count.y = 0;
@@ -82,8 +85,9 @@ void project(t_data *data, t_3d camera, t_2d resolution, t_3d *triangle, int col
 		{
 			screen_coord.x = (2.0f * count.x) / resolution.x - 1.0f;
 			screen_coord.y = (-2.0f * count.y) / resolution.y + 1.0f;
+			//printf("screen x=%f\nscreen y=%f\n", screen_coord.x, screen_coord.y);
 			ray = make_ray(cam, screen_coord);
-			if (inter_plane(&ray, plane)) // inter_sphere(&ray, sphere))
+			if (inter_sphere(&ray, sphere))
 			{
 				mlx_pixel_put_fast(data, count.x, count.y, color);
 			}

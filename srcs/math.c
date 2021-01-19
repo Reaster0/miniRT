@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/19 14:22:44 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/19 16:45:40 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void normalize2d(t_2d *vector)
 void normalize(t_3d *vector)
 {
 	float norm;
-	norm = sqrt(vector->x * vector->x + vector->y * vector->y + vector->z * vector->z);
+	norm = sqrt(sqr(vector->x) + sqr(vector->y) + sqr(vector->z));
+	// printf("norm =%f\n", norm);
 	vector->x /= norm;
 	vector->y /= norm;
 	vector->z /= norm;
@@ -69,11 +70,12 @@ void sub_v(float a, t_3d *vector)
 	vector->z -= a;
 }
 
-void add_v(float a, t_3d *vector)
+t_3d add_v(float a, t_3d vector)
 {
-	vector->x += a;
-	vector->y += a;
-	vector->z += a;
+	vector.x += a;
+	vector.y += a;
+	vector.z += a;
+	return (vector);
 }
 
 t_3d multiply_product(t_3d a, t_3d b)
