@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/19 16:46:17 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/20 16:51:39 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,14 @@ typedef struct s_plane
 {
 	t_3d position;
 	t_3d normal;
+	int color;
 } t_plane;
 
 typedef struct s_sphere
 {
 	t_3d startpoint;
 	float r;
+	int color;
 } t_sphere;
 
 typedef struct s_data
