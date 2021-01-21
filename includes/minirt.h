@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/20 16:51:39 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/21 14:33:06 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,8 @@
 #include <math.h>
 #include "mlx.h"
 #include "../dependencies/libft/libft.h"
-#include "../includes/math.h"
-
-typedef struct s_3d
-{
-	float x;
-	float y;
-	float z;
-} t_3d;
-
-typedef struct s_2d
-{
-	float y;
-	float x;
-} t_2d;
+#include "shapes.h"
+#include "math.h"
 
 typedef struct s_ray
 {
@@ -45,27 +33,12 @@ typedef struct s_ray
 typedef struct s_camera
 {
 	t_3d startpoint;
-	//t_3d *dir;
 	t_3d forward;
 	t_3d up;
 	t_3d right;
 	float h;
 	float w;
 } t_camera;
-
-typedef struct s_plane
-{
-	t_3d position;
-	t_3d normal;
-	int color;
-} t_plane;
-
-typedef struct s_sphere
-{
-	t_3d startpoint;
-	float r;
-	int color;
-} t_sphere;
 
 typedef struct s_data
 {
@@ -96,22 +69,5 @@ t_data new_img(t_vars *vars, int y, int x);
 void img_adress(t_data *data);
 int next_frame(t_vars *vars);
 void mlx_pixel_put_fast(t_data *data, int x, int y, int color);
-void pixel_square(t_data *data, int y, int x, int sx, int sy, int color);
-
-float dot_product(t_3d a, t_3d b);
-t_3d cross_product(t_3d a, t_3d b);
-t_3d sub_product(t_3d a, t_3d b);
-t_3d add_product(t_3d a, t_3d b);
-t_3d multiply_product(t_3d a, t_3d b);
-int moller_trumbore(t_3d startpoint, t_3d endpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v);
-int inter_plane(t_ray *ray, t_plane plane);
-int inter_sphere(t_ray *ray, t_sphere sphere);
-t_ray calculate(t_ray ray, float t);
-void normalize(t_3d *vector);
-void normalize2d(t_2d *vector);
-t_3d add_v(float a, t_3d vector);
-t_3d multiply_v(float a, t_3d vector);
-void sub_v(float a, t_3d *vector);
-void divide_v(float a, t_3d *vector);
 
 #endif

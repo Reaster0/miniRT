@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/21 10:08:05 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/21 14:16:11 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,12 @@ t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float rat
 	return (result);
 }
 
-int inter_spheres(t_ray *ray, t_sphere *sphere)
+int inter_spheres(t_ray *ray, t_sphere **sphere)
 {
 	int i = 0;
 	int ret;
 	ret = 0;
-	//autant de spheres
-	while (i < 2)
+	while (sphere[i])
 	{
 		if (inter_sphere(ray, sphere[i]))
 			ret = 1;
@@ -66,13 +65,12 @@ int inter_spheres(t_ray *ray, t_sphere *sphere)
 	return (ret);
 }
 
-int inter_planes(t_ray *ray, t_plane *plane)
+int inter_planes(t_ray *ray, t_plane **plane)
 {
 	int i = 0;
 	int ret;
 	ret = 0;
-	//autant de planes
-	while (i < 1)
+	while (plane[i])
 	{
 		if (inter_plane(ray, plane[i]))
 			ret = 1;
@@ -81,16 +79,35 @@ int inter_planes(t_ray *ray, t_plane *plane)
 	return (ret);
 }
 
-int intersections(t_ray *ray, t_plane *plane, t_sphere *sphere)
+int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere)
 {
 	int ret;
 	ret = 0;
-
 	if (inter_spheres(ray, sphere))
 		ret = 1;
 	if (inter_planes(ray, plane))
 		ret = 1;
 	return (ret);
+}
+
+t_sphere *new_sphere(t_3d startpoint, float r, int color)
+{
+	t_sphere *sphere;
+	sphere = (t_sphere *)malloc(sizeof(t_sphere));
+	sphere->startpoint = startpoint;
+	sphere->r = r;
+	sphere->color = color;
+	return (sphere);
+}
+
+t_plane *new_plane(t_3d position, t_3d normal, int color)
+{
+	t_plane *plane;
+	plane = (t_plane *)malloc(sizeof(t_plane));
+	plane->position = position;
+	plane->normal = normal;
+	plane->color = color;
+	return (plane);
 }
 
 void project(t_data *data, t_3d camera, t_2d resolution, int color)
@@ -99,23 +116,15 @@ void project(t_data *data, t_3d camera, t_2d resolution, int color)
 	float ratio;
 	float fov;
 
-	t_sphere sphere[2];
-	sphere[0].startpoint = new_3d(0.0f, 0.0f, 20.0f);
-	sphere[0].r = 5.0f;
-	sphere[0].color = 0x00FF00;
+	t_sphere **sphere;
+	sphere = malloc(sizeof(t_plane) * 3);
+	sphere[0] = new_sphere(new_3d(0.0f, 0.0f, 20.0f), 5.0f, 0x00FF00);
+	sphere[1] = new_sphere(new_3d(7.f, 0.f, 18.f), 5.f, 0xFF0000);
 
-	sphere[1].color = 0xFF0000;
-	sphere[1].r = 5.f;
-	sphere[1].startpoint = new_3d(7.f, 0.f, 18.f);
-
-	t_plane plane[2];
-	plane[0].position = new_3d(0.f, -0.5f, 0.f);
-	plane[0].normal = new_3d(0.f, 1.f, 0.f);
-	plane[0].color = 0x0000FF;
-
-	plane[1].color = 0xFFFFFF;
-	plane[1].position = new_3d(0.f, 0.f, 25.f);
-	plane[1].normal = new_3d(0.f, 10.f, 0.f);
+	t_plane **plane;
+	plane = malloc(sizeof(t_plane) * 3);
+	plane[0] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
+	plane[1] = new_plane(new_3d(0.f, -0.5f, 0.f), new_3d(2.f, 1.0f, 0.f), 0xFFFFFF);
 
 	fov = 25.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
