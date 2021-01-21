@@ -6,11 +6,49 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:22:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/21 14:40:21 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/21 16:35:47 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+t_3d new_3d(float x, float y, float z)
+{
+	t_3d result;
+	result.x = x;
+	result.y = y;
+	result.z = z;
+	return (result);
+}
+
+t_ray make_ray(t_camera camera, t_2d point)
+{
+	t_ray result;
+	result.startpoint = camera.startpoint;
+	result.endpoint = camera.forward;
+	result.endpoint = add_product(result.endpoint, multiply_v(point.x * camera.w, camera.right));
+	result.endpoint = add_product(result.endpoint, multiply_v(point.y * camera.h, camera.up));
+	normalize(&result.endpoint);
+	result.t = 1.0e30f;
+	result.color = 0x00FFFFFF;
+
+	return (result);
+}
+
+t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio)
+{ //pensez a fix le cas ou upguide == target
+	t_camera result;
+	result.startpoint = origin;
+	result.forward = sub_product(target, origin);
+	normalize(&result.forward);
+	result.right = cross_product(result.forward, upguide);
+	normalize(&result.right);
+	result.up = cross_product(result.right, result.forward);
+
+	result.h = tan(fov);
+	result.w = result.h * ratio;
+	return (result);
+}
 
 int inter_plane(t_ray *ray, t_plane *plane)
 {
@@ -24,7 +62,6 @@ int inter_plane(t_ray *ray, t_plane *plane)
 		return (0);
 	ray->color = plane->color;
 	ray->t = t;
-
 	return (1);
 }
 

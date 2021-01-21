@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/01/10 17:44:42 by earnaud          ###   ########.fr        #
+#    Updated: 2021/01/21 17:03:55 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ MINILIBX_A_DIR 		=	$(MINILIBX_DIR)/libmlx.a
 FILES		= main.c \
 				mlx_util.c \
 				colors.c \
-				math.c
+				math.c \
+				shapes.c
 
 
 SRCS		= $(addprefix $(SRCS_DIR), $(FILES))

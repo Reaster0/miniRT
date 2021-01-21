@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/21 14:33:06 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/21 17:34:45 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,6 @@
 #include "../dependencies/libft/libft.h"
 #include "shapes.h"
 #include "math.h"
-
-typedef struct s_ray
-{
-	t_3d startpoint;
-	t_3d endpoint;
-	float t;
-	int color;
-} t_ray;
-
-typedef struct s_camera
-{
-	t_3d startpoint;
-	t_3d forward;
-	t_3d up;
-	t_3d right;
-	float h;
-	float w;
-} t_camera;
 
 typedef struct s_data
 {
