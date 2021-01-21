@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/20 17:21:58 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/21 10:08:05 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int inter_planes(t_ray *ray, t_plane *plane)
 	int ret;
 	ret = 0;
 	//autant de planes
-	while (i > 2)
+	while (i < 1)
 	{
 		if (inter_plane(ray, plane[i]))
 			ret = 1;
@@ -85,6 +85,7 @@ int intersections(t_ray *ray, t_plane *plane, t_sphere *sphere)
 {
 	int ret;
 	ret = 0;
+
 	if (inter_spheres(ray, sphere))
 		ret = 1;
 	if (inter_planes(ray, plane))
@@ -112,9 +113,11 @@ void project(t_data *data, t_3d camera, t_2d resolution, int color)
 	plane[0].normal = new_3d(0.f, 1.f, 0.f);
 	plane[0].color = 0x0000FF;
 
-	plane[1]
+	plane[1].color = 0xFFFFFF;
+	plane[1].position = new_3d(0.f, 0.f, 25.f);
+	plane[1].normal = new_3d(0.f, 10.f, 0.f);
 
-		fov = 25.f * M_PI / 180.f;
+	fov = 25.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
@@ -130,7 +133,7 @@ void project(t_data *data, t_3d camera, t_2d resolution, int color)
 			screen_coord.x = (2.0f * count.x) / resolution.x - 1.0f;
 			screen_coord.y = (-2.0f * count.y) / resolution.y + 1.0f;
 			ray = make_ray(cam, screen_coord);
-			if (inter_sphere2(&ray, sphere) || inter_plane(&ray, plane))
+			if (intersections(&ray, plane, sphere))
 			{
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
 			}
