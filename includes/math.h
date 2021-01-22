@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/21 17:54:51 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/22 12:54:09 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,16 @@
 #include "minirt.h"
 
 
-t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio);
+
 t_ray make_ray(t_camera camera, t_2d point);
 
-int inter_triangle(t_3d startpoint, t_3d endpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v);
+int inter_triangle(t_ray *ray, t_triangle *triangle);
+int inter_triangles(t_ray *ray, t_triangle **triangle);
 int inter_plane(t_ray *ray, t_plane *plane);
 int inter_planes(t_ray *ray, t_plane **plane);
 int inter_spheres(t_ray *ray, t_sphere **sphere);
 int inter_sphere(t_ray *ray, t_sphere *sphere);
-int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere);
+int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle);
 
 
 float length2(t_3d point);

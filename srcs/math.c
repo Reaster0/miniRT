@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/21 17:52:57 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/22 12:52:38 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 	localRay.startpoint = sub_product(localRay.startpoint, sphere->startpoint);
 
 	a = length2(ray->endpoint);
-	b = 2.0 * dot_product(localRay.endpoint, localRay.startpoint);
+	b = 2.f * dot_product(localRay.endpoint, localRay.startpoint);
 	c = length2(localRay.startpoint) - sqr(sphere->r);
 	discriminant = sqr(b) - 4 * a * c;
 	if (discriminant < 0.0f)
@@ -85,7 +85,21 @@ int inter_spheres(t_ray *ray, t_sphere **sphere)
 	return (ret);
 }
 
-int inter_triangle(t_3d startpoint, t_3d dirpoint, t_3d *triangle, float *rayt, float *bary_u, float *bary_v)
+int inter_triangles(t_ray *ray, t_triangle **triangle)
+{
+	int i = 0;
+	int ret;
+	ret = 0;
+	while (triangle[i])
+	{
+		if (inter_triangle(ray, triangle[i]))
+			ret = 1;
+		i++;
+	}
+	return (ret);
+}
+
+int inter_triangle(t_ray *ray, t_triangle *triangle)
 {
 	t_3d edge1;
 	t_3d edge2;
@@ -93,32 +107,37 @@ int inter_triangle(t_3d startpoint, t_3d dirpoint, t_3d *triangle, float *rayt, 
 	t_3d cross_raydir_edge2;
 	t_3d cross_oriminusvert0_edge1;
 	float determinent, inv_determinent;
+	float t;
 
-	edge1 = sub_product(triangle[1], triangle[0]);
-	edge2 = sub_product(triangle[2], triangle[0]);
+	edge1 = sub_product(triangle->b, triangle->a);
+	edge2 = sub_product(triangle->c, triangle->a);
 
-	cross_raydir_edge2 = cross_product(dirpoint, edge2);
+	cross_raydir_edge2 = cross_product(ray->endpoint, edge2);
 	determinent = dot_product(edge1, cross_raydir_edge2);
 
-	//je sais pas pourquoi ni comment ça marche
 	if (determinent > -0.000001 && determinent < 0.000001)
 		return (0);
 	inv_determinent = 1.0 / determinent;
 
-	orig_minus_vert0 = sub_product(startpoint, triangle[0]);
+	orig_minus_vert0 = sub_product(ray->startpoint, triangle->a);
 
-	//calcul pour voir si l'on est dans le triangle barycentrique
-	*bary_u = dot_product(orig_minus_vert0, cross_raydir_edge2) * inv_determinent;
-	if (*bary_u < 0.0 || *bary_u > 1.0)
-		return 0;
+	triangle->barycentric.y = dot_product(orig_minus_vert0, cross_raydir_edge2) * inv_determinent;
+	if (triangle->barycentric.y < 0.0 || triangle->barycentric.y > 1.0)
+		return (0);
 
 	cross_oriminusvert0_edge1 = cross_product(orig_minus_vert0, edge1);
 
-	*bary_v = dot_product(cross_oriminusvert0_edge1, orig_minus_vert0) * inv_determinent;
-	if (*bary_v < 0.0 || *bary_u > 1.0)
+	triangle->barycentric.z = dot_product(ray->endpoint, cross_oriminusvert0_edge1) * inv_determinent;
+	if (triangle->barycentric.z < 0.0 || triangle->barycentric.z > 1.0)
 		return (0);
-	// calcul de la longueur de notre rayon
-	*rayt = dot_product(edge2, cross_oriminusvert0_edge1) * inv_determinent;
+	triangle->barycentric.x = 1 - triangle->barycentric.y - triangle->barycentric.z;
+
+	t = dot_product(edge2, cross_oriminusvert0_edge1) * inv_determinent;
+	if (t < ray->t)
+	{
+		ray->t = t;
+		ray->color = triangle->color;
+	}
 	return (1);
 }
 
