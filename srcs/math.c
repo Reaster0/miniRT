@@ -6,11 +6,29 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/22 12:52:38 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/22 17:16:45 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+int inter_square(t_ray *ray, t_square *square)
+{
+}
+
+int inter_squares(t_ray *ray, t_plane **square)
+{
+	int i = 0;
+	int ret;
+	ret = 0;
+	while (square[i])
+	{
+		if (inter_square(ray, square[i]))
+			ret = 1;
+		i++;
+	}
+	return (ret);
+}
 
 int inter_plane(t_ray *ray, t_plane *plane)
 {
@@ -115,22 +133,25 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 	cross_raydir_edge2 = cross_product(ray->endpoint, edge2);
 	determinent = dot_product(edge1, cross_raydir_edge2);
 
-	if (determinent > -0.000001 && determinent < 0.000001)
+	if (determinent > -0.000001f && determinent < 0.000001f)
 		return (0);
-	inv_determinent = 1.0 / determinent;
+	inv_determinent = 1.0f / determinent;
 
 	orig_minus_vert0 = sub_product(ray->startpoint, triangle->a);
 
 	triangle->barycentric.y = dot_product(orig_minus_vert0, cross_raydir_edge2) * inv_determinent;
-	if (triangle->barycentric.y < 0.0 || triangle->barycentric.y > 1.0)
+	if (triangle->barycentric.y < 0.0f || triangle->barycentric.y > 1.0f)
 		return (0);
 
 	cross_oriminusvert0_edge1 = cross_product(orig_minus_vert0, edge1);
 
 	triangle->barycentric.z = dot_product(ray->endpoint, cross_oriminusvert0_edge1) * inv_determinent;
-	if (triangle->barycentric.z < 0.0 || triangle->barycentric.z > 1.0)
+	if (triangle->barycentric.z < 0.0f || triangle->barycentric.z > 1.0f)
 		return (0);
 	triangle->barycentric.x = 1 - triangle->barycentric.y - triangle->barycentric.z;
+
+	if (triangle->barycentric.x < 0.0f || triangle->barycentric.z > 1.0f)
+		return (0);
 
 	t = dot_product(edge2, cross_oriminusvert0_edge1) * inv_determinent;
 	if (t < ray->t)

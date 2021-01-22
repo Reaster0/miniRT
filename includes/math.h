@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/22 12:54:09 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/22 17:10:13 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@
 
 t_ray make_ray(t_camera camera, t_2d point);
 
+int inter_square(t_ray *ray, t_square *square);
+int inter_squares(t_ray *ray, t_plane **square);
 int inter_triangle(t_ray *ray, t_triangle *triangle);
 int inter_triangles(t_ray *ray, t_triangle **triangle);
 int inter_plane(t_ray *ray, t_plane *plane);
 int inter_planes(t_ray *ray, t_plane **plane);
 int inter_spheres(t_ray *ray, t_sphere **sphere);
 int inter_sphere(t_ray *ray, t_sphere *sphere);
-int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle);
+int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle, t_square **square);
 
 
 float length2(t_3d point);

@@ -6,13 +6,14 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/22 12:56:12 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/22 17:09:33 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+//faire une structure qui englobe toutes les autres
 
-int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle)
+int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle, t_square **square)
 {
 	int ret;
 	ret = 0;
@@ -21,6 +22,8 @@ int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **t
 	if (inter_planes(ray, plane))
 		ret = 1;
 	if (inter_triangles(ray, triangle))
+		ret = 1;
+	if (inter_squares(ray, square))
 		ret = 1;
 	return (ret);
 }
@@ -43,11 +46,11 @@ void project(t_data *data, t_3d camera, t_2d resolution, int color)
 	plane[2] = NULL;
 	t_triangle **triangle;
 	triangle = malloc(sizeof(t_triangle *) * 1);
-	triangle[0]->a = new_3d(-10, 0, 20);
-	triangle[0]->b = new_3d(10, 0, 20);
-	triangle[0]->c = new_3d(0, 20, 20);
-	triangle[0]->color = 0xFFFF00;
+	triangle[0] = new_triangle(new_3d(-10, 0, 20), new_3d(10, 0, 20), new_3d(0, 20, 20), 0xFFFF00);
 	triangle[1] = NULL;
+	t_square **square;
+	square[0] = new_square(new_3d(20, 0, 16), new_3d(0, 0, 16), new_3d(0, 20, 16), 0x00FFFF);
+	square[1] = 0;
 
 	fov = 60.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
@@ -65,7 +68,7 @@ void project(t_data *data, t_3d camera, t_2d resolution, int color)
 			screen_coord.x = (2.0f * count.x) / resolution.x - 1.0f;
 			screen_coord.y = (-2.0f * count.y) / resolution.y + 1.0f;
 			ray = make_ray(cam, screen_coord);
-			if (intersections(&ray, plane, sphere, triangle))
+			if (intersections(&ray, plane, sphere, triangle, square))
 			{
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
 			}

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:22:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/21 17:51:05 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/22 17:00:04 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,26 @@ t_plane *new_plane(t_3d position, t_3d normal, int color)
 	plane->normal = normal;
 	plane->color = color;
 	return (plane);
+}
+
+t_triangle *new_triangle(t_3d a, t_3d b, t_3d c, int color)
+{
+	t_triangle *triangle;
+	triangle = malloc(sizeof(t_triangle));
+	triangle->a = a;
+	triangle->b = b;
+	triangle->c = c;
+	triangle->color = color;
+	return (triangle);
+}
+
+t_square *new_square(t_3d a, t_3d b, t_3d c, int color)
+{
+	t_square *square;
+	square = malloc(sizeof(t_square));
+	square->a = a;
+	square->b = b;
+	square->c = c;
+	square->color = color;
+	return (square);
 }
