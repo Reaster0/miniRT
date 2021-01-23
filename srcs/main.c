@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/22 17:09:33 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/23 10:51:40 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **t
 	return (ret);
 }
 
-void project(t_data *data, t_3d camera, t_2d resolution, int color)
+void project(t_data *data, t_2d resolution, int color)
 {
 	t_2d count;
 	float ratio;
@@ -52,7 +52,7 @@ void project(t_data *data, t_3d camera, t_2d resolution, int color)
 	square[0] = new_square(new_3d(20, 0, 16), new_3d(0, 0, 16), new_3d(0, 20, 16), 0x00FFFF);
 	square[1] = 0;
 
-	fov = 60.f * M_PI / 180.f;
+	fov = 70.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
@@ -86,16 +86,11 @@ int main(void)
 	res.x = 1020.f;
 	res.y = 720.f;
 
-	t_3d camera;
-	camera.x = -5.0f;
-	camera.y = 1.0f;
-	camera.z = 0.0f;
-
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");
 	img = new_img(&vars, res.y, res.x);
 
-	project(&img, camera, res, 0xFF0000);
+	project(&img, res, 0xFF0000);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	mlx_loop(vars.mlx);
 	return (0);

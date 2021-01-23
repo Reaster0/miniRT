@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/22 17:16:45 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/23 12:35:51 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 int inter_square(t_ray *ray, t_square *square)
 {
+	t_3d center;
+	t_3d e1;
+	t_3d e2;
+	center = add_product(square->a, divide_vr(2, square->c));
+	e1 = sub_product(square->a, square->b);
 }
 
 int inter_squares(t_ray *ray, t_plane **square)
