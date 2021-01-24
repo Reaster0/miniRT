@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:22:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/22 17:00:04 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/24 12:07:26 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ t_triangle *new_triangle(t_3d a, t_3d b, t_3d c, int color)
 	return (triangle);
 }
 
-t_square *new_square(t_3d a, t_3d b, t_3d c, int color)
+t_square *new_square(t_3d a, t_3d b, t_3d c, t_3d d, int color)
 {
 	t_square *square;
 	square = malloc(sizeof(t_square));
 	square->a = a;
 	square->b = b;
 	square->c = c;
+	square->d = d;
 	square->color = color;
 	return (square);
 }

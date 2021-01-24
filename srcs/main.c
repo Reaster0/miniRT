@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/23 10:51:40 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/24 12:48:03 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ void project(t_data *data, t_2d resolution, int color)
 	triangle[0] = new_triangle(new_3d(-10, 0, 20), new_3d(10, 0, 20), new_3d(0, 20, 20), 0xFFFF00);
 	triangle[1] = NULL;
 	t_square **square;
-	square[0] = new_square(new_3d(20, 0, 16), new_3d(0, 0, 16), new_3d(0, 20, 16), 0x00FFFF);
-	square[1] = 0;
+	square = malloc(sizeof(t_square) * 2);
+	square[0] = new_square(new_3d(20, 0, 10), new_3d(0, 0, 10), new_3d(0, 20, 10), new_3d(20, 20, 10), 0x00FFFF);
+	square[1] = NULL;
 
 	fov = 70.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
