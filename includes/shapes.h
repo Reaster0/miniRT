@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/24 12:08:45 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/24 16:00:11 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,19 @@ typedef struct s_square
 	int color;
 } t_square;
 
+typedef struct s_cylinder
+{
+	t_3d point;
+	t_3d orient;
+	float rayon;
+	float height;
+	int color;
+} t_cylinder;
+
 t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio);
 t_3d new_3d(float x, float y, float z);
+t_2d new_2d(float x, float y);
+t_cylinder *new_cylinder(t_3d point, t_3d orient, t_2d h_r, int color);
 t_sphere *new_sphere(t_3d startpoint, float r, int color);
 t_plane *new_plane(t_3d position, t_3d normal, int color);
 t_triangle *new_triangle(t_3d a, t_3d b, t_3d c, int color);

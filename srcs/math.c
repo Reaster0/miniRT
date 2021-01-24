@@ -6,18 +6,40 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/24 13:31:35 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/24 20:08:29 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
+int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
+{
+	int result;
+	t_3d delta;
+	delta = add_product(ray->endpoint, ray->startpoint);
+}
+
+int inter_cylinders(t_ray *ray, t_cylinder **cylinder)
+{
+	int i = 0;
+	int ret;
+	ret = 0;
+	while (cylinder[i])
+	{
+		if (inter_square(ray, cylinder[i]))
+			ret = 1;
+		i++;
+	}
+	return (ret);
+}
+
 int inter_square(t_ray *ray, t_square *square)
 {
 	int result;
-	result = 0;
+
 	t_triangle *triangle1;
 	t_triangle *triangle2;
+	result = 0;
 	triangle1 = new_triangle(square->a, square->b, square->c, square->color);
 	triangle2 = new_triangle(square->a, square->c, square->d, square->color);
 	if (inter_triangle(ray, triangle1))

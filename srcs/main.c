@@ -6,14 +6,14 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/24 12:48:03 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/24 16:13:46 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 //faire une structure qui englobe toutes les autres
 
-int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle, t_square **square)
+int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle, t_square **square, t_cylinder **cylinder)
 {
 	int ret;
 	ret = 0;
@@ -24,6 +24,8 @@ int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **t
 	if (inter_triangles(ray, triangle))
 		ret = 1;
 	if (inter_squares(ray, square))
+		ret = 1;
+	if (inter_cylinders(ray, cylinder))
 		ret = 1;
 	return (ret);
 }
@@ -50,10 +52,14 @@ void project(t_data *data, t_2d resolution, int color)
 	triangle[1] = NULL;
 	t_square **square;
 	square = malloc(sizeof(t_square) * 2);
-	square[0] = new_square(new_3d(20, 0, 10), new_3d(0, 0, 10), new_3d(0, 20, 10), new_3d(20, 20, 10), 0x00FFFF);
+	square[0] = new_square(new_3d(35, 0, 10), new_3d(5, 0, 10), new_3d(5, 20, 10), new_3d(35, 20, 10), 0x00FFFF);
 	square[1] = NULL;
+	t_cylinder **cylinder;
+	cylinder = malloc(sizeof(t_cylinder *) * 2);
+	cylinder[0] = new_cylinder(new_3d(50.f, 0.f, 19.f), new_3d(0.f, 0.f, 1.f), new_2d(14.2, 21.42), create_trgb(0, 10, 0, 255));
+	cylinder[1] = NULL;
 
-	fov = 70.f * M_PI / 180.f;
+	fov = 80.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
