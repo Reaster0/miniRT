@@ -6,17 +6,64 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/24 20:08:29 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/25 17:17:37 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
+int in_cylinder(t_cylinder *cylinder, t_ray *ray, float t)
+{
+	t_3d hitpoint;
+	t_3d down;
+	t_3d up;
+
+	hitpoint = add_product(ray->startpoint, multiply_v(t, ray->endpoint));
+	down = sub_product(hitpoint, cylinder->point);
+	up = sub_product(hitpoint, cylinder->orient);
+	if (dot_product(cylinder->orient, down) > 0.f && dot_product(cylinder->orient, up) < 0.f)
+		return (1);
+	return (0);
+}
+
 int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 {
-	int result;
-	t_3d delta;
-	delta = add_product(ray->endpoint, ray->startpoint);
+	int ret;
+	t_3d p0;
+	t_3d dir;
+	t_3d pdir;
+	t_3d quadra;
+	t_2d t;
+	float discriminant;
+	ret = 0;
+	p0 = sub_product(ray->startpoint, cylinder->point);
+	dir = sub_product(multiply_v(dot_product(ray->endpoint, cylinder->orient), cylinder->orient), ray->endpoint);
+	pdir = sub_product(multiply_v(dot_product(p0, cylinder->orient), cylinder->orient), p0);
+	//coefficients for quadratics equations
+	quadra.x = dot_product(dir, dir);
+	quadra.y = 2.f * dot_product(dir, p0);
+	quadra.z = dot_product(p0, p0) - sqr(cylinder->rayon);
+	//
+	discriminant = sqr(quadra.y) - (4.f * quadra.x * quadra.z);
+	if (discriminant < 0.f)
+		return (0);
+	t.x = (-quadra.y + sqrt(discriminant)) / (2.f * quadra.x);
+	t.y = (-quadra.y - sqrt(discriminant)) / (2.f * quadra.x);
+
+	if (t.x > 0.000001 && in_cylinder(cylinder, ray, t.x))
+	{
+		ray->t = t.x;
+		ret = 1;
+	}
+	if ((t.y > 0.000001) && in_cylinder(cylinder, ray, t.y))
+	{
+		if (t.y < t.x)
+		{
+			ray->t = t.y;
+			ret = 1;
+		}
+	}
+	return (ret);
 }
 
 int inter_cylinders(t_ray *ray, t_cylinder **cylinder)
@@ -26,7 +73,7 @@ int inter_cylinders(t_ray *ray, t_cylinder **cylinder)
 	ret = 0;
 	while (cylinder[i])
 	{
-		if (inter_square(ray, cylinder[i]))
+		if (inter_cylinder(ray, cylinder[i]))
 			ret = 1;
 		i++;
 	}
@@ -273,6 +320,14 @@ t_3d divide_vr(float a, t_3d vector)
 	vector.x /= a;
 	vector.y /= a;
 	vector.z /= a;
+	return (vector);
+}
+
+t_3d sub_vr(float a, t_3d vector)
+{
+	vector.x -= a;
+	vector.y -= a;
+	vector.z -= a;
 	return (vector);
 }
 

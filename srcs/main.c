@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/24 16:13:46 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/25 16:49:54 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ void project(t_data *data, t_2d resolution, int color)
 	square[1] = NULL;
 	t_cylinder **cylinder;
 	cylinder = malloc(sizeof(t_cylinder *) * 2);
-	cylinder[0] = new_cylinder(new_3d(50.f, 0.f, 19.f), new_3d(0.f, 0.f, 1.f), new_2d(14.2, 21.42), create_trgb(0, 10, 0, 255));
+	cylinder[0] = new_cylinder(new_3d(0.f, 0.f, 10.f), new_3d(0.f, 0.f, 1.f), new_2d(10, 13), create_trgb(0, 10, 0, 255));
 	cylinder[1] = NULL;
 
-	fov = 80.f * M_PI / 180.f;
+	fov = 60.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
@@ -75,7 +75,7 @@ void project(t_data *data, t_2d resolution, int color)
 			screen_coord.x = (2.0f * count.x) / resolution.x - 1.0f;
 			screen_coord.y = (-2.0f * count.y) / resolution.y + 1.0f;
 			ray = make_ray(cam, screen_coord);
-			if (intersections(&ray, plane, sphere, triangle, square))
+			if (intersections(&ray, plane, sphere, triangle, square, cylinder))
 			{
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
 			}
