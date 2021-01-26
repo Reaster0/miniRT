@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/24 16:00:11 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/26 14:01:59 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_square
 typedef struct s_cylinder
 {
 	t_3d point;
+	t_3d pointup;
 	t_3d orient;
 	float rayon;
 	float height;

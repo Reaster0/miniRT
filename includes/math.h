@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/25 12:02:41 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/26 14:36:56 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_ray make_ray(t_camera camera, t_2d point);
 int inter_cylinder(t_ray *ray, t_cylinder *cylinder);
 int inter_cylinders(t_ray *ray, t_cylinder **cylinder);
 int inter_square(t_ray *ray, t_square *square);
-int inter_squares(t_ray *ray, t_plane **square);
+int inter_squares(t_ray *ray, t_square **square);
 int inter_triangle(t_ray *ray, t_triangle *triangle);
 int inter_triangles(t_ray *ray, t_triangle **triangle);
 int inter_plane(t_ray *ray, t_plane *plane);

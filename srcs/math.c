@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/25 17:17:37 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/26 15:39:12 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,50 +18,65 @@ int in_cylinder(t_cylinder *cylinder, t_ray *ray, float t)
 	t_3d down;
 	t_3d up;
 
+	cylinder->pointup = add_product(cylinder->point, multiply_v(cylinder->height, cylinder->orient));
+
 	hitpoint = add_product(ray->startpoint, multiply_v(t, ray->endpoint));
+
+	// printf("pointup.x=%f\npointup.y=%f\npointup.z=%f\nhitpoint.x=%f\nhitpoint.y=%f\nhitpoint.z=%f\n", cylinder->pointup.z, cylinder->pointup.y, cylinder->pointup.z, hitpoint.x, hitpoint.y, hitpoint.z);
 	down = sub_product(hitpoint, cylinder->point);
-	up = sub_product(hitpoint, cylinder->orient);
-	if (dot_product(cylinder->orient, down) > 0.f && dot_product(cylinder->orient, up) < 0.f)
+	up = sub_product(hitpoint, cylinder->pointup);
+	if (dot_product(cylinder->orient, down) > 0.0 && dot_product(cylinder->orient, up) < 0.0)
 		return (1);
+	printf("machin vaut %f\n", dot_product(cylinder->orient, down));
+	// printf("nous sortons de incylinder avec downx=%f\ndown.y =%f\ndown.z =%f\nup.x =%f\nup.y = %f\nup.z =%f\n", down.x, down.y, down.z, up.x, up.y, up.z);
 	return (0);
 }
 
 int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 {
 	int ret;
-	t_3d p0;
+	t_3d oc;
 	t_3d dir;
-	t_3d pdir;
+	t_3d ocdir;
 	t_3d quadra;
 	t_2d t;
 	float discriminant;
 	ret = 0;
-	p0 = sub_product(ray->startpoint, cylinder->point);
-	dir = sub_product(multiply_v(dot_product(ray->endpoint, cylinder->orient), cylinder->orient), ray->endpoint);
-	pdir = sub_product(multiply_v(dot_product(p0, cylinder->orient), cylinder->orient), p0);
+	oc = sub_product(ray->startpoint, cylinder->point);
+	dir = sub_product(ray->endpoint, multiply_v(dot_product(ray->endpoint, cylinder->orient), cylinder->orient));
+	ocdir = sub_product(oc, multiply_v(dot_product(oc, cylinder->orient), cylinder->orient));
 	//coefficients for quadratics equations
 	quadra.x = dot_product(dir, dir);
-	quadra.y = 2.f * dot_product(dir, p0);
-	quadra.z = dot_product(p0, p0) - sqr(cylinder->rayon);
+	quadra.y = 2.0 * dot_product(dir, oc);
+	quadra.z = dot_product(oc, oc) - sqr(cylinder->rayon);
 	//
-	discriminant = sqr(quadra.y) - (4.f * quadra.x * quadra.z);
-	if (discriminant < 0.f)
+	discriminant = sqr(quadra.y) - (4.0 * quadra.x * quadra.z);
+	if (discriminant < 0.0)
+	{
+		// printf("on sort au discriminant=%f\n", discriminant);
 		return (0);
+	}
 	t.x = (-quadra.y + sqrt(discriminant)) / (2.f * quadra.x);
 	t.y = (-quadra.y - sqrt(discriminant)) / (2.f * quadra.x);
 
-	if (t.x > 0.000001 && in_cylinder(cylinder, ray, t.x))
+	// printf("pourtant on est juste en desous\n");
+
+	if (t.x > 0.000001 && in_cylinder(cylinder, ray, t.x)) //&& t.x > ray->t)
 	{
 		ray->t = t.x;
+		ray->color = cylinder->color;
 		ret = 1;
+		printf("il y a t.x=%f\n", t.x);
 	}
-	if ((t.y > 0.000001) && in_cylinder(cylinder, ray, t.y))
+	if ((t.y > 0.000001) && in_cylinder(cylinder, ray, t.y)) // && t.y > ray->t)
 	{
 		if (t.y < t.x)
 		{
 			ray->t = t.y;
+			ray->color = cylinder->color;
 			ret = 1;
 		}
+		printf("il y a t.y=%f", t.y);
 	}
 	return (ret);
 }
@@ -98,7 +113,7 @@ int inter_square(t_ray *ray, t_square *square)
 	return (result);
 }
 
-int inter_squares(t_ray *ray, t_plane **square)
+int inter_squares(t_ray *ray, t_square **square)
 {
 	int i = 0;
 	int ret;
