@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/26 15:39:12 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/27 19:51:03 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,29 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	}
 	t.x = (-quadra.y + sqrt(discriminant)) / (2.f * quadra.x);
 	t.y = (-quadra.y - sqrt(discriminant)) / (2.f * quadra.x);
-
 	// printf("pourtant on est juste en desous\n");
 
-	if (t.x > 0.000001 && in_cylinder(cylinder, ray, t.x)) //&& t.x > ray->t)
-	{
+	if (t.x < t.y)
 		ray->t = t.x;
-		ray->color = cylinder->color;
-		ret = 1;
-		printf("il y a t.x=%f\n", t.x);
-	}
-	if ((t.y > 0.000001) && in_cylinder(cylinder, ray, t.y)) // && t.y > ray->t)
-	{
-		if (t.y < t.x)
-		{
-			ray->t = t.y;
-			ray->color = cylinder->color;
-			ret = 1;
-		}
-		printf("il y a t.y=%f", t.y);
-	}
+	else
+		ray->t = t.y;
+	ray->color = cylinder->color;
+	ret = 1;
+	// printf("t.x =%f\nt.y =%f\n", t.x * cylinder->height / 2, t.y * cylinder->height / 2);
+	// if (t.x * (cylinder->height / 2) > -1.f && t.x * (cylinder->height / 2) < 1.f)
+	// {
+	// 	ray->t = t.x;
+	// 	ray->color = cylinder->color;
+	// 	ret = 1;
+	// 	printf("il y a t.x=%f\n", t.x);
+	// }
+	// if (t.y * (cylinder->height / 2) > -1.f && t.y * (cylinder->height / 2) < 1.f && t.y < t.x)
+	// {
+	// 	ray->t = t.y;
+	// 	ray->color = cylinder->color;
+	// 	ret = 1;
+	// 	printf("il y a t.y=%f\n", t.y);
+	// }
 	return (ret);
 }
 

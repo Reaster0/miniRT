@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/26 16:31:20 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/27 19:54:30 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **t
 		ret = 1;
 	if (inter_squares(ray, square))
 		ret = 1;
-	// if (inter_cylinders(ray, cylinder))
-	// 	ret = 1;
+	if (inter_cylinders(ray, cylinder))
+		ret = 1;
 	return (ret);
 }
 
@@ -56,7 +56,7 @@ void project(t_data *data, t_2d resolution, int color)
 	square[1] = NULL;
 	t_cylinder **cylinder;
 	cylinder = malloc(sizeof(t_cylinder *) * 2);
-	cylinder[0] = new_cylinder(new_3d(0.f, 0.f, 9.f), new_3d(0.f, 0.f, 1.f), new_2d(10, 13), create_trgb(0, 10, 0, 255));
+	cylinder[0] = new_cylinder(new_3d(0.f, 2.f, 9.f), new_3d(0.f, 1.f, 0.f), new_2d(10, 13), create_trgb(0, 10, 0, 255));
 	cylinder[1] = NULL;
 
 	fov = 60.f * M_PI / 180.f;
