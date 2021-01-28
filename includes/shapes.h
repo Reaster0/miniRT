@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/26 14:01:59 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/28 16:30:48 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,15 @@ typedef struct s_cylinder
 	float height;
 	int color;
 } t_cylinder;
+ 
+typedef struct s_light
+{
+	t_3d point;
+	float r;
+	float intens;
+	t_ray hit;
+	t_ray normale;
+} t_light;
 
 t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio);
 t_3d new_3d(float x, float y, float z);

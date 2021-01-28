@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:22:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/24 16:00:35 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/28 16:03:11 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_cylinder *new_cylinder(t_3d point, t_3d orient, t_2d h_r, int color)
 	cylinder->orient = orient;
 	cylinder->rayon = h_r.y;
 	cylinder->height = h_r.x;
+	cylinder->pointup = multiply_product(cylinder->point, multiply_v(cylinder->height, cylinder->orient));
 	cylinder->color = color;
 	return (cylinder);
 }

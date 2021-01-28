@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/28 15:30:33 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/28 16:12:52 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ void project(t_data *data, t_2d resolution, int color)
 	t_camera cam;
 	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.0f, 0.0f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
 	t_ray ray;
+
+	t_sphere light;
+	light.startpoint = new_3d(-5.f, 5, -10);
+	light.color = 10000;
 
 	count.x = 0;
 	while (count.x < resolution.x)

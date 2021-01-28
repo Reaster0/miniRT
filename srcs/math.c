@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/28 15:31:23 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/28 16:35:32 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	float discriminant;
 	ret = 0;
 
-	cylinder->pointup = multiply_product(cylinder->point, multiply_v(cylinder->height, cylinder->orient));
-
 	oc = sub_product(ray->startpoint, cylinder->point);
 	dir = sub_product(ray->endpoint, multiply_v(dot_product(ray->endpoint, cylinder->orient), cylinder->orient));
 	ocdir = sub_product(oc, multiply_v(dot_product(oc, cylinder->orient), cylinder->orient));
@@ -32,7 +30,7 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	quadra.x = dot_product(dir, dir);
 	quadra.y = 2.0 * dot_product(dir, ocdir);
 	quadra.z = dot_product(ocdir, ocdir) - sqr(cylinder->rayon);
-	//
+
 	discriminant = sqr(quadra.y) - (4.0 * quadra.x * quadra.z);
 	if (discriminant < 0.0)
 		return (0);
@@ -151,6 +149,11 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 		ray->t = t2;
 	else
 		return (0);
+	t_light light;
+	light.hit = calculate(*ray, ray->t);
+	light.normale = sub_product(light.hit.startpoint, sphere->startpoint);
+	normalize(&light.normale);
+
 	ray->color = sphere->color;
 	return (1);
 }
@@ -274,11 +277,6 @@ t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float rat
 float sqr(float number)
 {
 	return (number * number);
-}
-
-float norm_v(t_3d A, t_3d B)
-{
-	return (sqrt(sqr(A.x - B.x) + sqr(A.y - B.y) + sqr(A.z - B.z)));
 }
 
 float length2(t_3d point)
