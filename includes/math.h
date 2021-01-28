@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/26 14:36:56 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/28 11:41:06 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_3d sub_product(t_3d a, t_3d b);
 t_3d add_product(t_3d a, t_3d b);
 t_3d multiply_product(t_3d a, t_3d b);
 t_ray calculate(t_ray ray, float t);
+float norm_v(t_3d A, t_3d B);
 void normalize(t_3d *vector);
 void normalize2d(t_2d *vector);
 t_3d add_v(float a, t_3d vector);

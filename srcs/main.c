@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/27 19:54:30 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/28 15:30:33 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void project(t_data *data, t_2d resolution, int color)
 	t_plane **plane;
 	plane = malloc(sizeof(t_plane *) * 3);
 	plane[0] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
-	plane[1] = new_plane(new_3d(0.f, -0.5f, 25.f), new_3d(0.f, 0.0f, -1.f), 0xFFFFFF);
+	plane[1] = new_plane(new_3d(0.f, -0.5f, 21.f), new_3d(0.f, 0.0f, -1.f), 0x4d1aec);
 	plane[2] = NULL;
 	t_triangle **triangle;
 	triangle = malloc(sizeof(t_triangle *) * 1);
@@ -52,11 +52,11 @@ void project(t_data *data, t_2d resolution, int color)
 	triangle[1] = NULL;
 	t_square **square;
 	square = malloc(sizeof(t_square) * 2);
-	square[0] = new_square(new_3d(35, 0, 10), new_3d(5, 0, 10), new_3d(5, 20, 10), new_3d(35, 20, 10), 0x00FFFF);
+	square[0] = new_square(new_3d(35, 0, 19), new_3d(5, 0, 10), new_3d(5, 20, 10), new_3d(35, 20, 10), 0x00FFFF);
 	square[1] = NULL;
 	t_cylinder **cylinder;
 	cylinder = malloc(sizeof(t_cylinder *) * 2);
-	cylinder[0] = new_cylinder(new_3d(0.f, 2.f, 9.f), new_3d(0.f, 1.f, 0.f), new_2d(10, 13), create_trgb(0, 10, 0, 255));
+	cylinder[0] = new_cylinder(new_3d(-4.f, 1.f, 9.f), new_3d(0.f, 1.f, 0.f), new_2d(2, 2), create_trgb(0, 237, 153, 83));
 	cylinder[1] = NULL;
 
 	fov = 60.f * M_PI / 180.f;

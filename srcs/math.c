@@ -6,31 +6,11 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/27 19:51:03 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/28 15:31:23 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-
-int in_cylinder(t_cylinder *cylinder, t_ray *ray, float t)
-{
-	t_3d hitpoint;
-	t_3d down;
-	t_3d up;
-
-	cylinder->pointup = add_product(cylinder->point, multiply_v(cylinder->height, cylinder->orient));
-
-	hitpoint = add_product(ray->startpoint, multiply_v(t, ray->endpoint));
-
-	// printf("pointup.x=%f\npointup.y=%f\npointup.z=%f\nhitpoint.x=%f\nhitpoint.y=%f\nhitpoint.z=%f\n", cylinder->pointup.z, cylinder->pointup.y, cylinder->pointup.z, hitpoint.x, hitpoint.y, hitpoint.z);
-	down = sub_product(hitpoint, cylinder->point);
-	up = sub_product(hitpoint, cylinder->pointup);
-	if (dot_product(cylinder->orient, down) > 0.0 && dot_product(cylinder->orient, up) < 0.0)
-		return (1);
-	printf("machin vaut %f\n", dot_product(cylinder->orient, down));
-	// printf("nous sortons de incylinder avec downx=%f\ndown.y =%f\ndown.z =%f\nup.x =%f\nup.y = %f\nup.z =%f\n", down.x, down.y, down.z, up.x, up.y, up.z);
-	return (0);
-}
 
 int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 {
@@ -42,45 +22,45 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	t_2d t;
 	float discriminant;
 	ret = 0;
+
+	cylinder->pointup = multiply_product(cylinder->point, multiply_v(cylinder->height, cylinder->orient));
+
 	oc = sub_product(ray->startpoint, cylinder->point);
 	dir = sub_product(ray->endpoint, multiply_v(dot_product(ray->endpoint, cylinder->orient), cylinder->orient));
 	ocdir = sub_product(oc, multiply_v(dot_product(oc, cylinder->orient), cylinder->orient));
-	//coefficients for quadratics equations
+
 	quadra.x = dot_product(dir, dir);
-	quadra.y = 2.0 * dot_product(dir, oc);
-	quadra.z = dot_product(oc, oc) - sqr(cylinder->rayon);
+	quadra.y = 2.0 * dot_product(dir, ocdir);
+	quadra.z = dot_product(ocdir, ocdir) - sqr(cylinder->rayon);
 	//
 	discriminant = sqr(quadra.y) - (4.0 * quadra.x * quadra.z);
 	if (discriminant < 0.0)
-	{
-		// printf("on sort au discriminant=%f\n", discriminant);
 		return (0);
-	}
+
 	t.x = (-quadra.y + sqrt(discriminant)) / (2.f * quadra.x);
 	t.y = (-quadra.y - sqrt(discriminant)) / (2.f * quadra.x);
-	// printf("pourtant on est juste en desous\n");
 
-	if (t.x < t.y)
-		ray->t = t.x;
-	else
-		ray->t = t.y;
-	ray->color = cylinder->color;
-	ret = 1;
-	// printf("t.x =%f\nt.y =%f\n", t.x * cylinder->height / 2, t.y * cylinder->height / 2);
-	// if (t.x * (cylinder->height / 2) > -1.f && t.x * (cylinder->height / 2) < 1.f)
-	// {
-	// 	ray->t = t.x;
-	// 	ray->color = cylinder->color;
-	// 	ret = 1;
-	// 	printf("il y a t.x=%f\n", t.x);
-	// }
-	// if (t.y * (cylinder->height / 2) > -1.f && t.y * (cylinder->height / 2) < 1.f && t.y < t.x)
-	// {
-	// 	ray->t = t.y;
-	// 	ray->color = cylinder->color;
-	// 	ret = 1;
-	// 	printf("il y a t.y=%f\n", t.y);
-	// }
+	t_3d hitpoint = add_product(ray->startpoint, multiply_v(t.x, ray->endpoint));
+	t_3d hitpoint2 = add_product(ray->startpoint, multiply_v(t.y, ray->endpoint));
+
+	if (t.x > 0.000001 && dot_product(cylinder->orient, sub_product(hitpoint, cylinder->point)) > 0.f && t.x < ray->t)
+	{
+		if (dot_product(cylinder->orient, sub_product(hitpoint, cylinder->point)) <= cylinder->height)
+		{
+			ray->t = t.x;
+			ray->color = cylinder->color;
+			ret = 1;
+		}
+	}
+	if (t.y > 0.000001 && dot_product(cylinder->orient, sub_product(hitpoint2, cylinder->pointup)) < 0.f)
+	{
+		if (t.y < t.x && t.y < ray->t && dot_product(cylinder->orient, sub_product(hitpoint2, cylinder->point)) <= cylinder->height)
+		{
+			ray->t = t.y;
+			ray->color = cylinder->color;
+			ret = 1;
+		}
+	}
 	return (ret);
 }
 
@@ -294,6 +274,11 @@ t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float rat
 float sqr(float number)
 {
 	return (number * number);
+}
+
+float norm_v(t_3d A, t_3d B)
+{
+	return (sqrt(sqr(A.x - B.x) + sqr(A.y - B.y) + sqr(A.z - B.z)));
 }
 
 float length2(t_3d point)
