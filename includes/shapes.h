@@ -90,11 +90,12 @@ typedef struct s_cylinder
  
 typedef struct s_light
 {
-	t_3d point;
+	t_3d point;	
+	t_3d normale;
 	float r;
 	float intens;
 	t_ray hit;
-	t_ray normale;
+
 } t_light;
 
 t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio);
