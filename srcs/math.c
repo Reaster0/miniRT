@@ -6,11 +6,26 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/28 16:35:32 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/29 13:26:14 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+int inside_cyl(t_cylinder *cylinder, t_ray *ray, float t)
+{
+	t_3d hitpoint;
+	t_3d bottom;
+	t_3d top;
+
+	hitpoint = add_product(ray->startpoint, multiply_v(t, ray->endpoint));
+	bottom = sub_product(hitpoint, cylinder->point);
+	top = sub_product(hitpoint, cylinder->pointup);
+
+	if (dot_product(cylinder->orient, bottom) > 0.0 && dot_product(cylinder->orient, top) < 0.0)
+		return (1);
+	return (0);
+}
 
 int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 {
@@ -35,29 +50,27 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	if (discriminant < 0.0)
 		return (0);
 
-	t.x = (-quadra.y + sqrt(discriminant)) / (2.f * quadra.x);
-	t.y = (-quadra.y - sqrt(discriminant)) / (2.f * quadra.x);
+	t.x = (-quadra.y + sqrt(discriminant)) / (2.0 * quadra.x);
+	t.y = (-quadra.y - sqrt(discriminant)) / (2.0 * quadra.x);
 
-	t_3d hitpoint = add_product(ray->startpoint, multiply_v(t.x, ray->endpoint));
-	t_3d hitpoint2 = add_product(ray->startpoint, multiply_v(t.y, ray->endpoint));
+	// printf("t.x=%f t.y=%f\n", t.x, t.y);
+	// printf("hitpoint.x=%f,hitpoint.y=%f,hitpoint.z=%f\n", hitpoint.x, hitpoint.y, hitpoint.z);
+	// printf("hitpoint2.x=%f,hitpoint2.y=%f,hitpoint2.z=%f\n", hitpoint2.x, hitpoint2.y, hitpoint2.z);
 
-	if (t.x > 0.000001 && dot_product(cylinder->orient, sub_product(hitpoint, cylinder->point)) > 0.f && t.x < ray->t)
+	if (t.x > 0.000001 && inside_cyl(cylinder, ray, t.x) && t.x < ray->t)
 	{
-		if (dot_product(cylinder->orient, sub_product(hitpoint, cylinder->point)) <= cylinder->height)
-		{
-			ray->t = t.x;
-			ray->color = cylinder->color;
-			ret = 1;
-		}
+		ray->t = t.x;
+		ray->color = cylinder->color;
+		ret = 1;
 	}
-	if (t.y > 0.000001 && dot_product(cylinder->orient, sub_product(hitpoint2, cylinder->pointup)) < 0.f)
+	if (t.y > 0.000001 && inside_cyl(cylinder, ray, t.y) && t.y < ray->t)
 	{
-		if (t.y < t.x && t.y < ray->t && dot_product(cylinder->orient, sub_product(hitpoint2, cylinder->point)) <= cylinder->height)
-		{
-			ray->t = t.y;
-			ray->color = cylinder->color;
-			ret = 1;
-		}
+		// if (dot_product(cylinder->orient, sub_product(hitpoint2, cylinder->pointup)) <= cylinder->height)
+		// {
+		ray->t = t.y;
+		ray->color = cylinder->color;
+		ret = 1;
+		//}
 	}
 	return (ret);
 }

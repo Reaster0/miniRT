@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/28 16:12:52 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/29 13:20:40 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void project(t_data *data, t_2d resolution, int color)
 
 	t_sphere **sphere;
 	sphere = malloc(sizeof(t_sphere *) * 3);
-	sphere[0] = new_sphere(new_3d(0.0f, 0.0f, 20.0f), 5.0f, 0x00FF00);
+	sphere[0] = new_sphere(new_3d(0.0f, 0.0f, 20.0f), 4.0f, 0x00FF00);
 	sphere[1] = new_sphere(new_3d(-15.f, 3.f, 10.f), 4.f, 0xFF0000);
 	sphere[2] = NULL;
 	t_plane **plane;
@@ -56,7 +56,7 @@ void project(t_data *data, t_2d resolution, int color)
 	square[1] = NULL;
 	t_cylinder **cylinder;
 	cylinder = malloc(sizeof(t_cylinder *) * 2);
-	cylinder[0] = new_cylinder(new_3d(-4.f, 1.f, 9.f), new_3d(0.f, 1.f, 0.f), new_2d(2, 2), create_trgb(0, 237, 153, 83));
+	cylinder[0] = new_cylinder(new_3d(-7.5f, -2.f, 10.f), new_3d(0.f, 1.f, 0.f), new_2d(4, 2), create_trgb(0, 237, 153, 83));
 	cylinder[1] = NULL;
 
 	fov = 60.f * M_PI / 180.f;
