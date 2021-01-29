@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:22:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/29 13:26:04 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/29 16:17:50 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@ t_2d new_2d(float x, float y)
 	return (result);
 }
 
-void pointup(t_cylinder *cylinder)
-{
-}
-
 t_cylinder *new_cylinder(t_3d point, t_3d orient, t_2d h_r, int color)
 {
 	t_cylinder *cylinder;
@@ -42,8 +38,6 @@ t_cylinder *new_cylinder(t_3d point, t_3d orient, t_2d h_r, int color)
 	cylinder->rayon = h_r.y;
 	cylinder->height = h_r.x;
 	cylinder->pointup = add_product(cylinder->point, multiply_v(cylinder->height, cylinder->orient));
-
-	// printf("point.x=%f,point.y=%f,point.z=%f\npointup.x=%f,pointup.y=%f,pointup.z=%f\n", cylinder->point.x, cylinder->point.y, cylinder->point.z, cylinder->pointup.x, cylinder->pointup.y, cylinder->pointup.z);
 
 	cylinder->color = color;
 	return (cylinder);

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/29 13:26:14 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/01/29 16:53:48 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,19 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	t.x = (-quadra.y + sqrt(discriminant)) / (2.0 * quadra.x);
 	t.y = (-quadra.y - sqrt(discriminant)) / (2.0 * quadra.x);
 
-	// printf("t.x=%f t.y=%f\n", t.x, t.y);
-	// printf("hitpoint.x=%f,hitpoint.y=%f,hitpoint.z=%f\n", hitpoint.x, hitpoint.y, hitpoint.z);
-	// printf("hitpoint2.x=%f,hitpoint2.y=%f,hitpoint2.z=%f\n", hitpoint2.x, hitpoint2.y, hitpoint2.z);
-
 	if (t.x > 0.000001 && inside_cyl(cylinder, ray, t.x) && t.x < ray->t)
 	{
 		ray->t = t.x;
+		ray->shape_point = cylinder->point;
 		ray->color = cylinder->color;
 		ret = 1;
 	}
 	if (t.y > 0.000001 && inside_cyl(cylinder, ray, t.y) && t.y < ray->t)
 	{
-		// if (dot_product(cylinder->orient, sub_product(hitpoint2, cylinder->pointup)) <= cylinder->height)
-		// {
+		ray->shape_point = cylinder->point;
 		ray->t = t.y;
 		ray->color = cylinder->color;
 		ret = 1;
-		//}
 	}
 	return (ret);
 }
@@ -104,6 +99,8 @@ int inter_square(t_ray *ray, t_square *square)
 	if (inter_triangle(ray, triangle2))
 		result = (1);
 	free(triangle2);
+	if (result == 1)
+		ray->shape_point = sub_product(square->c, divide_vr(2, square->a));
 	return (result);
 }
 
@@ -133,6 +130,7 @@ int inter_plane(t_ray *ray, t_plane *plane)
 		return (0);
 	ray->color = plane->color;
 	ray->t = t;
+	ray->shape_point = plane->position;
 	return (1);
 }
 
@@ -162,11 +160,7 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 		ray->t = t2;
 	else
 		return (0);
-	t_light light;
-	light.hit = calculate(*ray, ray->t);
-	light.normale = sub_product(light.hit.startpoint, sphere->startpoint);
-	normalize(&light.normale);
-
+	ray->shape_point = sphere->startpoint;
 	ray->color = sphere->color;
 	return (1);
 }
@@ -252,6 +246,7 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 	t = dot_product(edge2, cross_oriminusvert0_edge1) * inv_determinent;
 	if (t < ray->t)
 	{
+		ray->shape_point = new_3d((triangle->a.x + triangle->b.x + triangle->c.x) / 2, (triangle->a.y + triangle->b.y + triangle->c.y) / 2, (triangle->a.z + triangle->b.z + triangle->c.z) / 2);
 		ray->t = t;
 		ray->color = triangle->color;
 	}
@@ -312,6 +307,16 @@ void normalize(t_3d *vector)
 	vector->x /= norm;
 	vector->y /= norm;
 	vector->z /= norm;
+}
+
+t_3d get_norm(t_3d vector)
+{
+	float norm;
+	norm = sqrt(sqr(vector.x) + sqr(vector.y) + sqr(vector.z));
+	vector.x /= norm;
+	vector.y /= norm;
+	vector.z /= norm;
+	return (vector);
 }
 
 t_3d multiply_v(float a, t_3d vector)
