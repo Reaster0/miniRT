@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/20 13:35:21 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/06 20:05:56 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/02 15:27:54 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ int create_trgb(int t, int r, int g, int b)
 
 int get_t(int trgb)
 {
-	return (trgb & (0xFF << 24));
+	return ((trgb >> 24) & 0xFF);
 }
 
 int get_r(int trgb)
 {
-	return (trgb & (0xFF << 16));
+	return ((trgb >> 16) & 0xFF);
 }
 
 int get_g(int trgb)
 {
-	return (trgb & (0xFF << 8));
+	return ((trgb >> 8) & 0xFF);
 }
 
 int get_b(int trgb)

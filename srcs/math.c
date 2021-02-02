@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/01 11:50:28 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/02 14:59:54 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	ray->color = plane->color;
 	ray->t = t;
 	ray->shape_point = plane->position;
+	ray->shape_normale = plane->normal;
 	return (1);
 }
 
@@ -162,7 +163,8 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 		return (0);
 	ray->shape_point = sphere->startpoint;
 	ray->color = sphere->color;
-
+	ray->shape_normale = sub_product(ray->startpoint, sphere->startpoint);
+	normalize(&ray->shape_normale);
 	return (1);
 }
 

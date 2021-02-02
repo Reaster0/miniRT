@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/02 09:49:55 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/02 16:28:58 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int intens_color(t_ray *ray, t_light *light, int color)
 {
 	int result;
 
-	result = get_normf(color) * light->intens * dot_product(get_norm(sub_product(light->point, light->hit.endpoint)), light->normale) / length2(sub_product(light->point, light->hit.endpoint));
+	result = (get_normf(color) / M_PI) * (light->intens * dot_product(get_norm(sub_product(light->point, light->hit.endpoint)), light->normale) / length2(sub_product(light->point, light->hit.endpoint)));
+
 	if (result > 255)
 		result = 255;
 	if (result < 0)
@@ -36,14 +37,16 @@ int intens_color(t_ray *ray, t_light *light, int color)
 void inter_light(t_ray *ray, t_light *light)
 {
 	light->hit = calculate(*ray, ray->t);
-	light->normale = sub_product(light->hit.startpoint, ray->shape_point);
-	normalize(&light->normale);
+	// light->normale = sub_product(light->hit.startpoint, ray->shape_point);
+	// normalize(&light->normale);
+	light->normale = ray->shape_normale;
+
 	int r = intens_color(ray, light, get_r(ray->color));
 	int g = intens_color(ray, light, get_g(ray->color));
 	int b = intens_color(ray, light, get_b(ray->color));
 	ray->color = create_trgb(get_t(ray->color), r, g, b);
-
-	//printf("color r=%d\ncolor g=%d\ncolor b=%d\n", get_r(ray->color), get_g(ray->color), get_b(ray->color));
+	// if (r && g && b)
+	// 	printf("\n\ncolor r=%d\ncolor g=%d\ncolor b=%d\nr =%d\ng =%d\nb =%d\n\n", get_r(ray->color), get_g(ray->color), get_b(ray->color), r, g, b);
 }
 
 int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle, t_square **square, t_cylinder **cylinder)
@@ -51,13 +54,13 @@ int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **t
 	int ret;
 	t_light *light;
 
-	light = new_light(new_3d(12.f, 6, -5), 30000);
+	light = new_light(new_3d(12.f, 6, -5), 60000);
 	ret = 0;
 
 	if (inter_spheres(ray, sphere))
 		ret = 1;
-	// if (inter_planes(ray, plane))
-	// 	ret = 1;
+	if (inter_planes(ray, plane))
+		ret = 1;
 	// if (inter_triangles(ray, triangle))
 	// 	ret = 1;
 	// if (inter_squares(ray, square))
@@ -80,22 +83,22 @@ void project(t_data *data, t_2d resolution, int color)
 
 	t_sphere **sphere;
 	sphere = malloc(sizeof(t_sphere *) * 6);
-	sphere[0] = new_sphere(new_3d(-8.0f, 0.0f, 15.0f), 4.f, 0xFF0000);
+	sphere[0] = new_sphere(new_3d(-8.0f, 0.0f, 15.0f), 4.f, 0x900C3F);
 	sphere[1] = new_sphere(new_3d(-60.f, 3.f, 20.f), 45.f, 0xFF0000);
-	sphere[2] = new_sphere(new_3d(0.f, -50.f, 20.f), 45.f, 0xFFFF00);
+	sphere[2] = new_sphere(new_3d(6.f, 1.f, 10.f), 4.f, 0x59e1a7);
 	sphere[3] = new_sphere(new_3d(60.f, 0.f, 20.f), 45.f, 0xFF00FF);
-	sphere[4] = new_sphere(new_3d(0.f, 0.f, 80.f), 45.f, 0xFFFFFF);
-	sphere[5] = new_sphere(new_3d(0.f, 48.f, 20.f), 45.f, 0x0000FF);
-	sphere[6] = NULL;
-
-	printf("get norm of 244 =%f\n", get_normf(244.f));
-	printf("test =%d", get_r(sphere[4]->color));
+	// sphere[4] = new_sphere(new_3d(0.f, 0.f, 80.f), 45.f, 0xFFFFFF);
+	sphere[4] = new_sphere(new_3d(0.f, 48.f, 20.f), 45.f, 0x0000FF);
+	sphere[5] = NULL;
 
 	t_plane **plane;
 	plane = malloc(sizeof(t_plane *) * 3);
 	plane[0] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
-	plane[1] = new_plane(new_3d(0.f, -0.5f, 21.f), new_3d(0.f, 0.0f, -1.f), 0x4d1aec);
+	plane[1] = new_plane(new_3d(0.f, -0.5f, 16.f), new_3d(0.f, 0.0f, -1.f), create_trgb(0, 200, 145, 210));
 	plane[2] = NULL;
+
+	//ft_putnbr_fd((create_trgb(0, 255, 0, 0)), 1);
+
 	t_triangle **triangle;
 	triangle = malloc(sizeof(t_triangle *) * 1);
 	triangle[0] = new_triangle(new_3d(-10, 20, 20), new_3d(10, 20, 20), new_3d(0, 40, 20), 0xFFFF00);
