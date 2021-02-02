@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/01 11:50:33 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/02 21:39:34 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int inter_plane(t_ray *ray, t_plane *plane);
 int inter_planes(t_ray *ray, t_plane **plane);
 int inter_spheres(t_ray *ray, t_sphere **sphere);
 int inter_sphere(t_ray *ray, t_sphere *sphere);
-int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle, t_square **square, t_cylinder ** cylinder);
+int intersections(t_ray *ray, t_shapes *shapes, int inter_l);
 
 
 float length2(t_3d point);

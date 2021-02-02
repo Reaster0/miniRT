@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/02 14:50:43 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/02 21:34:07 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,18 @@ typedef struct s_light
 	t_3d normale;
 	float r;
 	float intens;
+	int color;
 	t_ray hit;
 } t_light;
+
+typedef struct s_shapes
+{
+	t_plane **plane;
+	t_sphere **sphere;
+	t_triangle **triangle;
+	t_square **square;
+	t_cylinder **cylinder;
+} t_shapes;
 
 t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio);
 t_3d new_3d(float x, float y, float z);
