@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/02 16:28:58 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/02 17:16:16 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_light *new_light(t_3d point, int intens)
 	light = malloc(sizeof(t_light));
 	light->point = point;
 	light->intens = intens;
+	return (light);
 }
 
 int intens_color(t_ray *ray, t_light *light, int color)
@@ -26,7 +27,6 @@ int intens_color(t_ray *ray, t_light *light, int color)
 	int result;
 
 	result = (get_normf(color) / M_PI) * (light->intens * dot_product(get_norm(sub_product(light->point, light->hit.endpoint)), light->normale) / length2(sub_product(light->point, light->hit.endpoint)));
-
 	if (result > 255)
 		result = 255;
 	if (result < 0)
@@ -46,7 +46,7 @@ void inter_light(t_ray *ray, t_light *light)
 	int b = intens_color(ray, light, get_b(ray->color));
 	ray->color = create_trgb(get_t(ray->color), r, g, b);
 	// if (r && g && b)
-	// 	printf("\n\ncolor r=%d\ncolor g=%d\ncolor b=%d\nr =%d\ng =%d\nb =%d\n\n", get_r(ray->color), get_g(ray->color), get_b(ray->color), r, g, b);
+	// 	printf("\n\ncolor r=%d\ncolor g=%d\ncolor b=%d\nr =%d\ng =%d\nb =%d\n\n", get_r(ray->color), get_g(ray->color), get_b(ray->color), get_normf(r), get_normf(g), get_normf(b));
 }
 
 int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle, t_square **square, t_cylinder **cylinder)
