@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/29 17:00:48 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/02 09:49:55 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,59 @@
 t_light *new_light(t_3d point, int intens)
 {
 	t_light *light;
-	light = malloc(sizeof(t_light *));
+	light = malloc(sizeof(t_light));
 	light->point = point;
 	light->intens = intens;
+}
+
+int intens_color(t_ray *ray, t_light *light, int color)
+{
+	int result;
+
+	result = get_normf(color) * light->intens * dot_product(get_norm(sub_product(light->point, light->hit.endpoint)), light->normale) / length2(sub_product(light->point, light->hit.endpoint));
+	if (result > 255)
+		result = 255;
+	if (result < 0)
+		result = 0;
+	return (result);
+}
+
+void inter_light(t_ray *ray, t_light *light)
+{
+	light->hit = calculate(*ray, ray->t);
+	light->normale = sub_product(light->hit.startpoint, ray->shape_point);
+	normalize(&light->normale);
+	int r = intens_color(ray, light, get_r(ray->color));
+	int g = intens_color(ray, light, get_g(ray->color));
+	int b = intens_color(ray, light, get_b(ray->color));
+	ray->color = create_trgb(get_t(ray->color), r, g, b);
+
+	//printf("color r=%d\ncolor g=%d\ncolor b=%d\n", get_r(ray->color), get_g(ray->color), get_b(ray->color));
 }
 
 int intersections(t_ray *ray, t_plane **plane, t_sphere **sphere, t_triangle **triangle, t_square **square, t_cylinder **cylinder)
 {
 	int ret;
 	t_light *light;
+
+	light = new_light(new_3d(12.f, 6, -5), 30000);
 	ret = 0;
-	light = new_light(new_3d(-5.f, 5, -10), 100000);
 
 	if (inter_spheres(ray, sphere))
 		ret = 1;
-	if (inter_planes(ray, plane))
-		ret = 1;
-	if (inter_triangles(ray, triangle))
-		ret = 1;
-	if (inter_squares(ray, square))
-		ret = 1;
-	if (inter_cylinders(ray, cylinder))
-		ret = 1;
+	// if (inter_planes(ray, plane))
+	// 	ret = 1;
+	// if (inter_triangles(ray, triangle))
+	// 	ret = 1;
+	// if (inter_squares(ray, square))
+	// 	ret = 1;
+	// if (inter_cylinders(ray, cylinder))
+	// 	ret = 1;
 	//faire le calcul de lumiere ici
 
 	if (ret == 1)
-	{
-		light->hit = calculate(*ray, ray->t);
-		light->normale = sub_product(light->hit.startpoint, ray->shape_point);
-		normalize(&light->normale);
-		//faire une fonction qui fait ça pour toutes les couleurs
-		int r = get_r(ray->color) * light->intens * dot_product(get_norm(sub_product(light->point, light->hit.endpoint)), light->normale) / length2(sub_product(light->point, light->hit.endpoint));
-	}
+		inter_light(ray, light);
+
 	return (ret);
 }
 
@@ -58,10 +79,18 @@ void project(t_data *data, t_2d resolution, int color)
 	float fov;
 
 	t_sphere **sphere;
-	sphere = malloc(sizeof(t_sphere *) * 3);
-	sphere[0] = new_sphere(new_3d(0.0f, 0.0f, 7.0f), 4.0f, 0x00FF00);
-	sphere[1] = new_sphere(new_3d(-15.f, 3.f, 10.f), 4.f, 0xFF0000);
-	sphere[2] = NULL;
+	sphere = malloc(sizeof(t_sphere *) * 6);
+	sphere[0] = new_sphere(new_3d(-8.0f, 0.0f, 15.0f), 4.f, 0xFF0000);
+	sphere[1] = new_sphere(new_3d(-60.f, 3.f, 20.f), 45.f, 0xFF0000);
+	sphere[2] = new_sphere(new_3d(0.f, -50.f, 20.f), 45.f, 0xFFFF00);
+	sphere[3] = new_sphere(new_3d(60.f, 0.f, 20.f), 45.f, 0xFF00FF);
+	sphere[4] = new_sphere(new_3d(0.f, 0.f, 80.f), 45.f, 0xFFFFFF);
+	sphere[5] = new_sphere(new_3d(0.f, 48.f, 20.f), 45.f, 0x0000FF);
+	sphere[6] = NULL;
+
+	printf("get norm of 244 =%f\n", get_normf(244.f));
+	printf("test =%d", get_r(sphere[4]->color));
+
 	t_plane **plane;
 	plane = malloc(sizeof(t_plane *) * 3);
 	plane[0] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
@@ -80,7 +109,7 @@ void project(t_data *data, t_2d resolution, int color)
 	cylinder[0] = new_cylinder(new_3d(-7.5f, -2.f, 10.f), new_3d(0.f, 1.f, 0.f), new_2d(4, 2), create_trgb(0, 237, 153, 83));
 	cylinder[1] = NULL;
 
-	fov = 60.f * M_PI / 180.f;
+	fov = 48.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
@@ -111,7 +140,7 @@ int main(void)
 	t_vars vars;
 	t_data img;
 	t_2d res;
-	res.x = 1020.f;
+	res.x = 1200.f;
 	res.y = 720.f;
 
 	vars.mlx = mlx_init();

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/29 16:53:48 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/01 11:50:28 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 		return (0);
 	ray->shape_point = sphere->startpoint;
 	ray->color = sphere->color;
+
 	return (1);
 }
 
@@ -290,6 +291,11 @@ float sqr(float number)
 float length2(t_3d point)
 {
 	return (sqr(point.x) + sqr(point.y) + sqr(point.z));
+}
+
+float get_normf(float n)
+{
+	return (n /= sqrt(sqr(n)));
 }
 
 void normalize2d(t_2d *vector)
