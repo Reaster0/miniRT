@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/02 14:59:54 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/03 11:53:26 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,16 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 		ret = 1;
 	}
 	return (ret);
+}
+
+void inter_lights(t_ray *ray, t_light **light, t_shapes *shapes)
+{
+	int i = 0;
+	// while (light[i])
+	// {
+	inter_light(ray, light[i], shapes);
+	i++;
+	//}
 }
 
 int inter_cylinders(t_ray *ray, t_cylinder **cylinder)

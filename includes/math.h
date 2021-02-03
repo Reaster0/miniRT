@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/02 21:39:34 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/03 11:36:46 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 
 
 t_ray make_ray(t_camera camera, t_2d point);
+
+void inter_lights(t_ray *ray, t_light **light, t_shapes *shapes);
+void inter_light(t_ray *ray, t_light *light, t_shapes *shapes);
+int intens_color(t_ray *ray, t_light *light, int color);
+
 
 int inter_cylinder(t_ray *ray, t_cylinder *cylinder);
 int inter_cylinders(t_ray *ray, t_cylinder **cylinder);

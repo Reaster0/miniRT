@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/02 22:42:07 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/03 12:25:41 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ int intens_color(t_ray *ray, t_light *light, int color)
 
 	temp = ((float)color / 255) * (light->intens * dot_product(get_norm(sub_product(light->point, light->hit.shape_point)), light->hit.shape_normale) / length2(sub_product(light->point, light->hit.endpoint)));
 
-	//printf("je veux=%f\n", dot_product(get_norm(sub_product(light->point, light->hit.shape_point)), light->hit.shape_normale) / length2(sub_product(light->point, light->hit.endpoint)));
-	//result = color;
-	//printf("temp =%f\n", temp);
+	//un soucis sur la correction gamma
+	//temp = pow(temp, (1 / 2.2));
+
 	result = temp * 255;
+
 	if (result > 255)
 		result = 255;
 	if (result < 0)
@@ -51,8 +52,8 @@ void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 	light->normale = ray->shape_normale;
 
 	t_ray l_ray;
-	l_ray.startpoint = add_product(multiply_v(0.01, light->normale), light->hit.endpoint);
-	l_ray.endpoint = light->point;
+	l_ray.startpoint = add_product(multiply_v(0.001, light->normale), light->hit.endpoint);
+	l_ray.endpoint = get_norm(sub_product(light->point, light->hit.endpoint));
 	l_ray.t = 1.0e30f;
 	l_ray.color = 0xFFFFFF;
 
@@ -62,7 +63,7 @@ void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 	ray->color = create_trgb(get_t(ray->color), r, g, b);
 
 	intersections(&l_ray, shapes, 1);
-	if (l_ray.t < dot_product(l_ray.startpoint, l_ray.endpoint))
+	if (sqr(l_ray.t) < length2(sub_product(light->point, light->hit.endpoint)))
 		ray->color = 0;
 
 	// if (r && g && b)
@@ -72,9 +73,11 @@ void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 {
 	int ret;
-	t_light *light;
+	t_light **light;
 
-	light = new_light(new_3d(14.f, 5, -3), 180);
+	light = malloc(sizeof(t_light *) * 3);
+	light[0] = new_light(new_3d(8.f, 5, -3), 160);
+	light[1] = new_light(new_3d(-14.f, 3.f, -4.f), 120);
 	ret = 0;
 
 	if (inter_spheres(ray, shapes->sphere))
@@ -90,7 +93,7 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 	//faire le calcul de lumiere ici
 
 	if (ret == 1 && !inter_l)
-		inter_light(ray, light, shapes);
+		inter_lights(ray, light, shapes);
 
 	return (ret);
 }
@@ -104,19 +107,20 @@ void project(t_data *data, t_2d resolution, int color)
 
 	shapes.sphere = malloc(sizeof(t_sphere *) * 6);
 	shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, 14.0f), 4.f, 0x900C3F);
-	shapes.sphere[1] = new_sphere(new_3d(-60.f, 3.f, 20.f), 45.f, 0xFF0000);
-	shapes.sphere[2] = new_sphere(new_3d(-7.f, 1.f, 10.f), 4.f, 0x59e1a7);
+	//shapes.sphere[1] = new_sphere(new_3d(-60.f, 3.f, 20.f), 45.f, 0xFF0000);
+	shapes.sphere[1] = new_sphere(new_3d(7.f, 1.f, 10.f), 4.f, 0x59e1a7);
 	//shapes.sphere[3] = new_sphere(new_3d(60.f, 0.f, 20.f), 45.f, 0xFF00FF);
 	// spheres[4] = new_sphere(new_3d(0.f, 0.f, 80.f), 45.f, 0xFFFFFF);
 	//shapes.sphere[3] = new_sphere(new_3d(0.f, 48.f, 20.f), 45.f, 0x0000FF);
-	shapes.sphere[3] = NULL;
+	shapes.sphere[2] = NULL;
 
-	shapes.plane = malloc(sizeof(t_plane *) * 5);
+	shapes.plane = malloc(sizeof(t_plane *) * 6);
 	shapes.plane[1] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
 	shapes.plane[0] = new_plane(new_3d(0.f, -0.5f, 34.f), new_3d(0.f, 0.0f, -1.f), create_trgb(0, 140, 80, 180));
-	shapes.plane[2] = new_plane(new_3d(0.f, 20.f, 0.f), new_3d(0.f, 1.f, 0.f), 0xFF5733);
-	shapes.plane[3] = new_plane(new_3d(30.f, 0.f, 0.f), new_3d(1.f, 0.f, 0.f), 0xFF0000);
-	shapes.plane[4] = NULL;
+	shapes.plane[2] = new_plane(new_3d(0.f, 20.f, 0.f), new_3d(0.f, -1.f, 0.f), 0xFF5733);
+	shapes.plane[3] = new_plane(new_3d(30.f, 0.f, 0.f), new_3d(-1.f, 0.f, 0.f), 0xFF0000);
+	shapes.plane[4] = new_plane(new_3d(-30.f, 0.f, 0.f), new_3d(1.f, 0.f, 0.f), 0xFF0000);
+	shapes.plane[5] = NULL;
 
 	shapes.triangle = malloc(sizeof(t_triangle *) * 1);
 	shapes.triangle[0] = new_triangle(new_3d(-10, 20, 20), new_3d(10, 20, 20), new_3d(0, 40, 20), 0xFFFF00);
