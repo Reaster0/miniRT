@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/21 17:34:45 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/03 16:35:59 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ typedef struct s_vars
 } t_vars;
 
 int create_trgb(int t, int r, int g, int b);
+void change_r(int *trgb, int r);
+void change_g(int *trgb, int g);
+void change_b(int *trgb, int b);
+void color_up(int *trgb1, int trgb2);
+
 int get_t(int trgb);
 int get_r(int trgb);
 int get_g(int trgb);
