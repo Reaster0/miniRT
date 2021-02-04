@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/03 21:52:37 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/04 17:41:24 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,39 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	{
 		ray->t = t.x;
 		ray->shape_point = cylinder->point;
-		ray->color = cylinder->color;
+		ray->shape_color = cylinder->color;
 		ret = 1;
 	}
 	if (t.y > 0.000001 && inside_cyl(cylinder, ray, t.y) && t.y < ray->t)
 	{
-		ray->shape_point = cylinder->point;
 		ray->t = t.y;
-		ray->color = cylinder->color;
+		ray->shape_point = cylinder->point;
+		ray->shape_color = cylinder->color;
 		ret = 1;
+	}
+	if (ret)
+	{
+		if (length2(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->pointup)) < cylinder->rayon)
+			ray->shape_normale = cylinder->orient;
+		if (length2(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->point)) < cylinder->rayon)
+			ray->shape_normale = multiply_v(-1.f, cylinder->orient);
+		else
+		{
+			int t2 = dot_product(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->point), cylinder->orient);
+			t_3d pt = add_product(cylinder->point, multiply_v(t2, cylinder->orient));
+			ray->shape_normale = get_norm(sub_product(multiply_v(ray->t, ray->endpoint), pt));
+		}
 	}
 	return (ret);
 }
 
 void inter_lights(t_ray *ray, t_light **light, t_shapes *shapes)
 {
-	int i = 0;
-	int min_color;
-	min_color = 0;
+	int i;
+	i = 0;
 	while (light[i])
 	{
-		inter_light(ray, light[i], shapes, min_color);
-		color_up(&min_color, ray->color);
+		inter_light(ray, light[i], shapes);
 		i++;
 	}
 }
@@ -112,8 +123,12 @@ int inter_square(t_ray *ray, t_square *square)
 	if (inter_triangle(ray, triangle2))
 		result = (1);
 	free(triangle2);
-	if (result == 1)
-		ray->shape_point = sub_product(square->c, divide_vr(2, square->a));
+	// if (result == 1)
+	// {
+	// 	//ray->shape_point = sub_product(square->c, divide_vr(2, square->a));
+	// 	//ray->shape_normale = cross_product(sub_product(square->c, square->b), sub_product(square->a, square->b));
+	// 	ray->shape_color = square->color;
+	// }
 	return (result);
 }
 
@@ -141,7 +156,7 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	t = dot_product(sub_product(plane->position, ray->startpoint), divide_vr(dDotN, plane->normal));
 	if (t <= 0.0001f || t >= ray->t)
 		return (0);
-	ray->color = plane->color;
+	ray->shape_color = plane->color;
 	ray->t = t;
 	ray->shape_point = plane->position;
 	ray->shape_normale = plane->normal;
@@ -175,7 +190,7 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 	else
 		return (0);
 	ray->shape_point = sphere->startpoint;
-	ray->color = sphere->color;
+	ray->shape_color = sphere->color;
 	ray->shape_normale = sub_product(ray->startpoint, sphere->startpoint);
 	normalize(&ray->shape_normale);
 	return (1);
@@ -262,9 +277,10 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 	t = dot_product(edge2, cross_oriminusvert0_edge1) * inv_determinent;
 	if (t < ray->t)
 	{
+		ray->shape_normale = cross_product(sub_product(triangle->b, triangle->a), sub_product(triangle->c, triangle->a));
 		ray->shape_point = new_3d((triangle->a.x + triangle->b.x + triangle->c.x) / 2, (triangle->a.y + triangle->b.y + triangle->c.y) / 2, (triangle->a.z + triangle->b.z + triangle->c.z) / 2);
 		ray->t = t;
-		ray->color = triangle->color;
+		ray->shape_color = triangle->color;
 	}
 	return (1);
 }
@@ -278,7 +294,7 @@ t_ray make_ray(t_camera camera, t_2d point)
 	result.endpoint = add_product(result.endpoint, multiply_v(point.y * camera.h, camera.up));
 	normalize(&result.endpoint);
 	result.t = 1.0e30f;
-	result.color = 0x00FFFFFF;
+	result.color = 0;
 
 	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/03 11:35:10 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/04 15:04:45 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_ray
 	t_3d endpoint;
 	t_3d shape_point;
 	t_3d shape_normale;
+	int shape_color;
 	float t;
 	int color;
 } t_ray;
