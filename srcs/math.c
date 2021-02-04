@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/04 17:41:24 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/04 21:14:44 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,28 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	}
 	if (ret)
 	{
-		if (length2(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->pointup)) < cylinder->rayon)
+		t_3d inter_vec = sub_product(cylinder->pointup, multiply_v(ray->t, ray->endpoint));
+		if (!dot_product(inter_vec, cylinder->orient))
 			ray->shape_normale = cylinder->orient;
-		if (length2(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->point)) < cylinder->rayon)
-			ray->shape_normale = multiply_v(-1.f, cylinder->orient);
-		else
-		{
-			int t2 = dot_product(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->point), cylinder->orient);
-			t_3d pt = add_product(cylinder->point, multiply_v(t2, cylinder->orient));
-			ray->shape_normale = get_norm(sub_product(multiply_v(ray->t, ray->endpoint), pt));
-		}
+		inter_vec = sub_product(cylinder->point, multiply_v(ray->t, ray->endpoint));
+		if (!dot_product(inter_vec, cylinder->orient))
+			ray->shape_normale = cylinder->orient;
+		t_3d cylinder_center = add_product(cylinder->point, divide_vr(2, cylinder->pointup));
+		t_3d cyloritocenter = sub_product(cylinder_center, multiply_v(ray->t, ray->endpoint));
+		inter_vec = multiply_v(dot_product(cyloritocenter, multiply_v(ray->t, ray->endpoint)), cylinder->orient);
+		t_3d pcylaxis = add_product(cylinder_center, inter_vec);
+		ray->shape_normale = sub_product(pcylaxis, multiply_v(ray->t, ray->endpoint));
+
+		// if (length2(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->pointup)) < cylinder->rayon)
+		// 	ray->shape_normale = cylinder->orient;
+		// if (length2(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->point)) < cylinder->rayon)
+		// 	ray->shape_normale = multiply_v(-1.f, cylinder->orient);
+		// else
+		// {
+		// 	int t2 = dot_product(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->point), cylinder->orient);
+		// 	t_3d pt = add_product(cylinder->point, multiply_v(t2, cylinder->orient));
+		// 	ray->shape_normale = get_norm(sub_product(multiply_v(ray->t, ray->endpoint), pt));
+		// }
 	}
 	return (ret);
 }

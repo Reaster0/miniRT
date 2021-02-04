@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/04 17:43:58 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/04 21:19:52 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void project(t_data *data, t_2d resolution, int color)
 	shapes.square[1] = NULL;
 
 	shapes.cylinder = malloc(sizeof(t_cylinder *) * 2);
-	shapes.cylinder[0] = new_cylinder(new_3d(-7.5f, -2.f, 7.f), new_3d(0.f, 1.f, 0.f), new_2d(4, 2), create_trgb(0, 237, 153, 83));
+	shapes.cylinder[0] = new_cylinder(new_3d(-1.f, 0.f, 5.f), new_3d(0.f, 1.f, 0.f), new_2d(4, 2), 0x420420);
 	shapes.cylinder[1] = NULL;
 
 	fov = 50.f * M_PI / 180.f;
