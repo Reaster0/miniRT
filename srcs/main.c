@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/04 21:19:52 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/05 17:11:20 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 
 	light = malloc(sizeof(t_light *) * 4);
 	//light[0] = new_light(new_3d(0.f, 0.f, 0.f), 80);
-	light[0] = new_light(new_3d(9.f, 12, -2), 167);
-	light[1] = new_light(new_3d(-12.f, 5.f, -4.f), 140);
+	light[1] = new_light(new_3d(9.f, 12, -2), 167);
+	light[0] = new_light(new_3d(-12.f, 5.f, -4.f), 190);
 	light[2] = NULL;
 	ret = 0;
 
@@ -102,11 +102,11 @@ void project(t_data *data, t_2d resolution, int color)
 	t_shapes shapes;
 
 	shapes.sphere = malloc(sizeof(t_sphere *) * 6);
-	shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, 14.0f), 4.f, 0x900C3F);
-	shapes.sphere[1] = new_sphere(new_3d(7.f, 1.f, 10.f), 4.f, 0x59e1a7);
-	shapes.sphere[2] = new_sphere(new_3d(-20.f, -1.5f, 13.f), 4.f, 0xFF00FF);
-	shapes.sphere[3] = new_sphere(new_3d(-5.f, 2.f, 13.f), 3.f, 0x00FFFF);
-	shapes.sphere[4] = NULL;
+	// shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, 14.0f), 4.f, 0x900C3F);
+	// shapes.sphere[1] = new_sphere(new_3d(7.f, 1.f, 10.f), 4.f, 0x59e1a7);
+	// shapes.sphere[2] = new_sphere(new_3d(-20.f, -1.5f, 13.f), 4.f, 0xFF00FF);
+	// shapes.sphere[3] = new_sphere(new_3d(-5.f, 2.f, 13.f), 3.f, 0x00FFFF);
+	shapes.sphere[0] = NULL;
 
 	shapes.plane = malloc(sizeof(t_plane *) * 6);
 	shapes.plane[1] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
@@ -117,16 +117,16 @@ void project(t_data *data, t_2d resolution, int color)
 	shapes.plane[5] = NULL;
 
 	shapes.triangle = malloc(sizeof(t_triangle *) * 3);
-	shapes.triangle[0] = new_triangle(new_3d(-4.f, -1.f, 6.f), new_3d(-1.f, -1.f, 6.f), new_3d(-4.f, 4.f, 6.f), 0x420420);
-	shapes.triangle[1] = new_triangle(new_3d(3.f, 0.f, 4.f), new_3d(6.f, 0.f, 4.f), new_3d(6.f, 4.f, 4.f), 0x420420);
-	shapes.triangle[2] = NULL;
+	// shapes.triangle[1] = new_triangle(new_3d(-4.f, -1.f, 6.f), new_3d(-1.f, -1.f, 6.f), new_3d(-4.f, 4.f, 6.f), 0x420420);
+	// shapes.triangle[0] = new_triangle(new_3d(3.f, 0.f, 4.f), new_3d(6.f, 0.f, 4.f), new_3d(6.f, 4.f, 4.f), 0x420420);
+	shapes.triangle[0] = NULL;
 
 	shapes.square = malloc(sizeof(t_square) * 2);
-	shapes.square[0] = new_square(new_3d(4.f, 1.f, 5.f), new_3d(8.f, 1.f, 5.f), new_3d(8.f, 5.f, 7.f), new_3d(4.f, 5.f, 7.f), create_trgb(0, 66, 4, 32));
-	shapes.square[1] = NULL;
+	// shapes.square[0] = new_square(new_3d(4.f, 1.f, 5.f), new_3d(8.f, 1.f, 5.f), new_3d(8.f, 5.f, 7.f), new_3d(4.f, 5.f, 7.f), create_trgb(0, 66, 4, 32));
+	shapes.square[0] = NULL;
 
 	shapes.cylinder = malloc(sizeof(t_cylinder *) * 2);
-	shapes.cylinder[0] = new_cylinder(new_3d(-1.f, 0.f, 5.f), new_3d(0.f, 1.f, 0.f), new_2d(4, 2), 0x420420);
+	shapes.cylinder[0] = new_cylinder(new_3d(-4.f, -0.5f, 6.f), new_3d(0.f, 1.f, -0.3f), new_2d(4, 2), 0x420dab);
 	shapes.cylinder[1] = NULL;
 
 	fov = 50.f * M_PI / 180.f;

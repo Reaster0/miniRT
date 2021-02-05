@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/04 10:24:44 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/05 16:54:29 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ float get_normf(float n);
 t_3d add_v(float a, t_3d vector);
 t_3d multiply_v(float a, t_3d vector);
 void sub_v(float a, t_3d *vector);
+t_3d sub_vr(float a, t_3d vector);
 t_3d get_norm(t_3d vector);
 void divide_v(float a, t_3d *vector);
 t_3d divide_vr(float a, t_3d vector);
