@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/05 17:10:57 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/06 14:51:23 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,28 +70,23 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	if (ret)
 	{
 		t_3d hit_p = add_product(ray->startpoint, multiply_v(ray->t, ray->endpoint));
-		t_3d q_pa = sub_product(hit_p, cylinder->point);
-		t_3d va = sub_product(cylinder->pointup, cylinder->point);
-		t_3d va_q_pa = sub_product(va, q_pa);
-		t_3d total = sub_product(q_pa, va_q_pa);
-		t_3d total2 = multiply_product(total, va);
+		//cas ou je touche les caps
+		t_3d inter_vec = sub_product(cylinder->pointup, hit_p);
+		if (!dot_product(inter_vec, cylinder->orient))
+			ray->shape_normale = cylinder->orient;
 
-		ray->shape_normale = get_norm(total2);
+		inter_vec = sub_product(cylinder->point, hit_p);
+		if (!dot_product(inter_vec, cylinder->orient))
+			ray->shape_normale = cylinder->orient;
 
-		// t_3d inter_vec = sub_product(cylinder->pointup, hit_point);
-		// if (dot_product(inter_vec, cylinder->orient) > 0)
-		// 	return (0);
+		t_3d cylinder_center = divide_vr(2, add_product(cylinder->point, cylinder->pointup));
+		t_3d cyloritocenter = sub_product(cylinder_center, hit_p);
 
-		// inter_vec = sub_product(cylinder->point, hit_point);
-		// if (dot_product(inter_vec, cylinder->orient) < 0)
-		// 	return (0);
-
-		// t_3d cylinder_center = divide_vr(2, add_product(cylinder->point, cylinder->pointup));
-		// t_3d cyloritocenter = sub_product(cylinder_center, multiply_v(ray->t, ray->endpoint));
-		// inter_vec = multiply_v(dot_product(cyloritocenter, multiply_v(ray->t, ray->endpoint)), cylinder->orient);
-		// t_3d pcylaxis = add_product(cylinder_center, inter_vec);
-		// ray->shape_normale = sub_product(pcylaxis, multiply_v(ray->t, ray->endpoint));
+		inter_vec = multiply_v(dot_product(cyloritocenter, cylinder->orient), cylinder->orient);
+		t_3d pcylaxis = add_product(cylinder_center, inter_vec);
+		ray->shape_normale = get_norm(sub_product(hit_p, pcylaxis));
 	}
+
 	// if (length2(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->pointup)) < cylinder->rayon)
 	// 	ray->shape_normale = cylinder->orient;
 	// if (length2(sub_product(multiply_v(ray->t, ray->endpoint), cylinder->point)) < cylinder->rayon)

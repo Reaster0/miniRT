@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/05 17:11:20 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/06 14:51:13 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 
 	light = malloc(sizeof(t_light *) * 4);
 	//light[0] = new_light(new_3d(0.f, 0.f, 0.f), 80);
-	light[1] = new_light(new_3d(9.f, 12, -2), 167);
-	light[0] = new_light(new_3d(-12.f, 5.f, -4.f), 190);
+	light[1] = new_light(new_3d(9.f, 12, -2), 10);
+	light[0] = new_light(new_3d(-13.f, 1.f, -4.f), 190);
 	light[2] = NULL;
 	ret = 0;
 
@@ -153,6 +153,8 @@ void project(t_data *data, t_2d resolution, int color)
 	}
 }
 
+// IMPORTANT RAJOUTER LE STARTPOINT DU RAY A TOUT LES CALCULS DE HITPOINTS
+
 int main(void)
 {
 	t_vars vars;
@@ -164,6 +166,10 @@ int main(void)
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");
 	img = new_img(&vars, res.y, res.x);
+
+	// t_3d test = new_3d(1.f, -4.f, 1.f);
+	// test = get_norm(test);
+	// printf("x=%f,y=%f,z=%f\n", test.x, test.y, test.z);
 
 	project(&img, res, 0xFF0000);
 	ft_putstr_fd("finished\n", 1);
