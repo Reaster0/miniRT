@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/06 14:51:13 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/08 16:57:39 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 
 	t_ray l_ray;
 	//maybe multiply by 0.9
-	l_ray.startpoint = add_product(multiply_v(0.9, light->normale), light->hit.endpoint);
+	l_ray.startpoint = add_product(multiply_v(0.3f, light->normale), light->hit.endpoint);
 	l_ray.endpoint = get_norm(sub_product(light->point, light->hit.endpoint));
 	l_ray.t = 1.0e30f;
 	l_ray.color = 0;
@@ -71,8 +71,8 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 
 	light = malloc(sizeof(t_light *) * 4);
 	//light[0] = new_light(new_3d(0.f, 0.f, 0.f), 80);
-	light[1] = new_light(new_3d(9.f, 12, -2), 10);
-	light[0] = new_light(new_3d(-13.f, 1.f, -4.f), 190);
+	light[1] = new_light(new_3d(9.f, 12, -2), 0);
+	light[0] = new_light(new_3d(-6.f, 1.f, -4.f), 180);
 	light[2] = NULL;
 	ret = 0;
 
@@ -102,11 +102,11 @@ void project(t_data *data, t_2d resolution, int color)
 	t_shapes shapes;
 
 	shapes.sphere = malloc(sizeof(t_sphere *) * 6);
-	// shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, 14.0f), 4.f, 0x900C3F);
-	// shapes.sphere[1] = new_sphere(new_3d(7.f, 1.f, 10.f), 4.f, 0x59e1a7);
-	// shapes.sphere[2] = new_sphere(new_3d(-20.f, -1.5f, 13.f), 4.f, 0xFF00FF);
-	// shapes.sphere[3] = new_sphere(new_3d(-5.f, 2.f, 13.f), 3.f, 0x00FFFF);
-	shapes.sphere[0] = NULL;
+	shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, 14.0f), 4.f, 0x900C3F);
+	shapes.sphere[1] = new_sphere(new_3d(7.f, 1.f, 10.f), 4.f, 0x59e1a7);
+	shapes.sphere[2] = new_sphere(new_3d(-20.f, -1.5f, 6.f), 4.f, 0xFF00FF);
+	shapes.sphere[3] = new_sphere(new_3d(-5.f, 2.f, 13.f), 3.f, 0x00FFFF);
+	shapes.sphere[4] = NULL;
 
 	shapes.plane = malloc(sizeof(t_plane *) * 6);
 	shapes.plane[1] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
@@ -116,40 +116,41 @@ void project(t_data *data, t_2d resolution, int color)
 	shapes.plane[4] = new_plane(new_3d(-30.f, 0.f, 0.f), new_3d(1.f, 0.f, 0.f), 0xFF0000);
 	shapes.plane[5] = NULL;
 
+	//triangle backwards need a fix
 	shapes.triangle = malloc(sizeof(t_triangle *) * 3);
-	// shapes.triangle[1] = new_triangle(new_3d(-4.f, -1.f, 6.f), new_3d(-1.f, -1.f, 6.f), new_3d(-4.f, 4.f, 6.f), 0x420420);
-	// shapes.triangle[0] = new_triangle(new_3d(3.f, 0.f, 4.f), new_3d(6.f, 0.f, 4.f), new_3d(6.f, 4.f, 4.f), 0x420420);
+	shapes.triangle[1] = new_triangle(new_3d(-4.f, -1.f, -6.f), new_3d(-1.f, -1.f, 6.f), new_3d(-4.f, 4.f, 6.f), 0x420420);
+	shapes.triangle[0] = new_triangle(new_3d(0.f, 2.f, -5.f), new_3d(4.f, 2.f, 4.f), new_3d(1.5f, 5.f, 4.f), 0x420420);
 	shapes.triangle[0] = NULL;
 
 	shapes.square = malloc(sizeof(t_square) * 2);
-	// shapes.square[0] = new_square(new_3d(4.f, 1.f, 5.f), new_3d(8.f, 1.f, 5.f), new_3d(8.f, 5.f, 7.f), new_3d(4.f, 5.f, 7.f), create_trgb(0, 66, 4, 32));
+	shapes.square[0] = new_square(new_3d(4.f, 1.f, 5.f), new_3d(8.f, 1.f, 5.f), new_3d(8.f, 5.f, 7.f), new_3d(4.f, 5.f, 7.f), create_trgb(0, 66, 4, 32));
 	shapes.square[0] = NULL;
 
 	shapes.cylinder = malloc(sizeof(t_cylinder *) * 2);
 	shapes.cylinder[0] = new_cylinder(new_3d(-4.f, -0.5f, 6.f), new_3d(0.f, 1.f, -0.3f), new_2d(4, 2), 0x420dab);
-	shapes.cylinder[1] = NULL;
+	shapes.cylinder[0] = NULL;
 
 	fov = 50.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
-	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.0f, 0.0f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
+	cam = new_camera(new_3d(-5.f, 4.f, 2.f), new_3d(0.f, -1.f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
 	t_ray ray;
 
-	count.x = 0;
-	while (count.x < resolution.x)
+	count.y = 0;
+	while (count.y < resolution.y)
 	{
-		count.y = 0;
-		while (count.y < resolution.y)
+		count.x = 0;
+		while (count.x < resolution.x)
 		{
 			screen_coord.x = (2.0f * count.x) / resolution.x - 1.0f;
 			screen_coord.y = (-2.0f * count.y) / resolution.y + 1.0f;
 			ray = make_ray(cam, screen_coord);
 			if (intersections(&ray, &shapes, 1))
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
-			count.y++;
+			count.x++;
 		}
-		count.x++;
+		count.y++;
 	}
 }
 

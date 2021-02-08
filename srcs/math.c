@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/06 14:51:23 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/08 17:09:18 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,11 +168,13 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	float dDotN;
 	float t;
 	dDotN = dot_product(ray->endpoint, plane->normal);
-	if (dDotN == 0.0f)
+	if (dDotN == 0.0)
 		return (0);
-	t = dot_product(sub_product(plane->position, ray->startpoint), divide_vr(dDotN, plane->normal));
-	if (t <= 0.0001f || t >= ray->t)
+	//maybe it's ray->startpoint
+	t = dot_product(sub_product(plane->position, ray->endpoint), plane->normal) / dDotN;
+	if (t <= 0.000001f || t >= ray->t)
 		return (0);
+
 	ray->shape_color = plane->color;
 	ray->t = t;
 	ray->shape_point = plane->position;
@@ -208,6 +210,7 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 		return (0);
 	ray->shape_point = sphere->startpoint;
 	ray->shape_color = sphere->color;
+
 	ray->shape_normale = sub_product(ray->startpoint, sphere->startpoint);
 	normalize(&ray->shape_normale);
 	return (1);
@@ -254,7 +257,7 @@ int inter_triangles(t_ray *ray, t_triangle **triangle)
 	}
 	return (ret);
 }
-
+//problemes sur les triangles qui sont derrieres la camera
 int inter_triangle(t_ray *ray, t_triangle *triangle)
 {
 	t_3d edge1;
@@ -297,6 +300,8 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 		ray->shape_normale = cross_product(sub_product(triangle->b, triangle->a), sub_product(triangle->c, triangle->a));
 		ray->shape_point = new_3d((triangle->a.x + triangle->b.x + triangle->c.x) / 2, (triangle->a.y + triangle->b.y + triangle->c.y) / 2, (triangle->a.z + triangle->b.z + triangle->c.z) / 2);
 		ray->t = t;
+
+		ray->color = triangle->color;
 		ray->shape_color = triangle->color;
 	}
 	return (1);
@@ -310,6 +315,7 @@ t_ray make_ray(t_camera camera, t_2d point)
 	result.endpoint = add_product(result.endpoint, multiply_v(point.x * camera.w, camera.right));
 	result.endpoint = add_product(result.endpoint, multiply_v(point.y * camera.h, camera.up));
 	normalize(&result.endpoint);
+
 	result.t = 1.0e30f;
 	result.color = 0;
 
@@ -320,8 +326,9 @@ t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float rat
 { //pensez a fix le cas ou upguide == target
 	t_camera result;
 	result.startpoint = origin;
-	result.forward = sub_product(target, origin);
-	normalize(&result.forward);
+	//result.forward = sub_product(target, origin);
+	//normalize(&result.forward);
+	result.forward = target;
 	result.right = cross_product(result.forward, upguide);
 	normalize(&result.right);
 	result.up = cross_product(result.right, result.forward);
