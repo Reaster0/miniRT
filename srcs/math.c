@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/09 15:10:32 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/09 17:02:43 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,46 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 	}
 	return (1);
 }
+
+//new version
+
+void p_matrix(t_3d point, t_matrix4 *matrix)
+{
+	matrix->c1 = multiply_v(point.x, matrix->c1);
+}
+
+t_camera world_to_cam(t_matrix4 matrix, t_3d from)
+{
+	t_camera camera;
+	camera.startpoint = matrix.c4;
+	camera.forward = matrix.c3;
+	camera.up = matrix.c2;
+	camera.right = matrix.c1;
+	return (camera);
+}
+
+t_matrix4 cam_to_world(t_camera camera, t_3d to)
+{
+	t_matrix4 matrix;
+	matrix.c1 = camera.right;
+	matrix.c2 = camera.up;
+	matrix.c3 = camera.forward;
+	matrix.c4 = to;
+
+	return (matrix);
+}
+
+t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio)
+{
+	t_camera result;
+	result.startpoint = origin;
+	result.forward = get_norm(sub_product(origin, target));
+	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
+
+	matrix4(result);
+}
+
+//new version
 
 t_ray make_ray(t_camera camera, t_2d point)
 {

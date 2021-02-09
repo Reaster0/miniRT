@@ -6,14 +6,13 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/04 15:04:45 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/09 17:07:04 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SHAPES_H
 #define SHAPES_H
 #include "minirt.h"
-
 
 typedef struct s_3d
 {

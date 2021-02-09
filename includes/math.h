@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/05 16:54:29 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/09 16:46:30 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,17 @@
 #define MATH_H
 #include "minirt.h"
 
+typedef struct s_matrix4
+{
+	t_3d c1;
+	int c14;
+	t_3d c2;
+	int c24;
+	t_3d c3;
+	int c34;
+	t_3d c4;
+	int c44;
+} t_matrix4;
 
 
 t_ray make_ray(t_camera camera, t_2d point);

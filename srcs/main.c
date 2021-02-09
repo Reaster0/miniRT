@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/09 15:11:27 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/09 15:50:39 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void project(t_data *data, t_2d resolution, int color)
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
-	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(1.f, 0.f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
+	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 0.f, -1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
 	t_ray ray;
 
 	count.y = 0;
