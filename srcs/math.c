@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/09 12:49:02 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/09 15:10:32 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,15 +167,17 @@ int inter_plane(t_ray *ray, t_plane *plane)
 {
 	float dDotN;
 	float t;
-
+	if (dot_product(ray->endpoint, plane->normal) > 0.f)
+		plane->normal = multiply_v(-1, plane->normal);
 	dDotN = dot_product(ray->endpoint, plane->normal);
 	if (dDotN == 0.f)
 		return (0);
+
 	//maybe it's ray->startpoint
 	t = dot_product(sub_product(plane->position, ray->startpoint), plane->normal) / dDotN;
 	if (t <= 0.000001f || t >= ray->t)
 		return (0);
-	ray->color = plane->color;
+	//ray->color = plane->color;
 	ray->shape_color = plane->color;
 	ray->t = t;
 	ray->shape_point = plane->position;
@@ -209,7 +211,7 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 		ray->t = t2;
 	else
 		return (0);
-	ray->color = sphere->color;
+	//ray->color = sphere->color;
 
 	ray->shape_point = sphere->startpoint;
 	ray->shape_color = sphere->color;
@@ -314,14 +316,12 @@ t_ray make_ray(t_camera camera, t_2d point)
 {
 	t_ray result;
 	result.startpoint = camera.startpoint;
-
-	result.endpoint = add_product(camera.forward, multiply_v(point.x * camera.w, camera.right));
+	result.endpoint = camera.forward;
+	result.endpoint = add_product(result.endpoint, multiply_v(point.x * camera.w, camera.right));
 	result.endpoint = add_product(result.endpoint, multiply_v(point.y * camera.h, camera.up));
 	normalize(&result.endpoint);
-
 	result.t = 1.0e30f;
 	result.color = 0;
-
 	return (result);
 }
 
@@ -329,11 +329,8 @@ t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float rat
 { //pensez a fix le cas ou upguide == target
 	t_camera result;
 	result.startpoint = origin;
-	//result.forward = get_norm(sub_product(target, origin));
-
-	result.forward = target;
+	result.forward = sub_product(target, origin);
 	normalize(&result.forward);
-	printf("forward=%f and normforward =%f\n", target.z, result.forward.z);
 	result.right = cross_product(result.forward, upguide);
 	normalize(&result.right);
 	result.up = cross_product(result.right, result.forward);
