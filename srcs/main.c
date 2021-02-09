@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/08 16:57:39 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/09 12:57:22 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 	t_ray l_ray;
 	//maybe multiply by 0.9
 	l_ray.startpoint = add_product(multiply_v(0.3f, light->normale), light->hit.endpoint);
+	//maybe get_norm
 	l_ray.endpoint = get_norm(sub_product(light->point, light->hit.endpoint));
 	l_ray.t = 1.0e30f;
 	l_ray.color = 0;
@@ -72,7 +73,7 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 	light = malloc(sizeof(t_light *) * 4);
 	//light[0] = new_light(new_3d(0.f, 0.f, 0.f), 80);
 	light[1] = new_light(new_3d(9.f, 12, -2), 0);
-	light[0] = new_light(new_3d(-6.f, 1.f, -4.f), 180);
+	light[0] = new_light(new_3d(-6.f, 2.f, -2.f), 180);
 	light[2] = NULL;
 	ret = 0;
 
@@ -88,8 +89,8 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 		ret = 1;
 	//faire le calcul de lumiere ici
 
-	if (ret == 1 && inter_l)
-		inter_lights(ray, light, shapes);
+	// if (ret == 1 && inter_l)
+	// 	inter_lights(ray, light, shapes);
 
 	return (ret);
 }
@@ -103,7 +104,7 @@ void project(t_data *data, t_2d resolution, int color)
 
 	shapes.sphere = malloc(sizeof(t_sphere *) * 6);
 	shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, 14.0f), 4.f, 0x900C3F);
-	shapes.sphere[1] = new_sphere(new_3d(7.f, 1.f, 10.f), 4.f, 0x59e1a7);
+	shapes.sphere[1] = new_sphere(new_3d(7.f, 1.f, 5.f), 4.f, 0x59e1a7);
 	shapes.sphere[2] = new_sphere(new_3d(-20.f, -1.5f, 6.f), 4.f, 0xFF00FF);
 	shapes.sphere[3] = new_sphere(new_3d(-5.f, 2.f, 13.f), 3.f, 0x00FFFF);
 	shapes.sphere[4] = NULL;
@@ -130,11 +131,11 @@ void project(t_data *data, t_2d resolution, int color)
 	shapes.cylinder[0] = new_cylinder(new_3d(-4.f, -0.5f, 6.f), new_3d(0.f, 1.f, -0.3f), new_2d(4, 2), 0x420dab);
 	shapes.cylinder[0] = NULL;
 
-	fov = 50.f * M_PI / 180.f;
+	fov = 28.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
-	cam = new_camera(new_3d(-5.f, 4.f, 2.f), new_3d(0.f, -1.f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
+	cam = new_camera(new_3d(0.f, 3.f, -7.f), new_3d(0.4f, 0.f, 0.5f), new_3d(0.f, 1.f, 0.f), fov, ratio);
 	t_ray ray;
 
 	count.y = 0;
