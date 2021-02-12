@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/09 15:50:39 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/12 14:36:49 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void project(t_data *data, t_2d resolution, int color)
 	t_shapes shapes;
 
 	shapes.sphere = malloc(sizeof(t_sphere *) * 6);
-	shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, 14.0f), 4.f, 0x900C3F);
+	shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, -7.0f), 4.f, 0x900C3F);
 	shapes.sphere[1] = new_sphere(new_3d(4.f, 2.f, 5.f), 4.f, 0x59e1a7);
 	shapes.sphere[2] = new_sphere(new_3d(-40.f, -1.5f, 6.f), 4.f, 0xFF00FF);
 	shapes.sphere[3] = new_sphere(new_3d(-5.f, 2.f, 13.f), 3.f, 0x00FFFF);
@@ -129,14 +129,14 @@ void project(t_data *data, t_2d resolution, int color)
 	shapes.square[0] = NULL;
 
 	shapes.cylinder = malloc(sizeof(t_cylinder *) * 2);
-	shapes.cylinder[0] = new_cylinder(new_3d(-4.f, -0.5f, 6.f), new_3d(0.f, 1.f, -0.3f), new_2d(4, 2), 0x420dab);
-	shapes.cylinder[0] = NULL;
-
+	shapes.cylinder[0] = new_cylinder(new_3d(2.f, 0.f, 6.f), new_3d(0.f, 1.f, 0.5f), new_2d(4, 2), 0x420dab);
+	shapes.cylinder[1] = NULL;
+	//fov / 2?
 	fov = 42.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
-	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 0.f, -1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
+	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 0.f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
 	t_ray ray;
 
 	count.y = 0;

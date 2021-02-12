@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/09 17:02:43 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/12 14:38:28 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 		t_3d hit_p = add_product(ray->startpoint, multiply_v(ray->t, ray->endpoint));
 		//cas ou je touche les caps
 		t_3d inter_vec = sub_product(cylinder->pointup, hit_p);
-		if (!dot_product(inter_vec, cylinder->orient))
-			ray->shape_normale = cylinder->orient;
+		// if (!dot_product(inter_vec, cylinder->orient))
+		// 	ray->shape_normale = cylinder->orient;
 
-		inter_vec = sub_product(cylinder->point, hit_p);
-		if (!dot_product(inter_vec, cylinder->orient))
-			ray->shape_normale = cylinder->orient;
+		// inter_vec = sub_product(cylinder->point, hit_p);
+		// if (!dot_product(inter_vec, cylinder->orient))
+		// 	ray->shape_normale = cylinder->orient;
 
 		t_3d cylinder_center = divide_vr(2, add_product(cylinder->point, cylinder->pointup));
 		t_3d cyloritocenter = sub_product(cylinder_center, hit_p);
@@ -314,41 +314,41 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 
 //new version
 
-void p_matrix(t_3d point, t_matrix4 *matrix)
-{
-	matrix->c1 = multiply_v(point.x, matrix->c1);
-}
+// void p_matrix(t_3d point, t_matrix4 *matrix)
+// {
+// 	matrix->c1 = multiply_v(point.x, matrix->c1);
+// }
 
-t_camera world_to_cam(t_matrix4 matrix, t_3d from)
-{
-	t_camera camera;
-	camera.startpoint = matrix.c4;
-	camera.forward = matrix.c3;
-	camera.up = matrix.c2;
-	camera.right = matrix.c1;
-	return (camera);
-}
+// t_camera world_to_cam(t_matrix4 matrix, t_3d from)
+// {
+// 	t_camera camera;
+// 	camera.startpoint = matrix.c4;
+// 	camera.forward = matrix.c3;
+// 	camera.up = matrix.c2;
+// 	camera.right = matrix.c1;
+// 	return (camera);
+// }
 
-t_matrix4 cam_to_world(t_camera camera, t_3d to)
-{
-	t_matrix4 matrix;
-	matrix.c1 = camera.right;
-	matrix.c2 = camera.up;
-	matrix.c3 = camera.forward;
-	matrix.c4 = to;
+// t_matrix4 cam_to_world(t_camera camera, t_3d to)
+// {
+// 	t_matrix4 matrix;
+// 	matrix.c1 = camera.right;
+// 	matrix.c2 = camera.up;
+// 	matrix.c3 = camera.forward;
+// 	matrix.c4 = to;
 
-	return (matrix);
-}
+// 	return (matrix);
+// }
 
-t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio)
-{
-	t_camera result;
-	result.startpoint = origin;
-	result.forward = get_norm(sub_product(origin, target));
-	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
+// t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio)
+// {
+// 	t_camera result;
+// 	result.startpoint = origin;
+// 	result.forward = get_norm(sub_product(origin, target));
+// 	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
 
-	matrix4(result);
-}
+// 	matrix4(result);
+// }
 
 //new version
 
@@ -360,6 +360,7 @@ t_ray make_ray(t_camera camera, t_2d point)
 	result.endpoint = add_product(result.endpoint, multiply_v(point.x * camera.w, camera.right));
 	result.endpoint = add_product(result.endpoint, multiply_v(point.y * camera.h, camera.up));
 	normalize(&result.endpoint);
+	// printf("x=%f,y=%f,z=%f\n", result.endpoint.x, result.endpoint.y, result.endpoint.z);
 	result.t = 1.0e30f;
 	result.color = 0;
 	return (result);
@@ -369,12 +370,11 @@ t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float rat
 { //pensez a fix le cas ou upguide == target
 	t_camera result;
 	result.startpoint = origin;
-	result.forward = sub_product(target, origin);
-	normalize(&result.forward);
+	result.forward = get_norm(sub_product(target, origin));
 	result.right = cross_product(result.forward, upguide);
 	normalize(&result.right);
 	result.up = cross_product(result.right, result.forward);
-
+	//fov / 2
 	result.h = tan(fov);
 	result.w = result.h * ratio;
 	return (result);
