@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/12 14:38:28 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/15 18:30:46 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,42 +313,37 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 }
 
 //new version
+t_camera world_to_cam(float **matrix, t_3d from)
+{
+	t_camera camera;
+	outcol(matrix[3], &camera.startpoint);
+	outcol(matrix[2], &camera.forward);
+	outcol(matrix[1], &camera.up);
+	outcol(matrix[0], &camera.right);
+	return (camera);
+}
 
-// void p_matrix(t_3d point, t_matrix4 *matrix)
-// {
-// 	matrix->c1 = multiply_v(point.x, matrix->c1);
-// }
+float **cam_to_world(t_camera camera, t_3d to)
+{
+	float matrix[3][3];
 
-// t_camera world_to_cam(t_matrix4 matrix, t_3d from)
-// {
-// 	t_camera camera;
-// 	camera.startpoint = matrix.c4;
-// 	camera.forward = matrix.c3;
-// 	camera.up = matrix.c2;
-// 	camera.right = matrix.c1;
-// 	return (camera);
-// }
+	fillcol(matrix[0], camera.right, 0);
+	fillcol(matrix[1], camera.up, 0);
+	fillcol(matrix[2], camera.forward, 0);
+	fillcol(matrix[3], to, 0);
 
-// t_matrix4 cam_to_world(t_camera camera, t_3d to)
-// {
-// 	t_matrix4 matrix;
-// 	matrix.c1 = camera.right;
-// 	matrix.c2 = camera.up;
-// 	matrix.c3 = camera.forward;
-// 	matrix.c4 = to;
+	return (matrix);
+}
 
-// 	return (matrix);
-// }
+t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio)
+{
+	t_camera result;
+	result.startpoint = origin;
+	result.forward = get_norm(sub_product(origin, target));
+	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
 
-// t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio)
-// {
-// 	t_camera result;
-// 	result.startpoint = origin;
-// 	result.forward = get_norm(sub_product(origin, target));
-// 	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
-
-// 	matrix4(result);
-// }
+	matrix4(result);
+}
 
 //new version
 
@@ -378,139 +373,4 @@ t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float rat
 	result.h = tan(fov);
 	result.w = result.h * ratio;
 	return (result);
-}
-
-float sqr(float number)
-{
-	return (number * number);
-}
-
-float length2(t_3d point)
-{
-	return (sqr(point.x) + sqr(point.y) + sqr(point.z));
-}
-
-float get_normf(float n)
-{
-	return (n /= sqrt(sqr(n)));
-}
-
-void normalize2d(t_2d *vector)
-{
-	float norm;
-	norm = sqrt(vector->x * vector->x + vector->y * vector->y);
-	vector->x /= norm;
-	vector->y /= norm;
-}
-
-void normalize(t_3d *vector)
-{
-	float norm;
-	norm = sqrt(sqr(vector->x) + sqr(vector->y) + sqr(vector->z));
-	vector->x /= norm;
-	vector->y /= norm;
-	vector->z /= norm;
-}
-
-t_3d get_norm(t_3d vector)
-{
-	float norm;
-	norm = sqrt(sqr(vector.x) + sqr(vector.y) + sqr(vector.z));
-	vector.x /= norm;
-	vector.y /= norm;
-	vector.z /= norm;
-	return (vector);
-}
-
-t_3d multiply_v(float a, t_3d vector)
-{
-	vector.x *= a;
-	vector.y *= a;
-	vector.z *= a;
-	return (vector);
-}
-
-void divide_v(float a, t_3d *vector)
-{
-	vector->x /= a;
-	vector->y /= a;
-	vector->z /= a;
-}
-
-t_3d divide_vr(float a, t_3d vector)
-{
-	vector.x /= a;
-	vector.y /= a;
-	vector.z /= a;
-	return (vector);
-}
-
-t_3d sub_vr(float a, t_3d vector)
-{
-	vector.x -= a;
-	vector.y -= a;
-	vector.z -= a;
-	return (vector);
-}
-
-void sub_v(float a, t_3d *vector)
-{
-	vector->x -= a;
-	vector->y -= a;
-	vector->z -= a;
-}
-
-t_3d add_v(float a, t_3d vector)
-{
-	vector.x += a;
-	vector.y += a;
-	vector.z += a;
-	return (vector);
-}
-
-t_3d multiply_product(t_3d a, t_3d b)
-{
-	a.x *= b.x;
-	a.y *= b.y;
-	a.z *= b.z;
-	return (a);
-}
-
-float dot_product(t_3d a, t_3d b)
-{
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
-}
-
-t_3d cross_product(t_3d a, t_3d b)
-{
-	t_3d ret;
-	ret.x = a.y * b.z - a.z * b.y;
-	ret.y = a.z * b.x - a.x * b.z;
-	ret.z = a.x * b.y - a.y * b.x;
-	return (ret);
-}
-
-t_3d add_product(t_3d a, t_3d b)
-{
-	a.x += b.x;
-	a.y += b.y;
-	a.z += b.z;
-	return (a);
-}
-
-t_3d sub_product(t_3d a, t_3d b)
-{
-	t_3d ret;
-	ret.x = a.x - b.x;
-	ret.y = a.y - b.y;
-	ret.z = a.z - b.z;
-	return (ret);
-}
-
-t_ray calculate(t_ray ray, float t)
-{
-	t_ray temp;
-	temp = ray;
-	temp.endpoint = multiply_v(t, ray.endpoint);
-	return (temp);
 }

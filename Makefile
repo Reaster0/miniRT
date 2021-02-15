@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/02/03 15:14:44 by earnaud          ###   ########.fr        #
+#    Updated: 2021/02/15 18:04:14 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,9 @@ FILES		= main.c \
 				mlx_util.c \
 				colors.c \
 				math.c \
-				shapes.c
+				littlemath.c\
+				shapes.c \
+				matrice.c
 
 
 SRCS		= $(addprefix $(SRCS_DIR), $(FILES))
