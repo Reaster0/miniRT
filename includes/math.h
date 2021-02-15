@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/15 18:30:25 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/15 19:50:11 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ t_3d p_matrix(t_3d point, float **matrix);
 void fillcol(float *matrix, t_3d data, float i);
 void outcol(float *matrix, t_3d *data);
 float **multi_mtrx(float **m1, float **m2);
+float **rota_x_mtrx(float angle);
+float **rota_y_mtrx(float angle);
+float **rota_z_mtrx(float angle);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 19:17:17 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/15 19:28:03 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/15 19:50:00 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,82 @@ t_3d p_matrix(t_3d point, float **matrix)
 	result.x = point.x * matrix[0][0] + point.y * matrix[1][0] + point.z * matrix[2][0];
 	result.y = point.x * matrix[0][1] + point.y * matrix[1][1] + point.z * matrix[2][1];
 	result.z = point.x * matrix[0][2] + point.y * matrix[1][2] + point.z * matrix[2][2];
+}
+
+float **scale_mtrx(t_3d point)
+{
+	float result[3][3];
+
+	result[0][0] = point.x;
+	result[0][1] = 0;
+	result[0][2] = 0;
+	result[0][3] = 0;
+	result[1][0] = 0;
+	result[1][1] = point.y;
+	result[1][2] = 0;
+	result[1][3] = 0;
+	result[2][0] = 0;
+	result[2][1] = 0;
+	result[2][2] = point.z;
+	result[2][3] = 0;
+	return (result);
+}
+
+float **rota_x_mtrx(float angle)
+{
+	float result[3][3];
+
+	result[0][0] = 1;
+	result[0][1] = 0;
+	result[0][2] = 0;
+	result[0][3] = 0;
+	result[1][0] = 0;
+	result[1][1] = cos(angle);
+	result[1][2] = sin(angle);
+	result[1][3] = 0;
+	result[2][0] = 0;
+	result[2][1] = sin(angle);
+	result[2][2] = cos(angle);
+	result[2][3] = 0;
+	return (result);
+}
+
+float **rota_y_mtrx(float angle)
+{
+	float result[3][3];
+
+	result[0][0] = cos(angle);
+	result[0][1] = 0;
+	result[0][2] = sin(angle);
+	result[0][3] = 0;
+	result[1][0] = 0;
+	result[1][1] = 1;
+	result[1][2] = 0;
+	result[1][3] = 0;
+	result[2][0] = sin(angle);
+	result[2][1] = 0;
+	result[2][2] = cos(angle);
+	result[2][3] = 0;
+	return (result);
+}
+
+float **rota_z_mtrx(float angle)
+{
+	float result[3][3];
+
+	result[0][0] = cos(angle);
+	result[0][1] = sin(angle);
+	result[0][2] = 0;
+	result[0][3] = 0;
+	result[1][0] = sin(angle);
+	result[1][1] = cos(angle);
+	result[1][2] = 0;
+	result[1][3] = 0;
+	result[2][0] = 0;
+	result[2][1] = 0;
+	result[2][2] = 1;
+	result[2][3] = 0;
+	return (result);
 }
 
 void fillcol(float *matrix, t_3d data, float i)
