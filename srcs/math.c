@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/16 15:06:24 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/16 19:12:19 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,36 +313,41 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 }
 
 //new version
-t_camera world_to_cam(float **matrix, t_3d from)
+t_camera world_to_cam(t_matrix4 matrix, t_3d from)
 {
 	t_camera camera;
-	outcol(matrix[3], &camera.startpoint);
-	outcol(matrix[2], &camera.forward);
-	outcol(matrix[1], &camera.up);
-	outcol(matrix[0], &camera.right);
+	camera.right = matrix.r1;
+	camera.up = matrix.r2;
+	camera.forward = matrix.r3;
+	camera.startpoint = matrix.r4;
 	return (camera);
 }
 
-float **cam_to_world(t_camera camera, t_3d to)
+t_matrix4 cam_to_world(t_camera camera, t_3d to)
 {
-	float matrix[3][3];
-
-	fillcol(matrix[0], camera.right);
-	fillcol(matrix[1], camera.up);
-	fillcol(matrix[2], camera.forward);
-	fillcol(matrix[3], to);
-
-	return (matrix);
+	t_matrix4 result;
+	result.r1 = camera.right;
+	result.r2 = camera.up;
+	result.r3 = camera.forward;
+	result.r4 = to;
+	result.r4.w = 1.f;
+	return (result);
 }
 
 t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio)
 {
 	t_camera result;
-	result.startpoint = origin;
-	result.forward = get_norm(sub_product(origin, target));
+	t_matrix4 temp;
+	result.startpoint = new_3d(0.f, 0.f, 0.f);
+	result.forward = get_norm(sub_product(result.startpoint, target));
 	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
-
-	matrix4(result);
+	if (result.forward.y == 1)
+		result.forward.y -= 0.001;
+	if (result.forward.y == -1)
+		result.forward.y += 0.001;
+	temp = cam_to_world(result, origin);
+	result.forward = p_matrix(target, temp);
+	return (result);
 }
 
 //new version
@@ -354,7 +359,7 @@ t_ray make_ray(t_camera camera, t_2d point)
 	result.endpoint = camera.forward;
 	result.endpoint = add_product(result.endpoint, multiply_v(point.x * camera.w, camera.right));
 	result.endpoint = add_product(result.endpoint, multiply_v(point.y * camera.h, camera.up));
-	normalize(&result.endpoint);
+	//normalize(&result.endpoint);
 	// printf("x=%f,y=%f,z=%f\n", result.endpoint.x, result.endpoint.y, result.endpoint.z);
 	result.t = 1.0e30f;
 	result.color = 0;

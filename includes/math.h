@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/16 13:42:18 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/16 19:11:52 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 #define MATH_H
 #include "minirt.h"
 
-t_3d p_matrix(t_3d point, float **matrix);
-void fillcol(float *matrix, t_3d data);
-void outcol(float *matrix, t_3d *data);
-float **multi_mtrx(float **m1, float **m2);
-float **rota_x_mtrx(float angle);
-float **rota_y_mtrx(float angle);
-float **rota_z_mtrx(float angle);
+t_3d p_matrix(t_3d point, t_matrix4 matrix);
+//t_matrix4 multi_mtrx(float **m1, float **m2);
+t_matrix4 rota_x_mtrx(float angle);
+t_matrix4 rota_y_mtrx(float angle);
+t_matrix4 rota_z_mtrx(float angle);
 
 
 
 
 t_ray make_ray(t_camera camera, t_2d point);
+t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio);
+
 
 void inter_lights(t_ray *ray, t_light **light, t_shapes *shapes);
 void inter_light(t_ray *ray, t_light *light, t_shapes *shapes);

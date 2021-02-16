@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/15 12:50:09 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/16 18:29:34 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,13 +130,14 @@ void project(t_data *data, t_2d resolution, int color)
 
 	shapes.cylinder = malloc(sizeof(t_cylinder *) * 2);
 	shapes.cylinder[0] = new_cylinder(new_3d(2.f, 0.f, 6.f), new_3d(0.f, 1.f, 0.5f), new_2d(4, 2), 0x420dab);
-	shapes.cylinder[1] = NULL;
+	shapes.cylinder[0] = NULL;
 	//fov / 2?
 	fov = 42.f * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_2d screen_coord;
 	t_camera cam;
-	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 0.f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
+	//cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 0.f, 1.f), new_3d(0.f, 1.f, 0.f), fov, ratio);
+	cam = cam_lookat(new_3d(3.f, 0.f, 0.f), new_3d(0.f, 0.f, -1.f), fov, ratio);
 	t_ray ray;
 
 	count.y = 0;
