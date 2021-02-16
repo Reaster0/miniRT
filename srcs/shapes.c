@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:22:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/09 11:34:39 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/16 15:06:59 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_3d new_3d(float x, float y, float z)
 	result.x = x;
 	result.y = y;
 	result.z = z;
+	result.w = 0;
 	return (result);
 }
 

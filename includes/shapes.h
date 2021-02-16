@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/09 17:07:04 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/16 12:29:40 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_3d
 	float x;
 	float y;
 	float z;
+	float w;
 } t_3d;
 
 typedef struct s_2d

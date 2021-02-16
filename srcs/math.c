@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/15 18:30:46 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/16 15:06:24 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,10 +327,10 @@ float **cam_to_world(t_camera camera, t_3d to)
 {
 	float matrix[3][3];
 
-	fillcol(matrix[0], camera.right, 0);
-	fillcol(matrix[1], camera.up, 0);
-	fillcol(matrix[2], camera.forward, 0);
-	fillcol(matrix[3], to, 0);
+	fillcol(matrix[0], camera.right);
+	fillcol(matrix[1], camera.up);
+	fillcol(matrix[2], camera.forward);
+	fillcol(matrix[3], to);
 
 	return (matrix);
 }
