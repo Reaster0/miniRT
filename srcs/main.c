@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 16:25:22 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/17 19:57:17 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,8 @@ void project(t_data *data, t_2d resolution, int color)
 	t_camera cam;
 	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 0.f, -1.f));
 	t_ray ray;
-	t_3d origin = new_3d(0.f, 0.f, 0.f);
-	t_3d target = new_3d(0.f, 0.f, -1.f);
+	t_3d origin = new_3d(-2.f, 3.f, 12.f);
+	t_3d target = new_3d(0.f, 0.f, 1.f);
 
 	count.y = 0;
 	while (count.y < resolution.y)
@@ -156,11 +156,11 @@ void project(t_data *data, t_2d resolution, int color)
 			screen_coord.y *= tan(fov);
 			screen_coord.x *= ratio;
 
-			screen_coord.z = 1.f;
+			screen_coord.z = -1.f;
 
 			//printf("compare x=%f & y=%f with oldx=%f & oldy=%f\n", screen_coord.x, screen_coord.y, (2.0f * count.x) / resolution.x - 1.0f, (-2.0f * count.y) / resolution.y + 1.0f);
 			ray = make_ray(origin, target, screen_coord);
-			if (intersections(&ray, &shapes, 0))
+			if (intersections(&ray, &shapes, 1))
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
 			count.x++;
 		}

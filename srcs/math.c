@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 16:31:22 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/17 19:53:16 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	if (t <= 0.000001f || t >= ray->t)
 		return (0);
 
-	ray->color = plane->color;
+	//ray->color = plane->color;
 
 	ray->shape_color = plane->color;
 	ray->t = t;
@@ -328,6 +328,7 @@ t_matrix4 lookat(t_3d origin, t_3d target)
 { //gerer mieux le cas ou forward y  = 1
 	t_camera result;
 	result.startpoint = origin;
+	target = add_product(target, origin);
 	result.forward = get_norm(sub_product(origin, target));
 	if (result.forward.y == 1)
 		result.forward.y -= 0.001;
@@ -352,7 +353,7 @@ t_ray make_ray(t_3d origin, t_3d target, t_3d screen)
 
 	ray.endpoint = v_matrix(screen, temp);
 	ray.endpoint = (sub_product(ray.endpoint, origin));
-	normalize(&ray.endpoint);
+	//normalize(&ray.endpoint);
 
 	ray.t = 1.0e30f;
 	ray.color = 0;

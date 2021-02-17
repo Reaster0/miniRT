@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 19:17:17 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 15:26:46 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/17 19:44:53 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ t_matrix4 cam_to_world(t_camera camera)
 	result.r3 = camera.forward;
 	result.r4 = camera.startpoint;
 	result.r4.w = 1;
+	// printf("r1 1=%f,2=%f,3=%f,4=%f\n", result.r1.x, result.r1.y, result.r1.z);
+	// printf("r2 1=%f,2=%f,3=%f,4=%f\n", result.r2.x, result.r2.y, result.r2.z);
+	// printf("r3 1=%f,2=%f,3=%f,4=%f\n", result.r3.x, result.r3.y, result.r3.z);
+	// printf("r4 1=%f,2=%f,3=%f,4=%f\n", result.r4.x, result.r4.y, result.r4.z);
 	return (result);
 }
 
