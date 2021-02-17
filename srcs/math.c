@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 17:15:31 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/16 19:12:19 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/17 16:31:22 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,9 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	t = dot_product(sub_product(plane->position, ray->startpoint), plane->normal) / dDotN;
 	if (t <= 0.000001f || t >= ray->t)
 		return (0);
-	//ray->color = plane->color;
+
+	ray->color = plane->color;
+
 	ray->shape_color = plane->color;
 	ray->t = t;
 	ray->shape_point = plane->position;
@@ -312,7 +314,6 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 	return (1);
 }
 
-//new version
 t_camera world_to_cam(t_matrix4 matrix, t_3d from)
 {
 	t_camera camera;
@@ -323,59 +324,52 @@ t_camera world_to_cam(t_matrix4 matrix, t_3d from)
 	return (camera);
 }
 
-t_matrix4 cam_to_world(t_camera camera, t_3d to)
-{
-	t_matrix4 result;
-	result.r1 = camera.right;
-	result.r2 = camera.up;
-	result.r3 = camera.forward;
-	result.r4 = to;
-	result.r4.w = 1.f;
-	return (result);
-}
-
-t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio)
-{
+t_matrix4 lookat(t_3d origin, t_3d target)
+{ //gerer mieux le cas ou forward y  = 1
 	t_camera result;
-	t_matrix4 temp;
-	result.startpoint = new_3d(0.f, 0.f, 0.f);
-	result.forward = get_norm(sub_product(result.startpoint, target));
-	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
+	result.startpoint = origin;
+	result.forward = get_norm(sub_product(origin, target));
 	if (result.forward.y == 1)
 		result.forward.y -= 0.001;
 	if (result.forward.y == -1)
 		result.forward.y += 0.001;
-	temp = cam_to_world(result, origin);
-	result.forward = p_matrix(target, temp);
-	return (result);
+	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
+	result.up = cross_product(result.forward, result.right);
+
+	//printf("right x=%f,y=%f,z=%f\nforward x=%f,y=%f,z=%f\n", result.right.x, result.right.y, result.right.z, result.forward.x, result.forward.y, result.forward.z);
+	return (cam_to_world(result));
 }
 
 //new version
 
-t_ray make_ray(t_camera camera, t_2d point)
+t_ray make_ray(t_3d origin, t_3d target, t_3d screen)
 {
-	t_ray result;
-	result.startpoint = camera.startpoint;
-	result.endpoint = camera.forward;
-	result.endpoint = add_product(result.endpoint, multiply_v(point.x * camera.w, camera.right));
-	result.endpoint = add_product(result.endpoint, multiply_v(point.y * camera.h, camera.up));
-	//normalize(&result.endpoint);
-	// printf("x=%f,y=%f,z=%f\n", result.endpoint.x, result.endpoint.y, result.endpoint.z);
-	result.t = 1.0e30f;
-	result.color = 0;
-	return (result);
+	t_ray ray;
+	t_matrix4 temp;
+	ray.startpoint = origin;
+
+	temp = lookat(origin, target);
+
+	ray.endpoint = v_matrix(screen, temp);
+	ray.endpoint = (sub_product(ray.endpoint, origin));
+	normalize(&ray.endpoint);
+
+	ray.t = 1.0e30f;
+	ray.color = 0;
+	return (ray);
 }
 
-t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio)
-{ //pensez a fix le cas ou upguide == target
+//
+
+t_camera new_camera(t_3d origin, t_3d target)
+{
 	t_camera result;
-	result.startpoint = origin;
-	result.forward = get_norm(sub_product(target, origin));
-	result.right = cross_product(result.forward, upguide);
-	normalize(&result.right);
-	result.up = cross_product(result.right, result.forward);
-	//fov / 2
-	result.h = tan(fov);
-	result.w = result.h * ratio;
+	result.zero = new_3d(0.f, 0.f, 0.f);
+	// result.forward = get_norm(sub_product(result.startpoint, target));
+	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
+	if (result.forward.y == 1 && !result.forward.x && !result.forward.z)
+		result.forward.y -= 0.001;
+	if (result.forward.y == -1 && !result.forward.x && !result.forward.z)
+		result.forward.y += 0.001;
 	return (result);
 }

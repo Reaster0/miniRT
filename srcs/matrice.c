@@ -6,11 +6,22 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 19:17:17 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/16 19:13:52 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/17 15:26:46 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+t_matrix4 cam_to_world(t_camera camera)
+{
+	t_matrix4 result;
+	result.r1 = camera.right;
+	result.r2 = camera.up;
+	result.r3 = camera.forward;
+	result.r4 = camera.startpoint;
+	result.r4.w = 1;
+	return (result);
+}
 
 t_3d v_matrix(t_3d point, t_matrix4 matrix)
 {
@@ -28,12 +39,12 @@ t_3d p_matrix(t_3d point, t_matrix4 matrix)
 	result.y = point.x * matrix.r1.y + point.y * matrix.r2.y + point.z * matrix.r3.y + matrix.r4.y;
 	result.z = point.x * matrix.r1.z + point.y * matrix.r2.z + point.z * matrix.r3.z + matrix.r4.z;
 	result.w = point.x * matrix.r1.w + point.y * matrix.r2.w + point.z * matrix.r3.w + matrix.r4.w;
-	if (result.w != 1 && result.w != 0)
-	{
-		result.x /= result.w;
-		result.y /= result.w;
-		result.z /= result.w;
-	}
+	// if (result.w != 1 && result.w != 0)
+	// {
+	// 	result.x /= result.w;
+	// 	result.y /= result.w;
+	// 	result.z /= result.w;
+	// }
 	return (result);
 }
 

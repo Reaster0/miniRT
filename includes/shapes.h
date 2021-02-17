@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/16 19:12:38 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/17 11:22:52 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ typedef struct s_camera
 	t_3d forward;
 	t_3d up;
 	t_3d right;
-	float h;
-	float w;
+	t_3d zero;
 } t_camera;
 
 typedef struct s_plane
@@ -118,7 +117,7 @@ typedef struct s_matrix4
 	t_3d r4;
 } t_matrix4;
 
-t_camera new_camera(t_3d origin, t_3d target, t_3d upguide, float fov, float ratio);
+t_camera new_camera(t_3d origin, t_3d target);
 t_3d new_3d(float x, float y, float z);
 t_2d new_2d(float x, float y);
 t_cylinder *new_cylinder(t_3d point, t_3d orient, t_2d h_r, int color);
