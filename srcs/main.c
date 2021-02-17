@@ -6,21 +6,11 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 19:57:17 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/17 20:46:39 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-//faire une structure qui englobe toutes les autres
-
-t_light *new_light(t_3d point, int intens)
-{
-	t_light *light;
-	light = malloc(sizeof(t_light));
-	light->point = point;
-	light->intens = intens;
-	return (light);
-}
 
 int intens_color(t_ray *ray, t_light *light, int color, int ray_color)
 {
@@ -39,30 +29,6 @@ int intens_color(t_ray *ray, t_light *light, int color, int ray_color)
 	if (result < ray_color)
 		result = ray_color;
 	return (result);
-}
-
-void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
-{
-	light->hit = calculate(*ray, ray->t);
-	light->normale = ray->shape_normale;
-
-	t_ray l_ray;
-	//maybe multiply by 0.9
-	l_ray.startpoint = add_product(multiply_v(0.1f, light->normale), light->hit.endpoint);
-	//maybe get_norm
-	l_ray.endpoint = get_norm(sub_product(light->point, light->hit.endpoint));
-	l_ray.t = 1.0e30f;
-	l_ray.color = 0;
-
-	intersections(&l_ray, shapes, 0);
-	if (sqr(l_ray.t) > length2(sub_product(light->point, light->hit.endpoint)))
-	{
-		int r = intens_color(ray, light, get_r(ray->shape_color), get_r(ray->color));
-		int g = intens_color(ray, light, get_g(ray->shape_color), get_g(ray->color));
-		int b = intens_color(ray, light, get_b(ray->shape_color), get_b(ray->color));
-
-		ray->color = create_trgb(get_t(ray->shape_color), r, g, b);
-	}
 }
 
 int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
@@ -107,7 +73,7 @@ void project(t_data *data, t_2d resolution, int color)
 	shapes.sphere[1] = new_sphere(new_3d(4.f, 2.f, 5.f), 4.f, 0x59e1a7);
 	shapes.sphere[2] = new_sphere(new_3d(-40.f, -1.5f, 6.f), 4.f, 0xFF00FF);
 	shapes.sphere[3] = new_sphere(new_3d(-5.f, 2.f, 13.f), 3.f, 0x00FFFF);
-	shapes.sphere[0] = NULL;
+	shapes.sphere[1] = NULL;
 
 	shapes.plane = malloc(sizeof(t_plane *) * 7);
 	shapes.plane[1] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
@@ -135,10 +101,8 @@ void project(t_data *data, t_2d resolution, int color)
 	fov = 90.f / 2 * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_3d screen_coord;
-	t_camera cam;
-	cam = new_camera(new_3d(0.f, 0.f, 0.f), new_3d(0.f, 0.f, -1.f));
 	t_ray ray;
-	t_3d origin = new_3d(-2.f, 3.f, 12.f);
+	t_3d origin = new_3d(-2.f, 3.f, 0.f);
 	t_3d target = new_3d(0.f, 0.f, 1.f);
 
 	count.y = 0;

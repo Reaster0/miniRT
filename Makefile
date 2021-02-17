@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/02/15 18:04:14 by earnaud          ###   ########.fr        #
+#    Updated: 2021/02/17 20:57:03 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,14 @@ FILES		= main.c \
 				math.c \
 				littlemath.c\
 				shapes.c \
-				matrice.c
+				matrice.c \
+				ray.c \
+				lights.c \
+				planes.c \
+				triangles.c \
+				spheres.c \
+				squares.c \
+				cylinders.c
 
 
 SRCS		= $(addprefix $(SRCS_DIR), $(FILES))

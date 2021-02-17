@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 16:01:57 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/17 20:59:14 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,14 @@ t_matrix4 rota_x_mtrx(float angle);
 t_matrix4 rota_y_mtrx(float angle);
 t_matrix4 rota_z_mtrx(float angle);
 t_matrix4 cam_to_world(t_camera camera);
-
-
-
-
 t_ray make_ray(t_3d origin, t_3d target,t_3d screen);
-//t_camera cam_lookat(t_3d origin, t_3d target, float fov, float ratio);
 
 
 void inter_lights(t_ray *ray, t_light **light, t_shapes *shapes);
 void inter_light(t_ray *ray, t_light *light, t_shapes *shapes);
 int intens_color(t_ray *ray, t_light *light, int color, int ray_color);
 
-
+int inside_cyl(t_cylinder *cylinder, t_ray *ray, float t);
 int inter_cylinder(t_ray *ray, t_cylinder *cylinder);
 int inter_cylinders(t_ray *ray, t_cylinder **cylinder);
 int inter_square(t_ray *ray, t_square *square);
