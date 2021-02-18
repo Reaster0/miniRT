@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:37:44 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/18 13:01:54 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/18 13:26:07 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	if (t <= 0.000001f || t >= ray->t)
 		return (0);
 
-	ray->color = plane->color;
+	//ray->color = plane->color;
 
 	ray->shape_color = plane->color;
 	ray->t = t;
