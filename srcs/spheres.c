@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:54:29 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 20:55:16 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/18 13:01:50 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 	localRay = *ray;
 	localRay.startpoint = sub_product(localRay.startpoint, sphere->startpoint);
 
+	//t_3d L = sub_product(localRay.startpoint, sphere->startpoint);
+
 	a = length2(ray->endpoint);
 	b = 2.f * dot_product(localRay.endpoint, localRay.startpoint);
 	c = length2(localRay.startpoint) - sqr(sphere->r);
@@ -38,7 +40,7 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 		ray->t = t2;
 	else
 		return (0);
-	//ray->color = sphere->color;
+	ray->color = sphere->color;
 
 	ray->shape_point = sphere->startpoint;
 	ray->shape_color = sphere->color;

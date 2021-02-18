@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 20:46:39 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/18 13:02:15 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 	light = malloc(sizeof(t_light *) * 4);
 	//light[0] = new_light(new_3d(0.f, 0.f, 0.f), 80);
 	light[1] = new_light(new_3d(9.f, 12, -2), 10);
-	light[0] = new_light(new_3d(0.f, 1.f, -2.f), 220);
-	light[2] = NULL;
+	light[0] = new_light(new_3d(10.f, 3.f, -2.f), 220);
+	light[1] = NULL;
 	ret = 0;
 
 	if (inter_spheres(ray, shapes->sphere))
@@ -76,11 +76,11 @@ void project(t_data *data, t_2d resolution, int color)
 	shapes.sphere[1] = NULL;
 
 	shapes.plane = malloc(sizeof(t_plane *) * 7);
-	shapes.plane[1] = new_plane(new_3d(0.f, -4.f, 0.f), new_3d(0.f, 1.f, 0.f), 0x0000FF);
-	shapes.plane[0] = new_plane(new_3d(0.f, -0.5f, 34.f), new_3d(0.f, 0.0f, 1.f), create_trgb(0, 140, 80, 180));
+	shapes.plane[1] = new_plane(new_3d(0.f, -5.f, 0.f), new_3d(0.f, 1.f, 0.f), 0xFFFFFF);
+	shapes.plane[0] = new_plane(new_3d(0.f, 0.f, 34.f), new_3d(0.f, 0.0f, 1.f), create_trgb(0, 255, 255, 255));
 	shapes.plane[2] = new_plane(new_3d(0.f, 20.f, 0.f), new_3d(0.f, -1.f, 0.f), 0xFF5733);
-	shapes.plane[3] = new_plane(new_3d(30.f, 0.f, 0.f), new_3d(-1.f, 0.f, 0.f), 0xFF0000);
-	shapes.plane[4] = new_plane(new_3d(-30.f, 0.f, 0.f), new_3d(1.f, 0.f, 0.f), 0xFF0000);
+	shapes.plane[4] = new_plane(new_3d(30.f, 0.f, 0.f), new_3d(-1.f, 0.f, 0.f), 0xFF0000);
+	shapes.plane[3] = new_plane(new_3d(-30.f, 0.f, 0.f), new_3d(1.f, 0.f, 0.f), 0xFF0000);
 	shapes.plane[5] = new_plane(new_3d(0.f, 0.f, -30), new_3d(0.f, 0.f, 1), 0xFFFFFF);
 	shapes.plane[6] = NULL;
 
@@ -102,7 +102,7 @@ void project(t_data *data, t_2d resolution, int color)
 	ratio = resolution.x / resolution.y;
 	t_3d screen_coord;
 	t_ray ray;
-	t_3d origin = new_3d(-2.f, 3.f, 0.f);
+	t_3d origin = new_3d(15.f, 1.f, 0.f);
 	t_3d target = new_3d(0.f, 0.f, 1.f);
 
 	count.y = 0;
@@ -124,7 +124,7 @@ void project(t_data *data, t_2d resolution, int color)
 
 			//printf("compare x=%f & y=%f with oldx=%f & oldy=%f\n", screen_coord.x, screen_coord.y, (2.0f * count.x) / resolution.x - 1.0f, (-2.0f * count.y) / resolution.y + 1.0f);
 			ray = make_ray(origin, target, screen_coord);
-			if (intersections(&ray, &shapes, 1))
+			if (intersections(&ray, &shapes, 0))
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
 			count.x++;
 		}

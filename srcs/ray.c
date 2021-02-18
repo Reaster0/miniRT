@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:35:34 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 20:37:09 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/02/18 12:56:51 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ t_matrix4 lookat(t_3d origin, t_3d target)
 	target = add_product(target, origin);
 	result.forward = get_norm(sub_product(origin, target));
 	if (result.forward.y == 1)
-		result.forward.y -= 0.001;
+		result.forward.y -= 0.001f;
 	if (result.forward.y == -1)
-		result.forward.y += 0.001;
+		result.forward.y += 0.001f;
 	result.right = cross_product(get_norm(new_3d(0.f, 1.f, 0.f)), result.forward);
 	result.up = cross_product(result.forward, result.right);
 
@@ -42,8 +42,8 @@ t_ray make_ray(t_3d origin, t_3d target, t_3d screen)
 
 	ray.endpoint = v_matrix(screen, temp);
 	ray.endpoint = (sub_product(ray.endpoint, origin));
-	//normalize(&ray.endpoint);
-
+	normalize(&ray.endpoint);
+	//printf("ray x=%f,ray.y=%f,ray z=%f\n", ray.endpoint.x, ray.endpoint.y, ray.endpoint.z);
 	ray.t = 1.0e30f;
 	ray.color = 0;
 	return (ray);
