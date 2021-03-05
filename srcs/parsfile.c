@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 15:34:49 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/05 17:08:06 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int pars_res(char *str, t_2d *res)
 		res->x = ft_atoi(str + i);
 	else
 	{
-		printf("error camera value\n");
+		printf("error res value\n");
 		return (0);
 	}
 	while (str[i] == ' ')
@@ -31,7 +31,7 @@ int pars_res(char *str, t_2d *res)
 		res->y = ft_atoi(str + i);
 	else
 	{
-		printf("error camera value\n");
+		printf("error res value\n");
 		return (0);
 	}
 	while (str[i] == ' ')
@@ -39,19 +39,82 @@ int pars_res(char *str, t_2d *res)
 	if (str[i])
 	{
 		return (0);
-		printf("error camera value\n");
+		printf("error res value\n");
 	}
+}
+
+double itof(char *str, int *i)
+{
+	double result;
+	int isneg;
+	int flag;
+	int j;
+	isneg = 0;
+	j = 0;
+	flag = 0;
+	if (str[*i] == '-')
+	{
+		isneg = 1;
+		*i++;
+	}
+	while (str[*i] && (ft_isdigit(str[*i]) || str[*i] == '.'))
+	{
+		if (ft_isdigit(str[*i]))
+		{
+			result = (result * 10) + str[*i] - '0';
+			if (flag)
+				j--;
+		}
+		else if (str[*i] == '.')
+		{
+			if (flag)
+				return (0);
+			flag = 1;
+			*i++;
+		}
+		*i++;
+	}
+	result *= pow(10, j);
+	if (isneg)
+		result * -1;
+	return (result);
+}
+
+int read3d(char *str, t_3d *value)
+{
+	int i;
+	i = 0;
+	value->x = itof(str, &i);
+	if (str[i] == ',')
+		i++;
+	else
+		return (0);
+	value->y = itof(str, &i);
+	if (str[i] == ',')
+		i++;
+	else
+		return (0);
+	value->z = itof(str, &i);
+	return (1);
 }
 
 int pars_cam(char *str, t_shapes *shapes)
 {
-	static int nbr;
-	int ret = 0;
+	int ret = 1;
 	int i = 0;
-	if (nbr == NULL)
-		nbr = 0;
+	t_camera *camera;
+	camera = shapes->camera;
+	while (camera->next)
+		camera = camera->next;
+	if (!read3d(str + i, &camera->startpoint))
+		ret = 0;
 	while (str[i] == ' ')
 		i++;
+	if (!read3d(str + i, &camera->forward))
+		ret = 0;
+	while (str[i] == ' ')
+		i++;
+	camera->fov = itof(str, &i);
 }
 
 int parsline(char *str, t_2d *res, t_shapes *shapes)

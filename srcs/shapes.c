@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:22:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/16 18:38:13 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/05 15:43:03 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ t_cylinder *new_cylinder(t_3d point, t_3d orient, t_2d h_r, int color)
 	cylinder->rayon = h_r.y;
 	cylinder->height = h_r.x;
 	cylinder->pointup = add_product(cylinder->point, multiply_v(cylinder->height, cylinder->orient));
-
 	cylinder->color = color;
+	cylinder->next = NULL;
 	return (cylinder);
 }
 
@@ -51,6 +51,7 @@ t_sphere *new_sphere(t_3d startpoint, float r, int color)
 	sphere->startpoint = startpoint;
 	sphere->r = r;
 	sphere->color = color;
+	sphere->next = NULL;
 	return (sphere);
 }
 
@@ -61,6 +62,7 @@ t_plane *new_plane(t_3d position, t_3d normal, int color)
 	plane->position = position;
 	plane->normal = normal;
 	plane->color = color;
+	plane->next = NULL;
 	return (plane);
 }
 
@@ -72,6 +74,7 @@ t_triangle *new_triangle(t_3d a, t_3d b, t_3d c, int color)
 	triangle->b = b;
 	triangle->c = c;
 	triangle->color = color;
+	triangle->next = NULL;
 	return (triangle);
 }
 
@@ -84,5 +87,6 @@ t_square *new_square(t_3d a, t_3d b, t_3d c, t_3d d, int color)
 	square->c = c;
 	square->d = d;
 	square->color = color;
+	square->next = NULL;
 	return (square);
 }
