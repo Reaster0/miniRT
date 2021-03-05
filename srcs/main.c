@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 10:41:27 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/05 13:52:56 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,20 @@ void project(t_data *data, t_2d resolution, int color)
 
 // IMPORTANT RAJOUTER LE STARTPOINT DU RAY A TOUT LES CALCULS DE HITPOINTS
 
-int main(void)
+int main(int argc, char *argv)
 {
 	t_vars vars;
 	t_data img;
 	t_2d res;
+	t_shapes shapes;
 	res.x = 1200.f;
 	res.y = 720.f;
+	if (argc != 2)
+	{
+		printf("error argument\n");
+		return (0);
+	}
+	parsfile(argv[1], &res, &shapes);
 
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");

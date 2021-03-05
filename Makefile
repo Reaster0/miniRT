@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/02/17 20:57:03 by earnaud          ###   ########.fr        #
+#    Updated: 2021/03/05 13:38:32 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,9 @@ ifeq ($(OS), Darwin)
 endif
 MINILIBX_A_DIR 		=	$(MINILIBX_DIR)/libmlx.a
 
-FILES		= main.c \
+FILES		=  get_next_line.c \
+				get_next_line_utils.c \
+				main.c \
 				mlx_util.c \
 				colors.c \
 				math.c \

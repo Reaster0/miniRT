@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 11:22:52 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/05 15:30:20 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ typedef struct s_camera
 {
 	t_3d startpoint;
 	t_3d forward;
-	t_3d up;
-	t_3d right;
-	t_3d zero;
+	float fov;
 } t_camera;
 
 typedef struct s_plane
@@ -95,13 +93,15 @@ typedef struct s_light
 	t_3d point;	
 	t_3d normale;
 	float r;
-	float intens;
+	int intens;
 	int color;
 	t_ray hit;
 } t_light;
 
 typedef struct s_shapes
 {
+	t_camera **camera;
+	t_light **light;
 	t_plane **plane;
 	t_sphere **sphere;
 	t_triangle **triangle;
@@ -125,7 +125,7 @@ t_sphere *new_sphere(t_3d startpoint, float r, int color);
 t_plane *new_plane(t_3d position, t_3d normal, int color);
 t_triangle *new_triangle(t_3d a, t_3d b, t_3d c, int color);
 t_square *new_square(t_3d a, t_3d b, t_3d c, t_3d d, int color);
-t_light *new_light(t_3d point, int intens);
+t_light *new_light(t_3d point, float intens);
 
 
 #endif

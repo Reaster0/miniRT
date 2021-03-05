@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/03 16:35:59 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/05 13:44:00 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "../dependencies/libft/libft.h"
 #include "shapes.h"
 #include "math.h"
+#include "get_next_line.h"
 
 typedef struct s_data
 {
@@ -39,6 +40,9 @@ typedef struct s_vars
 	void *win;
 	t_data *data;
 } t_vars;
+
+
+int parsfile(char *path, t_2d *res, t_shapes *shapes)
 
 int create_trgb(int t, int r, int g, int b);
 void change_r(int *trgb, int r);
