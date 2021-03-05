@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:44:55 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/18 12:32:06 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/05 10:33:48 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 
 	t_ray l_ray;
 	//maybe multiply by 0.9
-	l_ray.startpoint = add_product(multiply_v(0.1f, light->normale), light->hit.endpoint);
+	l_ray.startpoint = add_product(multiply_v(0.9f, light->normale), light->hit.endpoint);
 	//maybe get_norm
 	l_ray.endpoint = get_norm(sub_product(light->point, light->hit.endpoint));
 	l_ray.t = 1.0e30f;

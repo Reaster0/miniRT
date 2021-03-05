@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/18 13:25:07 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/05 10:41:27 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 	light = malloc(sizeof(t_light *) * 4);
 	//light[0] = new_light(new_3d(0.f, 0.f, 0.f), 80);
 	light[1] = new_light(new_3d(9.f, 12, -2), 10);
-	light[0] = new_light(new_3d(10.f, 3.f, -2.f), 220);
+	light[0] = new_light(new_3d(10.f, 3.f, -2.f), 150);
 	light[1] = NULL;
 	ret = 0;
 
@@ -97,12 +97,12 @@ void project(t_data *data, t_2d resolution, int color)
 	shapes.cylinder = malloc(sizeof(t_cylinder *) * 2);
 	shapes.cylinder[0] = new_cylinder(new_3d(2.f, 0.f, 6.f), new_3d(0.f, 1.f, 0.5f), new_2d(4, 2), 0x420dab);
 	shapes.cylinder[0] = NULL;
-	//fov / 2?
+
 	fov = 90.f / 2 * M_PI / 180.f;
 	ratio = resolution.x / resolution.y;
 	t_3d screen_coord;
 	t_ray ray;
-	t_3d origin = new_3d(15.f, 1.f, 0.f);
+	t_3d origin = new_3d(0.f, 0.f, 0.f);
 	t_3d target = new_3d(0.f, 0.f, 1.f);
 
 	count.y = 0;
@@ -145,10 +145,6 @@ int main(void)
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");
 	img = new_img(&vars, res.y, res.x);
-
-	// t_3d test = new_3d(1.f, -4.f, 1.f);
-	// test = get_norm(test);
-	// printf("x=%f,y=%f,z=%f\n", test.x, test.y, test.z);
 
 	project(&img, res, 0xFF0000);
 	ft_putstr_fd("finished\n", 1);
