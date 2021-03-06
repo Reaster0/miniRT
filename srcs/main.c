@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 15:39:39 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/06 11:32:03 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 	return (ret);
 }
 
-void project(t_data *data, t_2d resolution, int color)
+void project(t_data *data, t_2d resolution, int color, char *path)
 {
 	t_2d count;
-	// float ratio;
+	t_2d res;
+	float ratio;
 	// float fov;
-	// t_shapes shapes;
+	t_shapes shapes;
 
 	// shapes.sphere = malloc(sizeof(t_sphere *) * 6);
 	// shapes.sphere[0] = new_sphere(new_3d(1.0f, 0.0f, 13.0f), 4.f, 0x900C3F);
@@ -98,8 +99,11 @@ void project(t_data *data, t_2d resolution, int color)
 	// shapes.cylinder[0] = new_cylinder(new_3d(2.f, 0.f, 6.f), new_3d(0.f, 1.f, 0.5f), new_2d(4, 2), 0x420dab);
 	// shapes.cylinder[0] = NULL;
 
-	fov = 90.f / 2 * M_PI / 180.f;
-	ratio = resolution.x / resolution.y;
+	//fov = 90.f / 2 * M_PI / 180.f;
+	//ratio = resolution.x / resolution.y;
+	if (!(parsfile(path, &res, &shapes)))
+		printf("bloup bloup eror file\n");
+
 	t_3d screen_coord;
 	t_ray ray;
 	t_3d origin = new_3d(0.f, 0.f, 0.f);
@@ -116,14 +120,14 @@ void project(t_data *data, t_2d resolution, int color)
 
 			screen_coord.x = 2 * ((count.x + 0.5) / resolution.x) - 1.f;
 			screen_coord.y = 1 - 2 * ((count.y + 0.5) / resolution.y);
-			screen_coord.x *= tan(fov);
-			screen_coord.y *= tan(fov);
+			screen_coord.x *= tan(shapes.camera->fov);
+			screen_coord.y *= tan(shapes.camera->fov);
 			screen_coord.x *= ratio;
 
 			screen_coord.z = -1.f;
 
 			//printf("compare x=%f & y=%f with oldx=%f & oldy=%f\n", screen_coord.x, screen_coord.y, (2.0f * count.x) / resolution.x - 1.0f, (-2.0f * count.y) / resolution.y + 1.0f);
-			ray = make_ray(origin, target, screen_coord);
+			ray = make_ray(shapes.camera->startpoint, shapes.camera->forward, screen_coord);
 			if (intersections(&ray, &shapes, 1))
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
 			count.x++;

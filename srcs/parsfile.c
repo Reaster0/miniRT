@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 17:08:06 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/06 11:31:57 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,11 @@ double itof(char *str, int *i)
 			flag = 1;
 			*i++;
 		}
+		else
+		{
+			printf("error parsing the value\n");
+			return (0);
+		}
 		*i++;
 	}
 	result *= pow(10, j);
@@ -98,44 +103,77 @@ int read3d(char *str, t_3d *value)
 	return (1);
 }
 
-int pars_cam(char *str, t_shapes *shapes)
+int pars_cam(char *str, t_camera *camera)
 {
 	int ret = 1;
 	int i = 0;
-	t_camera *camera;
-	camera = shapes->camera;
+	t_camera *cam;
+
+	if (!(cam = malloc(sizeof(t_camera))))
+		return (0);
 	while (camera->next)
 		camera = camera->next;
-	if (!read3d(str + i, &camera->startpoint))
+	camera->next = &cam;
+	if (!read3d(str + i, &cam->startpoint))
 		ret = 0;
 	while (str[i] == ' ')
 		i++;
-	if (!read3d(str + i, &camera->forward))
+	if (!read3d(str + i, &cam->forward))
 		ret = 0;
 	while (str[i] == ' ')
 		i++;
-	camera->fov = itof(str, &i);
+	camera->fov = itof(str, &i) / 2 * M_PI / 180.f;
+	return (ret);
+}
+
+int pars_light(char *str, t_light *light)
+{
+	int ret = 1;
+	int i = 0;
+	t_light *li;
+	t_3d color;
+	if (!(li = malloc(sizeof(t_light))))
+		return (0);
+	while (light->next)
+		light = light->next;
+	light->next = li;
+	li->intens = itof(str, &i) * 255;
+	while (str[i] == ' ')
+		i++;
+	if (!read3d(str + i, &color))
+		ret = 0;
+	li->color = create_trgb(0, color.x, color.y, color.z);
+	return (ret);
 }
 
 int parsline(char *str, t_2d *res, t_shapes *shapes)
 {
 	int i = 0;
 	int ret = 0;
+	int r = 0;
 	while (str[i])
 	{
 		if (str[i] == ' ')
 			i++;
-		else if (str[i] == 'R')
+		else if (str[i] == 'R' && !r)
+		{
 			ret = pars_res(str[i + 1], res);
+			r = 1;
+		}
 		// pars A
 		else if (str[i] == 'c')
-			ret = pars_cam(str[i + 1], shapes);
+			ret = pars_cam(str[i + 1], shapes->camera);
 		else if (str[i] == 'l')
 			ret = pars_light(str[i + 1], shapes);
 		else if (str[i] == 's' && str[i + 1] == 'p')
 			ret = pars_sphere(str[i + 2], shapes);
 		else if (str[i] == 'p' && str[i + 1] == 'l')
 			ret = pars_plane(str[i + 2], shapes);
+		else if (str[i] == '\n')
+		{
+			i++;
+			ret = 1;
+		}
 	}
 	return (ret);
 }
@@ -144,12 +182,19 @@ int parsfile(char *path, t_2d *res, t_shapes *shapes)
 {
 	char *str;
 	int fd;
+	int ret;
 	if ((fd = open(path, O_RDONLY)) == -1)
 	{
 		printf("error failed to open %s\n", path);
 		return (0);
 	}
-	while (get_next_line(fd, &str) > 0)
+	while ((ret = get_next_line(fd, &str)) > 0)
 		if (!parsline(str, res, shapes))
 			printf("error in the line\n");
+	if (ret == -1)
+	{
+		printf("error reading the file\n");
+		return (0);
+	}
+	return (1);
 }

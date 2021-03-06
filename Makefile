@@ -6,14 +6,14 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/03/05 13:38:32 by earnaud          ###   ########.fr        #
+#    Updated: 2021/03/06 11:06:56 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= miniRT
 CC			= gcc
 OS 				:=	$(shell uname)
-CFLAGS		= -g #-Wall -Wextra -Werror
+CFLAGS		= -O3 #-Wall -Wextra -Werror
 OPENGL		= -lmlx -lXext -lX11 -lm
 INCLUDES	= -Iincludes/ -I$(MINILIBX_DIR)
 OBJ_DIR		= obj/
