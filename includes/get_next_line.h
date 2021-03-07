@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 12:49:51 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 13:28:36 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/07 16:53:23 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
-# include <limits.h>
+//# include <limits.h>
 # include "minirt.h"
 
 int			get_next_line(int fd, char **line);

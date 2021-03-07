@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/03/07 16:41:30 by earnaud          ###   ########.fr        #
+#    Updated: 2021/03/07 17:56:13 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ FILES		=  get_next_line.c \
 				triangles.c \
 				spheres.c \
 				squares.c \
-				cylinders.c
+				cylinders.c \
+				parsfile.c
 
 
 SRCS		= $(addprefix $(SRCS_DIR), $(FILES))

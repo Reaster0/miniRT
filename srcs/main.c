@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/07 16:46:06 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/07 17:58:06 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,6 @@ void project(t_data *data, t_2d resolution, int color, char *path)
 
 	//fov = 90.f / 2 * M_PI / 180.f;
 	//ratio = resolution.x / resolution.y;
-	t_light ambient;
-	if (!(parsfile(path, &res, &ambient, &shapes)))
-		printf("bloup bloup eror file\n");
-
-	printf("resolution = %d,%d\n", res.x, res.y);
 
 	t_3d screen_coord;
 	t_ray ray;
@@ -141,14 +136,13 @@ void project(t_data *data, t_2d resolution, int color, char *path)
 
 // IMPORTANT RAJOUTER LE STARTPOINT DU RAY A TOUT LES CALCULS DE HITPOINTS
 
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
 	t_vars vars;
 	t_data img;
 	t_2d res;
 	t_shapes shapes;
-	res.x = 1200.f;
-	res.y = 720.f;
+	//check if the file is a .rt
 	if (argc != 2)
 	{
 		printf("error argument\n");
@@ -158,7 +152,7 @@ int main(int argc, char *argv)
 	if (!(parsfile(argv[2], &res, &ambient, &shapes)))
 		printf("bloup bloup eror file\n");
 
-	printf("resolution = %d,%d\n", res.x, res.y);
+	printf("resolution = %f,%f\n", res.x, res.y);
 
 	// vars.mlx = mlx_init();
 	// vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 15:41:20 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/07 16:56:01 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ typedef struct s_camera
 {
 	t_3d startpoint;
 	t_3d forward;
+	t_3d up;
+	t_3d right;
 	float fov;
-	t_camera *next;
+	void *next;
 } t_camera;
 
 typedef struct s_plane
@@ -52,7 +54,7 @@ typedef struct s_plane
 	t_3d position;
 	t_3d normal;
 	int color;
-	t_plane *next;
+	void *next;
 } t_plane;
 
 typedef struct s_sphere
@@ -60,7 +62,7 @@ typedef struct s_sphere
 	t_3d startpoint;
 	float r;
 	int color;
-	t_sphere *next;
+	void *next;
 } t_sphere;
 
 typedef struct s_triangle
@@ -70,7 +72,7 @@ typedef struct s_triangle
 	t_3d c;
 	t_3d barycentric;
 	int color;
-	t_triangle *next;
+	void *next;
 } t_triangle;
 
 typedef struct s_square
@@ -80,7 +82,7 @@ typedef struct s_square
 	t_3d c;
 	t_3d d;
 	int color;
-	t_square *next;
+	void *next;
 } t_square;
 
 typedef struct s_cylinder
@@ -91,7 +93,7 @@ typedef struct s_cylinder
 	float rayon;
 	float height;
 	int color;
-	t_cylinder *next;
+	void *next;
 } t_cylinder;
  
 typedef struct s_light
@@ -102,7 +104,7 @@ typedef struct s_light
 	int intens;
 	int color;
 	t_ray hit;
-	t_light *next;
+	void *next;
 } t_light;
 
 typedef struct s_shapes
@@ -113,7 +115,7 @@ typedef struct s_shapes
 	t_sphere *sphere;
 	t_triangle *triangle;
 	t_square *square;
-	t_cylinder *cylinder;
+	void *cylinder;
 } t_shapes;
 
 typedef struct s_matrix4

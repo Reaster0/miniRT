@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 12:48:55 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 13:26:53 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/07 16:53:06 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int ft_read_buf(char **rest, char **line, int fd)
 
 int get_next_line(int fd, char **line)
 {
-	static char *rest[OPEN_MAX];
+	static char *rest[FOPEN_MAX];
 	int ret;
 
 	ret = 1;

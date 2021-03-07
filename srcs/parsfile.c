@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/07 16:38:24 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/07 19:07:31 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 int pars_res(char *str, t_2d *res)
 {
 	int i = 0;
+	if (!str)
+		return (0);
 	while (str[i] == ' ')
 		i++;
 	if (ft_isdigit(str[i]))
@@ -25,6 +27,8 @@ int pars_res(char *str, t_2d *res)
 		printf("error res value\n");
 		return (0);
 	}
+	while (ft_isdigit(str[i]))
+		i++;
 	while (str[i] == ' ')
 		i++;
 	if (ft_isdigit(str[i]))
@@ -34,13 +38,15 @@ int pars_res(char *str, t_2d *res)
 		printf("error res value\n");
 		return (0);
 	}
-	while (str[i] == ' ')
-		i++;
-	if (str[i])
-	{
-		return (0);
-		printf("error res value\n");
-	}
+	// while (ft_isdigit(str[i]))
+	// i++;
+	// while (str[i] == ' ')
+	// 	i++;
+	// if (str[i])
+	// {
+	// 	printf("error res value\n");
+	// 	return (0);
+	// }
 }
 
 double itof(char *str, int *i)
@@ -229,22 +235,22 @@ int parsline(char *str, t_2d *res, t_light *ambi, t_shapes *shapes)
 			i++;
 		else if (str[i] == 'R' && !r)
 		{
-			ret = pars_res(str[i + 1], res);
+			ret = pars_res(str + i + 1, res);
 			r = 1;
 		}
 		else if (str[i] == 'A' && !a)
 		{
-			ret = pars_ambi(str[i + 1], ambi);
+			ret = pars_ambient(str + i + 1, ambi);
 			a = 1;
 		}
 		else if (str[i] == 'c')
-			ret = pars_cam(str[i + 1], shapes->camera);
+			ret = pars_cam(str + i + 1, shapes->camera);
 		else if (str[i] == 'l')
-			ret = pars_light(str[i + 1], shapes);
+			ret = pars_light(str + i + 1, shapes);
 		else if (str[i] == 's' && str[i + 1] == 'p')
-			ret = pars_sphere(str[i + 2], shapes);
+			ret = pars_sphere(str + i + 2, shapes);
 		else if (str[i] == 'p' && str[i + 1] == 'l')
-			ret = pars_plane(str[i + 2], shapes);
+			ret = pars_plane(str + i + 2, shapes);
 		else if (str[i] == '\n')
 		{
 			i++;
@@ -259,7 +265,7 @@ int parsfile(char *path, t_2d *res, t_light *ambi, t_shapes *shapes)
 	char *str;
 	int fd;
 	int ret;
-	if ((fd = open(path, O_RDONLY)) == -1)
+	if ((fd = open("./test.rt", O_RDONLY)) == -1)
 	{
 		printf("error failed to open %s\n", path);
 		return (0);
