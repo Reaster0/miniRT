@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/07 16:28:42 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/07 16:38:24 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,33 @@ int pars_sphere(char *str, t_sphere *sphere)
 	return (ret);
 }
 
+int pars_plane(char *str, t_plane *plane)
+{
+	int ret = 1;
+	int i = 0;
+	t_plane *pla;
+	t_3d color;
+	if (!(pla = malloc(sizeof(t_plane))))
+		return (0);
+	while (plane->next)
+		plane = plane->next;
+	plane->next = pla;
+	while (str[i] == ' ')
+		i++;
+	if (!read3d(str + i, &pla->position))
+		ret = 0;
+	while (str[i] == ' ')
+		i++;
+	if (!read3d(str + i, &pla->normal))
+		ret = 0;
+	while (str[i] == ' ')
+		i++;
+	if (!read3d(str + i, &color))
+		ret = 0;
+	pla->color = create_trgb(0, color.x, color.y, color.z);
+	return (ret);
+}
+
 int parsline(char *str, t_2d *res, t_light *ambi, t_shapes *shapes)
 {
 	int i = 0;
@@ -227,7 +254,7 @@ int parsline(char *str, t_2d *res, t_light *ambi, t_shapes *shapes)
 	return (ret);
 }
 
-int parsfile(char *path, t_2d *res, t_shapes *shapes)
+int parsfile(char *path, t_2d *res, t_light *ambi, t_shapes *shapes)
 {
 	char *str;
 	int fd;
@@ -238,12 +265,13 @@ int parsfile(char *path, t_2d *res, t_shapes *shapes)
 		return (0);
 	}
 	while ((ret = get_next_line(fd, &str)) > 0)
-		if (!parsline(str, res, shapes))
+		if (!parsline(str, res, ambi, shapes))
 			printf("error in the line\n");
 	if (ret == -1)
 	{
 		printf("error reading the file\n");
 		return (0);
 	}
+	exit(fd);
 	return (1);
 }
