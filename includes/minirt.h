@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 13:44:00 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/07 16:29:08 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_vars
 } t_vars;
 
 
-int parsfile(char *path, t_2d *res, t_shapes *shapes)
+int parsfile(char *path, t_2d *res, t_light *ambi, t_shapes *shapes);
 
 int create_trgb(int t, int r, int g, int b);
 void change_r(int *trgb, int r);

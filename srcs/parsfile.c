@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/06 11:31:57 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/07 16:28:42 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,11 +146,56 @@ int pars_light(char *str, t_light *light)
 	return (ret);
 }
 
-int parsline(char *str, t_2d *res, t_shapes *shapes)
+int pars_ambient(char *str, t_light *ambi)
+{
+	int ret = 1;
+	int i = 0;
+	t_3d color;
+	if (!(ambi = malloc(sizeof(t_light))))
+		return (0);
+	while (str[i] == ' ')
+		i++;
+	ambi->intens = itof(str, &i) * 255;
+	while (str[i] == ' ')
+		i++;
+	if (!read3d(str + i, &color))
+		ret = 0;
+	ambi->color = create_trgb(0, color.x, color.y, color.z);
+	return (ret);
+}
+
+int pars_sphere(char *str, t_sphere *sphere)
+{
+	int ret = 1;
+	int i = 0;
+	t_sphere *sphe;
+	t_3d color;
+	if (!(sphe = malloc(sizeof(t_sphere))))
+		return (0);
+	while (sphere->next)
+		sphere = sphere->next;
+	sphere->next = sphe;
+	while (str[i] == ' ')
+		i++;
+	if (!read3d(str + i, &sphe->startpoint))
+		ret = 0;
+	while (str[i] == ' ')
+		i++;
+	sphe->r = itof(str, &i) * 255;
+	while (str[i] == ' ')
+		i++;
+	if (!read3d(str + i, &color_up))
+		ret = 0;
+	sphe->color = create_trgb(0, color.x, color.y, color.z);
+	return (ret);
+}
+
+int parsline(char *str, t_2d *res, t_light *ambi, t_shapes *shapes)
 {
 	int i = 0;
 	int ret = 0;
 	int r = 0;
+	int a = 0;
 	while (str[i])
 	{
 		if (str[i] == ' ')
@@ -160,7 +205,11 @@ int parsline(char *str, t_2d *res, t_shapes *shapes)
 			ret = pars_res(str[i + 1], res);
 			r = 1;
 		}
-		// pars A
+		else if (str[i] == 'A' && !a)
+		{
+			ret = pars_ambi(str[i + 1], ambi);
+			a = 1;
+		}
 		else if (str[i] == 'c')
 			ret = pars_cam(str[i + 1], shapes->camera);
 		else if (str[i] == 'l')
