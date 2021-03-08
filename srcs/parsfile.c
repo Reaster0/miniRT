@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/08 17:20:25 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/08 19:27:12 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,21 +118,21 @@ t_camera *cam_last(t_camera *camera)
 	return (camera);
 }
 
-void cam_add(t_camera *camera, t_camera *new)
+void cam_add(t_camera **camera, t_camera *new)
 {
-	if (!(camera))
+	if (!(*camera))
 	{
-		camera = new;
+		*camera = new;
 		return;
 	}
-	cam_last(camera)->next = new;
+	cam_last(*camera)->next = new;
 	new->next = 0;
 }
 
 t_camera *new_cam()
 {
 	t_camera *camera;
-	camera = malloc(sizeof(t_camera *));
+	camera = malloc(sizeof(t_camera));
 	if (!camera)
 		return (NULL);
 	camera->fov = 0;
@@ -144,7 +144,7 @@ t_camera *new_cam()
 	return (camera);
 }
 
-int pars_cam(char *str, t_camera *camera)
+int pars_cam(char *str, t_camera **camera)
 {
 	int ret = 1;
 	int i = 0;
@@ -152,7 +152,7 @@ int pars_cam(char *str, t_camera *camera)
 	if (!str)
 		return (0);
 	cam = new_cam();
-	cam_add(camera, cam);
+	cam_add(&(*camera), cam);
 	while (str[i] == ' ')
 		i++;
 	if (!read3d(str, &cam->startpoint, &i))
@@ -205,7 +205,7 @@ int pars_ambient(char *str, t_light *ambi)
 	return (ret);
 }
 
-int pars_sphere(char *str, t_sphere **sphere)
+int pars_sphere(char *str, t_sphere *sphere)
 {
 	// int ret = 1;
 	// int i = 0;
@@ -233,7 +233,7 @@ int pars_sphere(char *str, t_sphere **sphere)
 	// return (ret);
 }
 
-int pars_plane(char *str, t_plane **plane)
+int pars_plane(char *str, t_plane *plane)
 {
 	// int ret = 1;
 	// int i = 0;
@@ -278,7 +278,7 @@ int parsline(char *str, t_2d *res, t_light *ambi, t_shapes *shapes)
 		a = 1;
 	}
 	else if (*str == 'c')
-		ret = pars_cam(str + 1, shapes->camera);
+		ret = pars_cam(str + 1, &shapes->camera);
 	else if (*str == 'l')
 		ret = pars_light(str + 1, shapes->light);
 	else if (*str == 's' && str[1] == 'p')

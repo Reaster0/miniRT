@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/08 17:24:47 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/08 18:27:48 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,13 @@ int main(int argc, char **argv)
 		return (0);
 	}
 	shapes.camera = NULL;
+	shapes.sphere = NULL;
+	shapes.cylinder = NULL;
+	shapes.light = NULL;
+	shapes.plane = NULL;
+	shapes.square = NULL;
+	shapes.triangle = NULL;
+
 	if (!(parsfile(argv[1], &res, &ambient, &shapes)))
 		printf("error reading the file\n");
 	// vars.mlx = mlx_init();
