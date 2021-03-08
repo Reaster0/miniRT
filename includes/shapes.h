@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/07 16:56:01 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/08 16:56:21 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef struct s_light
 	t_3d point;	
 	t_3d normale;
 	float r;
-	int intens;
+	float intens;
 	int color;
 	t_ray hit;
 	void *next;
@@ -115,7 +115,7 @@ typedef struct s_shapes
 	t_sphere *sphere;
 	t_triangle *triangle;
 	t_square *square;
-	void *cylinder;
+	t_cylinder *cylinder;
 } t_shapes;
 
 typedef struct s_matrix4

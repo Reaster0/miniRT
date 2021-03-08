@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/07 17:58:06 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/08 17:24:47 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,18 +142,16 @@ int main(int argc, char **argv)
 	t_data img;
 	t_2d res;
 	t_shapes shapes;
+	t_light ambient;
 	//check if the file is a .rt
 	if (argc != 2)
 	{
 		printf("error argument\n");
 		return (0);
 	}
-	t_light ambient;
-	if (!(parsfile(argv[2], &res, &ambient, &shapes)))
-		printf("bloup bloup eror file\n");
-
-	printf("resolution = %f,%f\n", res.x, res.y);
-
+	shapes.camera = NULL;
+	if (!(parsfile(argv[1], &res, &ambient, &shapes)))
+		printf("error reading the file\n");
 	// vars.mlx = mlx_init();
 	// vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");
 	// img = new_img(&vars, res.y, res.x);
