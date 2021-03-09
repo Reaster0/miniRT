@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/08 18:27:48 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 15:42:05 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,9 @@ int main(int argc, char **argv)
 		printf("error argument\n");
 		return (0);
 	}
+	res.x = 0;
+	res.y = 0;
+	ambient.color = 0;
 	shapes.camera = NULL;
 	shapes.sphere = NULL;
 	shapes.cylinder = NULL;

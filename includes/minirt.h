@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/07 16:29:08 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 15:25:50 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,27 @@ typedef struct s_vars
 	t_data *data;
 } t_vars;
 
+float itof(char *str, int *i);
+int read3d(char *str, t_3d *value, int *i);
+
+t_camera *cam_last(t_camera *camera);
+t_cylinder *cy_last(t_cylinder *cylinder);
+t_light *li_last(t_light *light);
+t_plane *pla_last(t_plane *plane);
+t_sphere *sphe_last(t_sphere *sphere);
+t_square *squ_last(t_square *square);
+t_triangle *tri_last(t_triangle *triangle);
+
 
 int parsfile(char *path, t_2d *res, t_light *ambi, t_shapes *shapes);
+int pars_cam(char *str, t_camera **camera);
+int pars_light(char *str, t_light **light);
+int pars_sphere(char *str, t_sphere **sphere);
+int pars_plane(char *str, t_plane **plane);
+int pars_square(char *str, t_square **square);
+int pars_cylinder(char *str, t_cylinder **cylinder);
+int pars_triangle(char *str, t_triangle **triangle);
+
 
 int create_trgb(int t, int r, int g, int b);
 void change_r(int *trgb, int r);

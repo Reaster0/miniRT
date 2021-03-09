@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/08 16:56:21 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 12:37:37 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ typedef struct s_square
 	t_3d b;
 	t_3d c;
 	t_3d d;
+	t_3d center;
+	t_3d orient;
+	float side;
 	int color;
 	void *next;
 } t_square;

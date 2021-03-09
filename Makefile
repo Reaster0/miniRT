@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/03/07 17:56:13 by earnaud          ###   ########.fr        #
+#    Updated: 2021/03/09 12:33:37 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,14 @@ FILES		=  get_next_line.c \
 				spheres.c \
 				squares.c \
 				cylinders.c \
-				parsfile.c
+				parsfile.c \
+				parscam.c \
+				pars_light.c \
+				pars_sphere.c \
+				pars_plane.c \
+				pars_triangle.c \
+				pars_square.c \
+				pars_cylinder.c
 
 
 SRCS		= $(addprefix $(SRCS_DIR), $(FILES))
