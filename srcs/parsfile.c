@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 16:18:01 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:20:56 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,7 @@ float itof(char *str, int *i)
 			flag = 1;
 		}
 		else
-		{
-			printf("error parsing the value\n");
 			return (0);
-		}
 		(*i)++;
 	}
 	result *= pow(10, j);

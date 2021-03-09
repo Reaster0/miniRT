@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:54:29 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 10:45:08 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:30:51 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,16 @@ int inter_sphere(t_ray *ray, t_sphere *sphere)
 	return (1);
 }
 
-int inter_spheres(t_ray *ray, t_sphere **sphere)
+int inter_spheres(t_ray *ray, t_sphere *sphere)
 {
 	int i = 0;
 	int ret;
 	ret = 0;
-	while (sphere[i])
+	while (sphere)
 	{
-		if (inter_sphere(ray, sphere[i]))
+		if (inter_sphere(ray, sphere))
 			ret = 1;
-		i++;
+		sphere = sphere->next;
 	}
 	return (ret);
 }

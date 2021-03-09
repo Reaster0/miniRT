@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:56:24 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 20:56:48 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:37:41 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,15 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	return (ret);
 }
 
-int inter_cylinders(t_ray *ray, t_cylinder **cylinder)
+int inter_cylinders(t_ray *ray, t_cylinder *cylinder)
 {
-	int i = 0;
 	int ret;
 	ret = 0;
-	while (cylinder[i])
+	while (cylinder)
 	{
-		if (inter_cylinder(ray, cylinder[i]))
+		if (inter_cylinder(ray, cylinder))
 			ret = 1;
-		i++;
+		cylinder = cylinder->next;
 	}
 	return (ret);
 }

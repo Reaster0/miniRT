@@ -6,20 +6,11 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:44:55 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/05 11:17:53 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:24:14 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-
-t_light *new_light(t_3d point, float intens)
-{
-	t_light *light;
-	light = malloc(sizeof(t_light));
-	light->point = point;
-	light->intens = intens * 255;
-	return (light);
-}
 
 void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 {
@@ -47,13 +38,11 @@ void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 	}
 }
 
-void inter_lights(t_ray *ray, t_light **light, t_shapes *shapes)
+void inter_lights(t_ray *ray, t_light *light, t_shapes *shapes)
 {
-	int i;
-	i = 0;
-	while (light[i])
+	while (light)
 	{
-		inter_light(ray, light[i], shapes);
-		i++;
+		inter_light(ray, light, shapes);
+		light = light->next;
 	}
 }

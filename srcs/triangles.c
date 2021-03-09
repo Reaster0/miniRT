@@ -6,25 +6,12 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:53:13 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/17 20:54:01 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:34:25 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-int inter_triangles(t_ray *ray, t_triangle **triangle)
-{
-	int i = 0;
-	int ret;
-	ret = 0;
-	while (triangle[i])
-	{
-		if (inter_triangle(ray, triangle[i]))
-			ret = 1;
-		i++;
-	}
-	return (ret);
-}
 //problemes sur les triangles qui sont derrieres la camera
 int inter_triangle(t_ray *ray, t_triangle *triangle)
 {
@@ -73,4 +60,18 @@ int inter_triangle(t_ray *ray, t_triangle *triangle)
 		ray->shape_color = triangle->color;
 	}
 	return (1);
+}
+
+int inter_triangles(t_ray *ray, t_triangle *triangle)
+{
+	int i = 0;
+	int ret;
+	ret = 0;
+	while (triangle)
+	{
+		if (inter_triangle(ray, triangle))
+			ret = 1;
+		triangle = triangle->next;
+	}
+	return (ret);
 }

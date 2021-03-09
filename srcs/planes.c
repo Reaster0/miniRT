@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:37:44 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/18 13:26:07 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:30:17 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,15 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	return (1);
 }
 
-int inter_planes(t_ray *ray, t_plane **plane)
+int inter_planes(t_ray *ray, t_plane *plane)
 {
-	int i = 0;
 	int ret;
 	ret = 0;
-	while (plane[i])
+	while (plane)
 	{
-		if (inter_plane(ray, plane[i]))
+		if (inter_plane(ray, plane))
 			ret = 1;
-		i++;
+		plane = plane->next;
 	}
 	return (ret);
 }
