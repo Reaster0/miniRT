@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 17:00:52 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 12:23:28 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,9 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 	return (ret);
 }
 
-void project(t_data *data, t_2d res, int color, t_shapes *shapes)
+void project(t_data *data, t_2d res, t_shapes *shapes, int ambient)
 {
 	t_2d count;
-	t_2d res;
-
-	//fov = 90.f / 2 * M_PI / 180.f;
-	//ratio = resolution.x / resolution.y;
-
 	t_3d screen_coord;
 	t_ray ray;
 
@@ -81,8 +76,8 @@ void project(t_data *data, t_2d res, int color, t_shapes *shapes)
 
 			screen_coord.z = -1.f;
 
-			ray = make_ray(shapes->camera->startpoint, shapes->camera->forward, screen_coord);
-			if (intersections(&ray, &shapes, 1))
+			ray = make_ray(shapes->camera->startpoint, shapes->camera->forward, screen_coord, ambient);
+			if (intersections(&ray, shapes, 1))
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
 			count.x++;
 		}
@@ -98,16 +93,16 @@ int main(int argc, char **argv)
 	t_data img;
 	t_2d res;
 	t_shapes shapes;
-	t_light ambient;
+	int ambient;
 	//check if the file is a .rt
 	if (argc != 2)
 	{
-		printf("error argument\n");
+		printf("error with the argument\n");
 		return (0);
 	}
 	res.x = 0;
 	res.y = 0;
-	ambient.color = 0;
+	ambient = 0;
 	shapes.camera = NULL;
 	shapes.sphere = NULL;
 	shapes.cylinder = NULL;
@@ -118,13 +113,14 @@ int main(int argc, char **argv)
 
 	if (!(parsfile(argv[1], &res, &ambient, &shapes)))
 		printf("error reading the file\n");
-	// vars.mlx = mlx_init();
-	// vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");
-	// img = new_img(&vars, res.y, res.x);
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");
+	img = new_img(&vars, res.y, res.x);
 
-	//project(&img, res, 0xFF0000);
+	project(&img, res, &shapes, ambient);
 	ft_putstr_fd("finished\n", 1);
-	// mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
-	// mlx_loop(vars.mlx);
+	end_all_life(&shapes);
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
+	mlx_loop(vars.mlx);
 	return (0);
 }

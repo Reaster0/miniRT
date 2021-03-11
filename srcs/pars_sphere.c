@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 10:35:52 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 12:31:11 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 10:58:59 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int pars_sphere(char *str, t_sphere **sphere)
 		i++;
 	if (!read3d(str, &color, &i))
 		return (0);
+	fix_3d(&color, 0, 255);
 	sphe->color = create_trgb(0, color.x, color.y, color.z);
 	while (str[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 12:23:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 12:30:50 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 10:56:04 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int pars_triangle(char *str, t_triangle **triangle)
 		i++;
 	if (!read3d(str, &color, &i))
 		return (0);
+	fix_3d(&color, 0, 255);
 	tri->color = create_trgb(0, color.x, color.y, color.z);
 	while (str[i])
 	{

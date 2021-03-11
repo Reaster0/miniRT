@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 15:25:50 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 12:24:17 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ typedef struct s_vars
 
 float itof(char *str, int *i);
 int read3d(char *str, t_3d *value, int *i);
+float fix_float(float nbr, float max, float min);
+void fix_3d(t_3d *d3, float min, float max);
 
+void end_all_life(t_shapes *shapes);
 t_camera *cam_last(t_camera *camera);
 t_cylinder *cy_last(t_cylinder *cylinder);
 t_light *li_last(t_light *light);
@@ -53,7 +56,7 @@ t_square *squ_last(t_square *square);
 t_triangle *tri_last(t_triangle *triangle);
 
 
-int parsfile(char *path, t_2d *res, t_light *ambi, t_shapes *shapes);
+int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes);
 int pars_cam(char *str, t_camera **camera);
 int pars_light(char *str, t_light **light);
 int pars_sphere(char *str, t_sphere **sphere);

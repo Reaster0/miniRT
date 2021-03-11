@@ -6,12 +6,29 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 16:20:56 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 12:32:02 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include <fcntl.h>
+
+void fix_3d(t_3d *d3, float min, float max)
+{
+	d3->w = fix_float(d3->w, min, max);
+	d3->x = fix_float(d3->x, min, max);
+	d3->y = fix_float(d3->y, min, max);
+	d3->z = fix_float(d3->z, min, max);
+}
+
+float fix_float(float nbr, float min, float max)
+{
+	if (nbr > max)
+		return (max);
+	if (nbr < min)
+		return (min);
+	return (nbr);
+}
 
 int pars_res(char *str, t_2d *res)
 {
@@ -93,21 +110,25 @@ int read3d(char *str, t_3d *value, int *i)
 	return (1);
 }
 
-int pars_ambient(char *str, t_light *ambi)
+int pars_ambient(char *str, int *ambi)
 {
 	int i;
 	i = 0;
 	t_3d color;
+	float intens;
 	if (!str)
 		return (0);
 	while (str[i] == ' ')
 		i++;
-	ambi->intens = itof(str, &i) * 255;
+	intens = itof(str, &i);
+	fix_float(intens, 0, 1);
 	while (str[i] == ' ')
 		i++;
 	if (!read3d(str, &color, &i))
 		return (0);
-	ambi->color = create_trgb(0, color.x, color.y, color.z);
+	fix_3d(&color, 0, 255);
+	color = multiply_v(intens, color);
+	*ambi = create_trgb(0, color.x, color.y, color.z);
 	while (str[i])
 	{
 		if (str[i] != ' ')
@@ -117,7 +138,7 @@ int pars_ambient(char *str, t_light *ambi)
 	return (1);
 }
 
-int parsline(char *str, t_2d *res, t_light *ambi, t_shapes *shapes)
+int parsline(char *str, t_2d *res, int *ambi, t_shapes *shapes)
 {
 	int ret;
 	int i;
@@ -125,7 +146,7 @@ int parsline(char *str, t_2d *res, t_light *ambi, t_shapes *shapes)
 	i = 0;
 	if (*str == 'R' && !res->x && str[1] == ' ')
 		ret = pars_res(str + 1, res);
-	else if (*str == 'A' && !ambi->color && str[1] == ' ')
+	else if (*str == 'A' && !*ambi && str[1] == ' ')
 		ret = pars_ambient(str + 1, ambi);
 	else if (*str == 'c' && str[1] == ' ')
 		ret = pars_cam(str + 1, &shapes->camera);
@@ -199,7 +220,7 @@ void end_all_life(t_shapes *shapes)
 	}
 }
 
-int parsfile(char *path, t_2d *res, t_light *ambi, t_shapes *shapes)
+int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
 {
 	char *str;
 	int fd;

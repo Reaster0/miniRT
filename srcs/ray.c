@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:35:34 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/18 12:56:51 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 12:18:07 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_matrix4 lookat(t_3d origin, t_3d target)
 
 //new version
 
-t_ray make_ray(t_3d origin, t_3d target, t_3d screen)
+t_ray make_ray(t_3d origin, t_3d target, t_3d screen, int ambient)
 {
 	t_ray ray;
 	t_matrix4 temp;
@@ -45,6 +45,6 @@ t_ray make_ray(t_3d origin, t_3d target, t_3d screen)
 	normalize(&ray.endpoint);
 	//printf("ray x=%f,ray.y=%f,ray z=%f\n", ray.endpoint.x, ray.endpoint.y, ray.endpoint.z);
 	ray.t = 1.0e30f;
-	ray.color = 0;
+	ray.color = ambient;
 	return (ray);
 }

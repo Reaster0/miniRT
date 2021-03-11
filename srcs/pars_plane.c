@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 11:22:18 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 12:31:06 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 11:04:05 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,12 @@ int pars_plane(char *str, t_plane **plane)
 		i++;
 	if (!read3d(str, &pla->normal, &i))
 		return (0);
+	fix_3d(&pla->normal, -1, 1);
 	while (str[i] == ' ')
 		i++;
 	if (!read3d(str, &color, &i))
 		return (0);
+	fix_3d(&color, 0, 255);
 	pla->color = create_trgb(0, color.x, color.y, color.z);
 	while (str[i])
 	{

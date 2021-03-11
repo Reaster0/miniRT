@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:55:28 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 17:13:18 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 11:46:45 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_triangle new_triangle(t_3d a, t_3d b, t_3d c, int color)
 int inter_square(t_ray *ray, t_square *square)
 {
 	int result;
-	t_3d point[3];
+	t_3d point[4];
 	point[0].x = square->center.x - square->side / 2;
 	point[0].y = square->center.y - square->side / 2;
 	point[1].x = square->center.x + square->side / 2;

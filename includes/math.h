@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 17:06:02 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 12:18:24 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_matrix4 rota_x_mtrx(float angle);
 t_matrix4 rota_y_mtrx(float angle);
 t_matrix4 rota_z_mtrx(float angle);
 t_matrix4 cam_to_world(t_camera camera);
-t_ray make_ray(t_3d origin, t_3d target,t_3d screen);
+t_ray make_ray(t_3d origin, t_3d target,t_3d screen, int ambient);
 
 
 void inter_lights(t_ray *ray, t_light *light, t_shapes *shapes);
