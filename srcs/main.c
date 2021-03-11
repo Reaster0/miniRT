@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 12:23:28 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/11 14:20:04 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ int intens_color(t_ray *ray, t_light *light, int color, int ray_color)
 	int result;
 	//rajouter la couleur de la lumiere
 	temp = (((float)color / 255) * (light->intens * dot_product(get_norm(sub_product(light->point, light->hit.shape_point)), light->hit.shape_normale) / length2(sub_product(light->point, light->hit.endpoint))));
-
-	//un soucis sur la correction gamma
-	//temp /= pow(1.f, 2.2);
 
 	result = temp * 255;
 
