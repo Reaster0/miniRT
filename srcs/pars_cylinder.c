@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 13:19:19 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 11:01:27 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/12 16:15:58 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int pars_cylinder(char *str, t_cylinder **cylinder)
 		return (0);
 	fix_3d(&color, 0, 255);
 	cy->color = create_trgb(0, color.x, color.y, color.z);
+	cy->orient.x *= -1;
+	cy->point.x *= -1;
 	while (str[i])
 	{
 		if (str[i] != ' ')

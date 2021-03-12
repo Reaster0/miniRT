@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 10:14:52 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 10:47:04 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/12 16:24:18 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int pars_cam(char *str, t_camera **camera)
 	while (str[i] == ' ')
 		i++;
 	cam->fov = fix_float(itof(str, &i) / 2 * M_PI / 180.f, 0, 180);
+	cam->startpoint.x *= -1;
+	cam->forward.x *= -1;
 	while (str[i])
 	{
 		if (str[i] != ' ')

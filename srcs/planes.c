@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:37:44 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 15:09:52 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/12 16:21:16 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	t = dot_product(sub_product(plane->position, ray->startpoint), plane->normal) / dDotN;
 	if (t <= 0.000001f || t >= ray->t)
 		return (0);
-
-	//ray->color = plane->color;
 
 	ray->shape_color = plane->color;
 	ray->t = t;
