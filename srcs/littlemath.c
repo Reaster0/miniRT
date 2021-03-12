@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 13:23:19 by earnaud           #+#    #+#             */
-/*   Updated: 2021/02/15 15:15:34 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/12 11:17:42 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,9 @@ t_3d sub_product(t_3d a, t_3d b)
 
 t_ray calculate(t_ray ray, float t)
 {
+	//test
 	t_ray temp;
 	temp = ray;
-	temp.endpoint = multiply_v(t, ray.endpoint);
+	temp.endpoint = add_product(multiply_v(t, ray.endpoint), ray.startpoint);
 	return (temp);
 }

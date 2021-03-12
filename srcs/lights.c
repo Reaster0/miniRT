@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:44:55 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 17:07:53 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/12 11:28:38 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,11 @@ void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 	light->normale = ray->shape_normale;
 
 	t_ray l_ray;
-	//maybe multiply by 0.9
 	l_ray.startpoint = light->hit.endpoint;
-	// = add_product(multiply_v(0.001, light->normale), );
-	//maybe get_norm
 	l_ray.endpoint = get_norm(sub_product(light->point, light->hit.endpoint));
 	l_ray.t = 1.0e30f;
 	l_ray.color = 0.f;
-
-	//printf("t =%f\n", ray->t);
 	intersections(&l_ray, shapes, 0);
-	//all the problem of the world are here
 	float temp = length2(sub_product(light->point, light->hit.endpoint));
 	float temp2 = sqr(l_ray.t);
 	if (temp2 >= temp)

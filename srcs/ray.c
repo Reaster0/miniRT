@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:35:34 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 15:36:56 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/12 10:54:25 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_matrix4 lookat(t_3d origin, t_3d target)
 { //gerer mieux le cas ou forward y  = 1
 	t_camera result;
 	result.startpoint = origin;
-	target = add_product(target, origin);
+	//target = add_product(target, origin);
 	result.forward = get_norm(sub_product(origin, target));
 	if (result.forward.y == 1)
 		result.forward.y -= 0.001f;
