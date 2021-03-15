@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:12:36 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 12:32:13 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/15 11:26:10 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int inter_cylinders(t_ray *ray, t_cylinder *cylinder);
 int inter_squares(t_ray *ray, t_square *square);
 int inter_triangle(t_ray *ray, t_triangle *triangle);
 int inter_triangles(t_ray *ray, t_triangle *triangle);
+int inter_plane(t_ray *ray, t_plane *plane);
 int inter_planes(t_ray *ray, t_plane *plane);
 int inter_spheres(t_ray *ray, t_sphere *sphere);
 

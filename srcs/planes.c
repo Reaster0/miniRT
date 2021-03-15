@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:37:44 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 16:21:16 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/15 11:24:24 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	float t;
 
 	if (dot_product(ray->endpoint, plane->normal) > 0.f)
-		plane->normal = multiply_v(-1, plane->normal);
+		plane->normal = multiply_v(-1.f, plane->normal);
 	dDotN = dot_product(ray->endpoint, plane->normal);
 	if (dDotN == 0.f)
 		return (0);

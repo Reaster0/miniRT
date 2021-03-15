@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:55:28 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 11:46:45 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/15 12:29:19 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,11 @@ int inter_square(t_ray *ray, t_square *square)
 		result = (1);
 	if (inter_triangle(ray, &triangle2))
 		result = (1);
-	// if (result == 1)
-	// {
-	// 	//ray->shape_point = sub_product(square->c, divide_vr(2, square->a));
-	// 	//ray->shape_normale = cross_product(sub_product(square->c, square->b), sub_product(square->a, square->b));
-	// 	ray->shape_color = square->color;
-	// }
-	return (result);
+	if (result == 1)
+	{
+		ray->shape_point = sub_product(point[2], divide_vr(2, point[0]));
+		return (result);
+	}
 }
 
 int inter_squares(t_ray *ray, t_square *square)
