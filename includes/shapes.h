@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/09 17:10:11 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/15 20:06:32 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_triangle
 	t_3d a;
 	t_3d b;
 	t_3d c;
-	t_3d barycentric;
+	t_3d bary;
 	int color;
 	void *next;
 } t_triangle;

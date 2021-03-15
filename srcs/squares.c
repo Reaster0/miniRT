@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:55:28 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/15 13:04:05 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/15 20:36:14 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ int inter_square(t_ray *ray, t_square *square)
 	result = 0;
 	triangle1 = new_triangle(point[0], point[1], point[2], square->color);
 	triangle2 = new_triangle(point[0], point[2], point[3], square->color);
-	// if (inter_triangle(ray, &triangle1))
-	// 	result = (1);
-	// if (inter_triangle(ray, &triangle2))
-	// 	result = (1);
+	if (inter_triangle2(ray, &triangle1))
+		result = (1);
+	if (inter_triangle2(ray, &triangle2))
+		result = (1);
 	if (result == 1)
 	{
 		ray->shape_point = sub_product(point[2], divide_vr(2, point[0]));
