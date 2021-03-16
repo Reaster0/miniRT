@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 12:31:56 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/16 11:47:29 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ void project(t_data *data, t_2d res, t_shapes *shapes, int ambient)
 		count.x = 0;
 		while (count.x < res.x)
 		{
-			//// screen_coord.x = (2.0f * count.x) / resolution.x - 1.0f;
-			//// screen_coord.y = (-2.0f * count.y) / resolution.y + 1.0f;
-
 			screen_coord.x = 2 * ((count.x + 0.5) / res.x) - 1.f;
 			screen_coord.y = 1 - 2 * ((count.y + 0.5) / res.y);
 			screen_coord.x *= tan(shapes->camera->fov);

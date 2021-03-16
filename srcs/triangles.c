@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:53:13 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/15 21:31:08 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/16 15:47:45 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,61 +56,12 @@ int inter_triangle2(t_ray *ray, t_triangle *triangle)
 	triangle->bary.z = 1.f - triangle->bary.x - triangle->bary.y;
 	if (triangle->bary.z > 1.f || triangle->bary.z < 0.f)
 		return (0);
+	ray->shape_point = divide_vr(3, add_product(add_product(triangle->a, triangle->b), triangle->c));
 	ray->t = t;
 	ray->shape_color = triangle->color;
 	ray->shape_normale = normal;
 	return (1);
 }
-
-// int inter_triangle(t_ray *ray, t_triangle *triangle)
-// {
-// 	t_3d edge1;
-// 	t_3d edge2;
-// 	t_3d orig_minus_vert0;
-// 	t_3d cross_raydir_edge2;
-// 	t_3d cross_oriminusvert0_edge1;
-// 	float determinent, inv_determinent;
-// 	float t;
-
-// 	edge1 = sub_product(triangle->b, triangle->a);
-// 	edge2 = sub_product(triangle->c, triangle->a);
-
-// 	cross_raydir_edge2 = cross_product(ray->endpoint, edge2);
-// 	determinent = dot_product(edge1, cross_raydir_edge2);
-
-// 	if (determinent > -0.000001 && determinent < 0.000001)
-// 		return (0);
-
-// 	inv_determinent = 1.f / determinent;
-
-// 	orig_minus_vert0 = sub_product(ray->startpoint, triangle->a);
-
-// 	triangle->bary.y = dot_product(orig_minus_vert0, cross_raydir_edge2) * inv_determinent;
-// 	if (triangle->bary.y < 0.0f || triangle->bary.y > 1.0f)
-// 		return (0);
-
-// 	cross_oriminusvert0_edge1 = cross_product(orig_minus_vert0, edge1);
-
-// 	triangle->bary.z = dot_product(ray->endpoint, cross_oriminusvert0_edge1) * inv_determinent;
-// 	if (triangle->bary.z < 0.0f || triangle->bary.z > 1.0f)
-// 		return (0);
-// 	triangle->bary.x = 1 - triangle->bary.y - triangle->bary.z;
-
-// 	if (triangle->bary.x < 0.0f || triangle->bary.z > 1.0f)
-// 		return (0);
-
-// 	t = dot_product(edge2, cross_oriminusvert0_edge1) * inv_determinent;
-// 	if (t < ray->t)
-// 	{
-// 		ray->shape_normale = cross_product(sub_product(triangle->b, triangle->a), sub_product(triangle->c, triangle->a));
-// 		ray->shape_point = new_3d((triangle->a.x + triangle->b.x + triangle->c.x) / 2, (triangle->a.y + triangle->b.y + triangle->c.y) / 2, (triangle->a.z + triangle->b.z + triangle->c.z) / 2);
-// 		ray->t = t;
-
-// 		//ray->color = triangle->color;
-// 		ray->shape_color = triangle->color;
-// 	}
-// 	return (1);
-// }
 
 int inter_triangles(t_ray *ray, t_triangle *triangle)
 {

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:44:55 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 12:37:11 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/16 11:29:39 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 {
-	light->hit = calculate(*ray, ray->t - 0.001);
+	light->hit = calculate(*ray, ray->t - 0.00001);
 	light->normale = ray->shape_normale;
 
 	t_ray l_ray;
