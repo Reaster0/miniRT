@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:55:28 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/15 21:51:21 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/16 11:15:29 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,25 @@ static int in_it(t_ray *ray, t_square *square, float *t)
 	return (1);
 }
 
-int square_len(t_square *square, t_3d interp)
+float sub_fabs(float a, float b)
+{
+	float temp;
+	float temp2;
+	temp = fabs(a);
+	temp2 = fabs(b);
+	if (temp > temp2)
+		return (temp - temp2);
+	if (temp < temp2)
+		return (temp2 - temp);
+	return (a);
+}
+
+int square_len(t_square *square, t_3d *interp)
 {
 	t_3d temp;
-	if (interp.x < 0.f)
-		interp.x *= -1.f;
-	if (interp.y < 0.f)
-		interp.y *= -1.f;
-	temp = sub_product(interp, square->center);
-
-	if (temp.x > square->side / 2 || temp.y > square->side / 2)
+	temp = sub_product(*interp, square->center);
+	if (fabs(temp.x) >= square->side / 2 || fabs(temp.y) >= square->side / 2 || fabs(temp.z) >= square->side / 2)
 		return (0);
-
 	return (1);
 }
 
@@ -61,7 +68,7 @@ int inter_square(t_ray *ray, t_square *square)
 	if (!in_it(ray, square, &t))
 		return (0);
 	interp = add_product(multiply_v(t, ray->endpoint), ray->startpoint);
-	if (!square_len(square, interp))
+	if (!square_len(square, &interp))
 		return (0);
 	ray->shape_color = square->color;
 	ray->t = t;
