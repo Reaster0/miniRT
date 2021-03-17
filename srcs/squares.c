@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:55:28 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/16 14:41:04 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/17 14:17:20 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int inter_square(t_ray *ray, t_square *square)
 {
 	float t;
 	t_3d interp;
-
 	if (!in_it(ray, square, &t))
 		return (0);
 	interp = add_product(multiply_v(t, ray->endpoint), ray->startpoint);

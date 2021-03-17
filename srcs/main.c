@@ -6,11 +6,13 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/16 11:47:29 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/17 16:13:55 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+//normaliser toutes les orientation dans le parsing
 
 int intens_color(t_ray *ray, t_light *light, int color, int ray_color, int col_light)
 {
@@ -45,7 +47,6 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 		ret = 1;
 	if (inter_cylinders(ray, shapes->cylinder))
 		ret = 1;
-
 	if (ret == 1 && inter_l)
 		inter_lights(ray, shapes->light, shapes);
 
