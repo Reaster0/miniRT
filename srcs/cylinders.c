@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:56:24 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/18 16:37:15 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/18 16:55:58 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ int inside_cyl(t_cylinder *cylinder, t_ray *ray, float t)
 	return (0);
 }
 
-t_3d cy_normal(t_cylinder *cylinder, t_3d hitpoint)
+t_3d cy_normal(t_cylinder *cylinder, t_3d hitpoint, t_ray *ray)
 {
 	float h;
 	t_3d a;
 	t_3d centre;
 	t_3d temp;
+	t_3d normal;
 
 	// temp = sub_product(hitpoint, cylinder->point);
 	// return get_norm(sub_vr(dot_product(cylinder->orient, multiply_product
@@ -42,7 +43,10 @@ t_3d cy_normal(t_cylinder *cylinder, t_3d hitpoint)
 	h = dot_product(bc, bc);
 	h = sqrt(h - sqr(cylinder->rayon));
 	centre = add_product(multiply_v(h, cylinder->orient), cylinder->point);
-	return (get_norm(sub_product(hitpoint, centre)));
+	normal = get_norm(sub_product(hitpoint, centre));
+	if (dot_product(ray->endpoint, normal) > 0.f)
+		normal = multiply_v(-1.f, normal);
+	return (normal);
 
 	//meilleur j'usqu'a present
 	// h = dot_product(sub_product(hitpoint, cylinder->point), cylinder->orient);
@@ -95,9 +99,9 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	t.x = (-quadra.y + sqrt(discriminant)) / (2.0 * quadra.x);
 	t.y = (-quadra.y - sqrt(discriminant)) / (2.0 * quadra.x);
 	hitp = add_product(multiply_v(t.x, ray->endpoint), ray->startpoint);
-	if (t.x > 0.001f && t.x < ray->t && inside_cyl(cylinder, ray, t.x))
+	if (t.x > 0.0001f && t.x < ray->t && inside_cyl(cylinder, ray, t.x))
 	{
-		ray->shape_normale = cy_normal(cylinder, hitp);
+		ray->shape_normale = cy_normal(cylinder, hitp, ray);
 		ray->shape_point = cylinder->point;
 		ray->shape_color = cylinder->color;
 		//ray->color = cylinder->color;
@@ -105,9 +109,9 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 		ret = 1;
 	}
 	hitp = add_product(multiply_v(t.y, ray->endpoint), ray->startpoint);
-	if (t.y > 0.001f && t.y < ray->t && inside_cyl(cylinder, ray, t.y))
+	if (t.y > 0.0001f && t.y < ray->t && inside_cyl(cylinder, ray, t.y))
 	{
-		ray->shape_normale = cy_normal(cylinder, hitp);
+		ray->shape_normale = cy_normal(cylinder, hitp, ray);
 		ray->shape_point = cylinder->point;
 		ray->shape_color = cylinder->color;
 		//ray->color = cylinder->color;
