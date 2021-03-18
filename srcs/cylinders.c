@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:56:24 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/18 16:55:58 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/18 17:01:15 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,7 @@ t_3d cy_normal(t_cylinder *cylinder, t_3d hitpoint, t_ray *ray)
 	float h;
 	t_3d a;
 	t_3d centre;
-	t_3d temp;
 	t_3d normal;
-
-	// temp = sub_product(hitpoint, cylinder->point);
-	// return get_norm(sub_vr(dot_product(cylinder->orient, multiply_product
-	//(temp, cylinder->orient)), temp));
-
 	t_3d bc = sub_product(hitpoint, cylinder->point);
 	h = dot_product(bc, bc);
 	h = sqrt(h - sqr(cylinder->rayon));
@@ -47,25 +41,6 @@ t_3d cy_normal(t_cylinder *cylinder, t_3d hitpoint, t_ray *ray)
 	if (dot_product(ray->endpoint, normal) > 0.f)
 		normal = multiply_v(-1.f, normal);
 	return (normal);
-
-	//meilleur j'usqu'a present
-	// h = dot_product(sub_product(hitpoint, cylinder->point), cylinder->orient);
-	// return (get_norm(sub_product(hitpoint, multiply_v(h, cylinder->orient))));
-
-	// float t;
-	// t_3d pt;
-	// t_3d bottom;
-	// t_3d top;
-	// cylinder->pointup = add_product(cylinder->point, multiply_v(cylinder->height, cylinder->orient));
-	// bottom = sub_product(hitpoint, cylinder->point);
-	// top = sub_product(hitpoint, cylinder->pointup);
-	// if (dot_product(top, top) < cylinder->rayon)
-	// 	return (cylinder->orient);
-	// if (dot_product(bottom, bottom) < cylinder->rayon)
-	// 	return (multiply_v(-1.f, cylinder->orient));
-	// t = dot_product(bottom, cylinder->orient);
-	// pt = add_product(bottom, multiply_v(t, cylinder->orient));
-	// return (get_norm(sub_product(hitpoint, pt)));
 }
 
 float auto_dot(t_3d a)
