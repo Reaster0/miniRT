@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/17 18:33:28 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/18 15:06:38 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 	int ret;
 	ret = 0;
 
+	if (inter_cylinders(ray, shapes->cylinder))
+		ret = 1;
 	if (inter_spheres(ray, shapes->sphere))
 		ret = 1;
 	if (inter_planes(ray, shapes->plane))
@@ -43,8 +45,7 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 		ret = 1;
 	if (inter_squares(ray, shapes->square))
 		ret = 1;
-	if (inter_cylinders(ray, shapes->cylinder))
-		ret = 1;
+
 	if (ret == 1 && inter_l)
 		inter_lights(ray, shapes->light, shapes);
 
