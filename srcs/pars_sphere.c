@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 10:35:52 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 16:19:04 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 11:06:21 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ int pars_sphere(char *str, t_sphere **sphere)
 	while (str[i] == ' ')
 		i++;
 	sphe->r = itof(str, &i);
+	if (str[i] != ' ' && str[i])
+		return (0);
+	if (str[i] != ' ' && str[i])
+		return (0);
 	while (str[i] == ' ')
 		i++;
 	if (!read3d(str, &color, &i))

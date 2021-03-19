@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 13:19:19 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 16:15:58 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 11:10:15 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,13 @@ int pars_cylinder(char *str, t_cylinder **cylinder)
 	while (str[i] == ' ')
 		i++;
 	cy->rayon = itof(str, &i);
+	if (str[i] != ' ' && str[i])
+		return (0);
 	while (str[i] == ' ')
 		i++;
 	cy->height = itof(str, &i);
+	if (str[i] != ' ' && str[i])
+		return (0);
 	while (str[i] == ' ')
 		i++;
 	if (!read3d(str, &color, &i))
@@ -78,6 +82,7 @@ int pars_cylinder(char *str, t_cylinder **cylinder)
 	fix_3d(&color, 0, 255);
 	cy->color = create_trgb(0, color.x, color.y, color.z);
 	cy->orient.x *= -1;
+	normalize(&cy->orient);
 	cy->point.x *= -1;
 	while (str[i])
 	{

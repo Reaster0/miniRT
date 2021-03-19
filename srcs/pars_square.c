@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 12:33:59 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/16 15:40:29 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 11:05:28 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,12 @@ int pars_square(char *str, t_square **square)
 	if (!read3d(str, &squ->orient, &i))
 		return (0);
 	fix_3d(&squ->orient, -1, 1);
+	normalize(&squ->orient);
 	while (str[i] == ' ')
 		i++;
 	squ->side = itof(str, &i);
+	if (str[i] != ' ' && str[i])
+		return (0);
 	while (str[i] == ' ')
 		i++;
 	if (!read3d(str, &color, &i))

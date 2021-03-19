@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 12:32:02 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 11:41:11 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,23 @@ void end_all_life(t_shapes *shapes)
 	}
 }
 
+int check_name(char *file)
+{
+	int i;
+	i = ft_strlen(file);
+	if (i <= 3)
+	{
+		printf("Error\n%s is not a valid file", file);
+		return (0);
+	}
+	if (file[i - 1] != 't' || file[i - 2] != 'r' || file[i - 3] != '.')
+	{
+		printf("Error\nthe file is not a .rt");
+		return (0);
+	}
+	return (1);
+}
+
 int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
 {
 	char *str;
@@ -230,14 +247,16 @@ int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
 	line = 1;
 	if ((fd = open(path, O_RDONLY)) == -1)
 	{
-		printf("error failed to open %s\n", path);
+		printf("Error\nfailed to open %s", path);
 		return (0);
 	}
+	if (!check_name(path))
+		return (0);
 	while ((ret = get_next_line(fd, &str)) != -1)
 	{
 		if (!parsline(str, res, ambi, shapes))
 		{
-			printf("error in the line : %d\n", line);
+			printf("Error\nin the line : %d\n", line);
 			end_all_life(shapes);
 			ret = -1;
 			break;

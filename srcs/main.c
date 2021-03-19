@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/18 15:06:38 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:03:01 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 
 void project(t_data *data, t_2d res, t_shapes *shapes, int ambient)
 {
+	float i;
 	t_2d count;
 	t_3d screen_coord;
 	t_ray ray;
@@ -69,9 +70,8 @@ void project(t_data *data, t_2d res, t_shapes *shapes, int ambient)
 			screen_coord.x *= tan(shapes->camera->fov);
 			screen_coord.y *= tan(shapes->camera->fov);
 			screen_coord.x *= res.x / res.y;
-
 			screen_coord.z = -1.f;
-
+			printf("\rLoading (%.0f%%)", (count.y / res.y) * 100);
 			ray = make_ray(shapes->camera->startpoint, shapes->camera->forward, screen_coord, ambient);
 			if (intersections(&ray, shapes, 1))
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
@@ -81,7 +81,10 @@ void project(t_data *data, t_2d res, t_shapes *shapes, int ambient)
 	}
 }
 
-// IMPORTANT RAJOUTER LE STARTPOINT DU RAY A TOUT LES CALCULS DE HITPOINTS
+void key_test(int keycode, t_vars vars)
+{
+	printf("the keycode is %d", keycode);
+}
 
 int main(int argc, char **argv)
 {
@@ -93,7 +96,7 @@ int main(int argc, char **argv)
 	//check if the file is a .rt
 	if (argc != 2)
 	{
-		printf("error with the argument\n");
+		printf("Error\nno argument");
 		return (0);
 	}
 	res.x = 0;
@@ -108,15 +111,16 @@ int main(int argc, char **argv)
 	shapes.triangle = NULL;
 
 	if (!(parsfile(argv[1], &res, &ambient, &shapes)))
-		printf("error reading the file\n");
+		return (0);
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "MiniRT");
+	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "Sacré MiniRT");
 	img = new_img(&vars, res.y, res.x);
 
 	project(&img, res, &shapes, ambient);
-	ft_putstr_fd("finished\n", 1);
+	ft_putstr_fd("\nfinished", 1);
 	end_all_life(&shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
+	//mlx_key_hook(vars.win, key_test, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
 }

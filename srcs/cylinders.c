@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:56:24 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/18 17:01:15 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:14:08 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,20 @@ int inside_cyl(t_cylinder *cylinder, t_ray *ray, float t)
 	return (0);
 }
 
-t_3d cy_normal(t_cylinder *cylinder, t_3d hitpoint, t_ray *ray)
+int cy_assign(t_cylinder *cylinder, t_3d hitpoint, t_ray *ray, int t)
 {
 	float h;
-	t_3d a;
 	t_3d centre;
-	t_3d normal;
 	t_3d bc = sub_product(hitpoint, cylinder->point);
-	h = dot_product(bc, bc);
-	h = sqrt(h - sqr(cylinder->rayon));
+	h = sqrt(dot_product(bc, bc) - sqr(cylinder->rayon));
 	centre = add_product(multiply_v(h, cylinder->orient), cylinder->point);
-	normal = get_norm(sub_product(hitpoint, centre));
-	if (dot_product(ray->endpoint, normal) > 0.f)
-		normal = multiply_v(-1.f, normal);
-	return (normal);
-}
-
-float auto_dot(t_3d a)
-{
-	return (dot_product(a, a));
+	ray->shape_normale = get_norm(sub_product(hitpoint, centre));
+	if (dot_product(ray->endpoint, ray->shape_normale) > 0.f)
+		ray->shape_normale = multiply_v(-1.f, ray->shape_normale);
+	ray->shape_point = cylinder->point;
+	ray->shape_color = cylinder->color;
+	ray->t = t;
+	return (1);
 }
 
 int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
@@ -74,25 +69,11 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	t.x = (-quadra.y + sqrt(discriminant)) / (2.0 * quadra.x);
 	t.y = (-quadra.y - sqrt(discriminant)) / (2.0 * quadra.x);
 	hitp = add_product(multiply_v(t.x, ray->endpoint), ray->startpoint);
-	if (t.x > 0.0001f && t.x < ray->t && inside_cyl(cylinder, ray, t.x))
-	{
-		ray->shape_normale = cy_normal(cylinder, hitp, ray);
-		ray->shape_point = cylinder->point;
-		ray->shape_color = cylinder->color;
-		//ray->color = cylinder->color;
-		ray->t = t.x;
-		ret = 1;
-	}
+	if (t.x > 0.00001f && t.x < ray->t && inside_cyl(cylinder, ray, t.x))
+		ret = cy_assign(cylinder, hitp, ray, t.x);
 	hitp = add_product(multiply_v(t.y, ray->endpoint), ray->startpoint);
-	if (t.y > 0.0001f && t.y < ray->t && inside_cyl(cylinder, ray, t.y))
-	{
-		ray->shape_normale = cy_normal(cylinder, hitp, ray);
-		ray->shape_point = cylinder->point;
-		ray->shape_color = cylinder->color;
-		//ray->color = cylinder->color;
-		ray->t = t.y;
-		ret = 1;
-	}
+	if (t.y > 0.00001f && t.y < ray->t && inside_cyl(cylinder, ray, t.y))
+		ret = cy_assign(cylinder, hitp, ray, t.y);
 	return (ret);
 }
 

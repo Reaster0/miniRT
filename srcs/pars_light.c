@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 10:32:30 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 16:13:10 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 11:07:50 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int pars_light(char *str, t_light **light)
 	while (str[i] == ' ')
 		i++;
 	li->intens = fix_float(itof(str, &i) * 255, 0, 255);
+	if (str[i] != ' ' && str[i])
+		return (0);
 	while (str[i] == ' ')
 		i++;
 	if (!read3d(str, &color, &i))
