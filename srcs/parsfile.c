@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 11:41:11 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 15:00:41 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,12 +226,27 @@ int check_name(char *file)
 	i = ft_strlen(file);
 	if (i <= 3)
 	{
-		printf("Error\n%s is not a valid file", file);
+		printf("Error\n%s what a strange file...but i can't read that captain", file);
 		return (0);
 	}
 	if (file[i - 1] != 't' || file[i - 2] != 'r' || file[i - 3] != '.')
 	{
-		printf("Error\nthe file is not a .rt");
+		printf("Error\nhey your thing don't have a .rt captain, are you trying to make me read a weird thing to break me?");
+		return (0);
+	}
+	return (1);
+}
+
+int error_file(t_shapes *shapes, t_2d *res)
+{
+	if (!shapes->camera)
+	{
+		printf("Error\nCamera is missing in the file captain!");
+		return (0);
+	}
+	if (!res->x || !res->y)
+	{
+		printf("Error\nCaptain captain! did you've forget to add a screen size? or are you trying to make me a 0/0 window?");
 		return (0);
 	}
 	return (1);
@@ -247,7 +262,7 @@ int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
 	line = 1;
 	if ((fd = open(path, O_RDONLY)) == -1)
 	{
-		printf("Error\nfailed to open %s", path);
+		printf("Error\nhey i can't read this ...thing(%s)? are you trying to make me read a dir captain?", path);
 		return (0);
 	}
 	if (!check_name(path))
@@ -256,7 +271,7 @@ int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
 	{
 		if (!parsline(str, res, ambi, shapes))
 		{
-			printf("Error\nin the line : %d\n", line);
+			printf("Error\ncaptain captain! i won't say that you'r dumb but check the line %d\n", line);
 			end_all_life(shapes);
 			ret = -1;
 			break;
@@ -268,5 +283,5 @@ int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
 	if (ret == -1)
 		return (0);
 	close(fd);
-	return (1);
+	return (error_file(shapes, res));
 }

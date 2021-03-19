@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 12:03:01 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 17:24:22 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 	return (ret);
 }
 
-void project(t_data *data, t_2d res, t_shapes *shapes, int ambient)
+void project(t_data *data, t_2d res, t_shapes *shapes, t_camera *camera)
 {
 	float i;
 	t_2d count;
@@ -67,12 +67,12 @@ void project(t_data *data, t_2d res, t_shapes *shapes, int ambient)
 		{
 			screen_coord.x = 2 * ((count.x + 0.5) / res.x) - 1.f;
 			screen_coord.y = 1 - 2 * ((count.y + 0.5) / res.y);
-			screen_coord.x *= tan(shapes->camera->fov);
-			screen_coord.y *= tan(shapes->camera->fov);
+			screen_coord.x *= tan(camera->fov);
+			screen_coord.y *= tan(camera->fov);
 			screen_coord.x *= res.x / res.y;
 			screen_coord.z = -1.f;
 			printf("\rLoading (%.0f%%)", (count.y / res.y) * 100);
-			ray = make_ray(shapes->camera->startpoint, shapes->camera->forward, screen_coord, ambient);
+			ray = make_ray(camera->startpoint, camera->forward, screen_coord, shapes->ambient);
 			if (intersections(&ray, shapes, 1))
 				mlx_pixel_put_fast(data, count.x, count.y, ray.color);
 			count.x++;
@@ -81,27 +81,81 @@ void project(t_data *data, t_2d res, t_shapes *shapes, int ambient)
 	}
 }
 
-void key_test(int keycode, t_vars vars)
+int key_test(int keycode, t_vars *vars)
 {
-	printf("the keycode is %d", keycode);
+	printf("\nthe keycode is %d\n", keycode);
+	return (1);
+}
+
+void end_of_mlx(t_all *all)
+{
+	int i;
+	i = 0;
+	while (i <= all->nbr_img)
+	{
+		mlx_destroy_image(all->vars->mlx, (all->img + i)->img);
+		i++;
+	}
+	free(all->img);
+	mlx_destroy_window(all->vars->mlx, all->vars->win);
+	//mlx_destroy_display(all->vars->mlx);
+}
+
+int key_press(int keycode, t_all *all)
+{
+	if (all->i > all->nbr_img)
+		all->i = 0;
+	if (keycode == 45)
+	{
+		mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
+		all->i++;
+	}
+	if (keycode == 53)
+		end_of_mlx(all);
+	return (1);
+}
+
+int nbr_cam(t_camera *camera)
+{
+	int i;
+	i = 0;
+	while (camera->next)
+	{
+		camera = camera->next;
+		i++;
+	}
+	return (i);
+}
+
+t_camera *id_cam(t_camera *camera, int i)
+{
+	int j;
+	j = 0;
+	while (j < i)
+	{
+		camera = camera->next;
+		j++;
+	}
+	return (camera);
 }
 
 int main(int argc, char **argv)
 {
 	t_vars vars;
-	t_data img;
+	t_all all;
+	t_data *img;
 	t_2d res;
 	t_shapes shapes;
-	int ambient;
-	//check if the file is a .rt
+	int i = 0;
+	int nbr_img;
 	if (argc != 2)
 	{
-		printf("Error\nno argument");
+		printf("Error\nhey captain i need a file to work with!");
 		return (0);
 	}
 	res.x = 0;
 	res.y = 0;
-	ambient = 0;
+	shapes.ambient = 0;
 	shapes.camera = NULL;
 	shapes.sphere = NULL;
 	shapes.cylinder = NULL;
@@ -109,18 +163,29 @@ int main(int argc, char **argv)
 	shapes.plane = NULL;
 	shapes.square = NULL;
 	shapes.triangle = NULL;
-
-	if (!(parsfile(argv[1], &res, &ambient, &shapes)))
+	if (!(parsfile(argv[1], &res, &shapes.ambient, &shapes)))
 		return (0);
+	all.nbr_img = nbr_cam(shapes.camera);
+	all.i = 1;
+	all.vars = &vars;
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "Sacré MiniRT");
-	img = new_img(&vars, res.y, res.x);
-
-	project(&img, res, &shapes, ambient);
-	ft_putstr_fd("\nfinished", 1);
+	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "Saint MiniRT");
+	//vars.data = img;
+	img = malloc(sizeof(t_data) * all.nbr_img + 1);
+	all.img = img;
+	while (i <= all.nbr_img)
+	{
+		printf("\nimage %d of %d processing\n", i + 1, all.nbr_img + 1);
+		img[i] = new_img(&vars, res.y, res.x);
+		project(&img[i], res, &shapes, id_cam(shapes.camera, i));
+		i++;
+	}
+	ft_putstr_fd("\nfinished\n", 1);
 	end_all_life(&shapes);
-	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
-	//mlx_key_hook(vars.win, key_test, &vars);
+	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
+	//key_press(53, &all);
+	//mlx_hook(vars.win, 2, 1L << 0, key_test, &vars);
+	mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
 	mlx_loop(vars.mlx);
 	return (0);
 }

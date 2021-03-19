@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 10:14:52 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 16:24:18 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 15:27:06 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int pars_cam(char *str, t_camera **camera)
 	if (!read3d(str, &cam->forward, &i))
 		return (0);
 	fix_3d(&cam->forward, -1, 1);
+	normalize(&cam->forward);
 	while (str[i] == ' ')
 		i++;
 	cam->fov = fix_float(itof(str, &i) / 2 * M_PI / 180.f, 0, 180);

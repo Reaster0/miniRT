@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/11 12:24:17 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 16:42:54 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@ typedef struct s_vars
 	void *win;
 	t_data *data;
 } t_vars;
+
+typedef struct s_all
+{
+	t_data *img;
+	t_vars *vars;
+	int i;
+	int nbr_img;
+} t_all;
 
 float itof(char *str, int *i);
 int read3d(char *str, t_3d *value, int *i);

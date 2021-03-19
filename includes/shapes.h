@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:23:57 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/15 20:06:32 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 14:49:46 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct s_light
 
 typedef struct s_shapes
 {
+	int ambient;
 	t_camera *camera;
 	t_light *light;
 	t_plane *plane;

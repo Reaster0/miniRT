@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:56:24 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 12:14:08 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/19 13:24:11 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ int inter_cylinder(t_ray *ray, t_cylinder *cylinder)
 	t.x = (-quadra.y + sqrt(discriminant)) / (2.0 * quadra.x);
 	t.y = (-quadra.y - sqrt(discriminant)) / (2.0 * quadra.x);
 	hitp = add_product(multiply_v(t.x, ray->endpoint), ray->startpoint);
-	if (t.x > 0.00001f && t.x < ray->t && inside_cyl(cylinder, ray, t.x))
+	if (t.x > 0.000001f && t.x < ray->t && inside_cyl(cylinder, ray, t.x))
 		ret = cy_assign(cylinder, hitp, ray, t.x);
 	hitp = add_product(multiply_v(t.y, ray->endpoint), ray->startpoint);
-	if (t.y > 0.00001f && t.y < ray->t && inside_cyl(cylinder, ray, t.y))
+	if (t.y > 0.000001f && t.y < ray->t && inside_cyl(cylinder, ray, t.y))
 		ret = cy_assign(cylinder, hitp, ray, t.y);
 	return (ret);
 }
