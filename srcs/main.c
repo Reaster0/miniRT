@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 17:24:22 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/21 18:23:51 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,17 +101,41 @@ void end_of_mlx(t_all *all)
 	//mlx_destroy_display(all->vars->mlx);
 }
 
+void filter(int id, t_data *img)
+{
+	t_2d count;
+
+	count.y = 0;
+	while (count.y < img->height)
+	{
+		count.x = 0;
+		while (count.x < img->width)
+		{
+			*(unsigned int *)get_pixel(img, count.x, count.y) = get_opposite(*(unsigned int *)get_pixel(img, count.x, count.y));
+			count.x++;
+		}
+		count.y++;
+	}
+}
+
 int key_press(int keycode, t_all *all)
 {
 	if (all->i > all->nbr_img)
 		all->i = 0;
-	if (keycode == 45)
+	if (all->j > 3)
+		all->j = 0;
+	if (keycode == 45 || keycode == 110)
 	{
 		mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
 		all->i++;
 	}
-	if (keycode == 53)
+	if (keycode == 53 || keycode == 65307)
 		end_of_mlx(all);
+	if (keycode == 0)
+	{
+		filter(all->j++, (all->img + all->i)->img);
+		mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
+	}
 	return (1);
 }
 
@@ -167,6 +191,7 @@ int main(int argc, char **argv)
 		return (0);
 	all.nbr_img = nbr_cam(shapes.camera);
 	all.i = 1;
+	all.j = 0;
 	all.vars = &vars;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "Saint MiniRT");
@@ -183,9 +208,9 @@ int main(int argc, char **argv)
 	ft_putstr_fd("\nfinished\n", 1);
 	end_all_life(&shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
-	//key_press(53, &all);
+	key_press(0, &all);
 	//mlx_hook(vars.win, 2, 1L << 0, key_test, &vars);
-	mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
+	//mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
 	mlx_loop(vars.mlx);
 	return (0);
 }

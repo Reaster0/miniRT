@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 20:35:34 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 16:01:30 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/21 18:03:56 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ t_matrix4 lookat(t_3d origin, t_3d target)
 
 	return (cam_to_world(result));
 }
-
-//new version
 
 t_ray make_ray(t_3d origin, t_3d target, t_3d screen, int ambient)
 {

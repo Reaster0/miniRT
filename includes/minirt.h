@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 16:42:54 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/21 18:18:02 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_all
 	t_data *img;
 	t_vars *vars;
 	int i;
+	int j;
 	int nbr_img;
 } t_all;
 
@@ -90,5 +91,6 @@ t_data new_img(t_vars *vars, int y, int x);
 void img_adress(t_data *data);
 int next_frame(t_vars *vars);
 void mlx_pixel_put_fast(t_data *data, int x, int y, int color);
+char *get_pixel(t_data *data, int x, int y);
 
 #endif

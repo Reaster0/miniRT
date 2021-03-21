@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/01/10 16:44:11 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/21 18:17:47 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ t_data new_img(t_vars *vars, int y, int x)
 								 &img.endian);
 	return (img);
 }
+
+char *get_pixel(t_data *data, int x, int y)
+{
+	return (data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8)));
+}
+
 void mlx_pixel_put_fast(t_data *data, int x, int y, int color)
 {
 	char *dst;
