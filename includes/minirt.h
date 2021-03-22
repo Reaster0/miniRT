@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/21 18:18:02 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/22 22:30:29 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_vars
 typedef struct s_all
 {
 	t_data *img;
+	t_2d *img_xy;
 	t_vars *vars;
 	int i;
 	int j;

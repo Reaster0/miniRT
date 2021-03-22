@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/21 18:23:51 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/22 22:36:20 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void end_of_mlx(t_all *all)
 	i = 0;
 	while (i <= all->nbr_img)
 	{
-		mlx_destroy_image(all->vars->mlx, (all->img + i)->img);
+		mlx_destroy_image(all->vars->mlx, (all->img + all->i)->img);
 		i++;
 	}
 	free(all->img);
@@ -101,17 +101,16 @@ void end_of_mlx(t_all *all)
 	//mlx_destroy_display(all->vars->mlx);
 }
 
-void filter(int id, t_data *img)
+void filter(int id, t_data *data, t_2d *xy)
 {
 	t_2d count;
-
 	count.y = 0;
-	while (count.y < img->height)
+	while (count.y < xy->y)
 	{
 		count.x = 0;
-		while (count.x < img->width)
+		while (count.x < xy->x)
 		{
-			*(unsigned int *)get_pixel(img, count.x, count.y) = get_opposite(*(unsigned int *)get_pixel(img, count.x, count.y));
+			*(unsigned int *)get_pixel(data, count.x, count.y) = get_opposite(*(unsigned int *)get_pixel(data, count.x, count.y));
 			count.x++;
 		}
 		count.y++;
@@ -120,20 +119,21 @@ void filter(int id, t_data *img)
 
 int key_press(int keycode, t_all *all)
 {
-	if (all->i > all->nbr_img)
-		all->i = 0;
 	if (all->j > 3)
 		all->j = 0;
 	if (keycode == 45 || keycode == 110)
 	{
-		mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
 		all->i++;
+		if (all->i > all->nbr_img)
+			all->i = 0;
+		mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
+		printf("img %d\n", all->i);
 	}
 	if (keycode == 53 || keycode == 65307)
 		end_of_mlx(all);
-	if (keycode == 0)
+	if (keycode == 102)
 	{
-		filter(all->j++, (all->img + all->i)->img);
+		filter(all->j++, all->img + all->i, all->img_xy);
 		mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
 	}
 	return (1);
@@ -190,27 +190,31 @@ int main(int argc, char **argv)
 	if (!(parsfile(argv[1], &res, &shapes.ambient, &shapes)))
 		return (0);
 	all.nbr_img = nbr_cam(shapes.camera);
-	all.i = 1;
+	all.i = 0;
 	all.j = 0;
+
 	all.vars = &vars;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "Saint MiniRT");
 	//vars.data = img;
 	img = malloc(sizeof(t_data) * all.nbr_img + 1);
+	all.img_xy = malloc(sizeof(t_2d) * all.nbr_img + 1);
 	all.img = img;
 	while (i <= all.nbr_img)
 	{
 		printf("\nimage %d of %d processing\n", i + 1, all.nbr_img + 1);
 		img[i] = new_img(&vars, res.y, res.x);
+		(all.img_xy + i)->x = img[i].width;
+		(all.img_xy + i)->y = img[i].height;
 		project(&img[i], res, &shapes, id_cam(shapes.camera, i));
 		i++;
 	}
 	ft_putstr_fd("\nfinished\n", 1);
 	end_all_life(&shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
-	key_press(0, &all);
+	//key_press(102, &all);
 	//mlx_hook(vars.win, 2, 1L << 0, key_test, &vars);
-	//mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
+	mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
 	mlx_loop(vars.mlx);
 	return (0);
 }
