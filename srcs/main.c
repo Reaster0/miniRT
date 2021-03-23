@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/23 15:45:46 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/23 16:02:36 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,9 @@ int end_of_mlx(t_all *all)
 	}
 	free(all->img);
 	mlx_destroy_window(all->vars->mlx, all->vars->win);
-	//mlx_destroy_display(all->vars->mlx);
+	mlx_destroy_display(all->vars->mlx);
 	free(all->vars->mlx);
 	exit(0);
-	//fix error
-	// ==18388== Invalid write of size 1
-	// ==18388==    at 0x10A233: ft_strlcpy (get_next_line_utils.c:48)
-	// ==18388==    by 0x109FB7: get_next_line (get_next_line.c:91)
-	// ==18388==    by 0x11023B: parsfile (parsfile.c:270)
-	// ==18388==    by 0x10B02E: main (main.c:212)
-	// ==18388==  Address 0x6989810 is 0 bytes after a block of size 0 alloc'd
-	// ==18388==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-	// ==18388==    by 0x109F43: get_next_line (get_next_line.c:89)
-	// ==18388==    by 0x11023B: parsfile (parsfile.c:270)
-	// ==18388==    by 0x10B02E: main (main.c:212)
 
 	return (1);
 }

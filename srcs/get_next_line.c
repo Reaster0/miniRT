@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 12:48:55 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/07 16:53:06 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/23 15:59:34 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ int ft_sendline_next(char **line, char *rest)
 
 int ft_read_buf(char **rest, char **line, int fd)
 {
-	char buf[42 + 1];
+	char buf[1 + 1];
 	int read_ret;
 	int ret;
 
 	ret = 1;
 	while (ft_line(*rest) == -1)
 	{
-		read_ret = read(fd, buf, 42);
+		read_ret = read(fd, buf, 1);
 		if (!read_ret)
 		{
 			if (ft_line(*rest) == -1)
@@ -76,28 +76,28 @@ int ft_read_buf(char **rest, char **line, int fd)
 
 int get_next_line(int fd, char **line)
 {
-	static char *rest[FOPEN_MAX];
+	static char *rest;
 	int ret;
 
 	ret = 1;
 	if (ft_check_error(line, fd) == -1)
 		return (-1);
-	if (!rest[fd])
-		rest[fd] = ft_strdup("");
-	if (ft_line(rest[fd]) >= 0)
+	if (!rest)
+		rest = ft_strdup("");
+	if (ft_line(rest) >= 0)
 	{
-		if (!(*line = malloc(ft_line(rest[fd]) * sizeof(char *))))
+		if (!(*line = malloc(ft_line(rest) * sizeof(char *))))
 			return (-1);
-		ft_strlcpy(*line, rest[fd], ft_line(rest[fd]) + 1);
-		if (rest[fd] + ft_line(rest[fd]) + 1)
-			rest[fd] = ft_afterline(rest[fd]);
+		ft_strlcpy(*line, rest, ft_line(rest) + 1);
+		if (rest + ft_line(rest) + 1)
+			rest = ft_afterline(rest);
 	}
 	else
 	{
-		if (!(ret = ft_read_buf(&rest[fd], line, fd)))
+		if (!(ret = ft_read_buf(&rest, line, fd)))
 		{
-			free(rest[fd]);
-			rest[fd] = NULL;
+			free(rest);
+			rest = NULL;
 		}
 	}
 	return (ret);
