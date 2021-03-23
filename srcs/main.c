@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/23 17:33:40 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/23 17:48:53 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,11 +217,11 @@ int main(int argc, char **argv)
 	set_start(&all, &img, &shapes, &all.res);
 	process_fullinter(&vars, img, &all, &shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
-	key_press(53, &all);
+	//key_press(53, &all);
 	//mlx_hook(vars.win, 2, 1L << 0, key_test, &vars);
-	//mlx_hook(vars.win, 15, 1L << 16, refresh, &all);
-	//mlx_hook(vars.win, 33, 1L << 17, end_of_mlx, &all);
-	//mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
+	mlx_hook(vars.win, 15, 1L << 16, refresh, &all);
+	mlx_hook(vars.win, 33, 1L << 17, end_of_mlx, &all);
+	mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
 	mlx_loop(vars.mlx);
 	return (0);
 }
