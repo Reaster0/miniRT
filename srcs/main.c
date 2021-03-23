@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/23 16:02:36 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/23 16:25:53 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,8 +175,8 @@ void set_start(t_all *all, t_data **img, t_shapes *shapes, t_2d *res)
 	all->i = 0;
 	all->vars->mlx = mlx_init();
 	all->vars->win = mlx_new_window(all->vars->mlx, res->x, res->y, "Saint MiniRT");
-	*img = malloc(sizeof(t_data) * all->nbr_img + 1);
-	all->img_xy = malloc(sizeof(t_2d) * all->nbr_img + 1);
+	*img = malloc(sizeof(t_data) * (all->nbr_img + 1));
+	all->img_xy = malloc(sizeof(t_2d) * (all->nbr_img + 1));
 	all->img = *img;
 }
 
