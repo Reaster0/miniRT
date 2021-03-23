@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/22 22:36:20 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/23 11:26:40 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,17 @@ void end_of_mlx(t_all *all)
 	i = 0;
 	while (i <= all->nbr_img)
 	{
-		mlx_destroy_image(all->vars->mlx, (all->img + all->i)->img);
+		mlx_destroy_image(all->vars->mlx, (all->img + i)->img);
 		i++;
 	}
+	all->i = -1;
 	free(all->img);
 	mlx_destroy_window(all->vars->mlx, all->vars->win);
-	//mlx_destroy_display(all->vars->mlx);
+	mlx_destroy_display(all->vars->mlx);
+	free(all->vars->mlx);
 }
 
-void filter(int id, t_data *data, t_2d *xy)
+void filter_invert(t_data *data, t_2d *xy)
 {
 	t_2d count;
 	count.y = 0;
@@ -119,7 +121,7 @@ void filter(int id, t_data *data, t_2d *xy)
 
 int key_press(int keycode, t_all *all)
 {
-	if (all->j > 3)
+	if (all->j > all->nbr_img)
 		all->j = 0;
 	if (keycode == 45 || keycode == 110)
 	{
@@ -133,7 +135,7 @@ int key_press(int keycode, t_all *all)
 		end_of_mlx(all);
 	if (keycode == 102)
 	{
-		filter(all->j++, all->img + all->i, all->img_xy);
+		filter_invert(all->img + all->i, all->img_xy);
 		mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
 	}
 	return (1);
@@ -212,9 +214,11 @@ int main(int argc, char **argv)
 	ft_putstr_fd("\nfinished\n", 1);
 	end_all_life(&shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
-	//key_press(102, &all);
+
+	key_press(53, &all);
 	//mlx_hook(vars.win, 2, 1L << 0, key_test, &vars);
-	mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
-	mlx_loop(vars.mlx);
+	//mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
+	if (all.i != -1)
+		mlx_loop(vars.mlx);
 	return (0);
 }
