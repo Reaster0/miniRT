@@ -277,6 +277,7 @@ int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
 			break;
 		}
 		line++;
+		free(str);
 		if (!ret)
 			break;
 	}
