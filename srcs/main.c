@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/23 16:25:53 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/23 17:33:40 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int end_of_mlx(t_all *all)
 	free(all->img);
 	mlx_destroy_window(all->vars->mlx, all->vars->win);
 	mlx_destroy_display(all->vars->mlx);
+	free(all->img_xy);
 	free(all->vars->mlx);
 	exit(0);
 
