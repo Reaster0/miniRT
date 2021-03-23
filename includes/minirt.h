@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/22 22:30:29 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/23 14:58:20 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_all
 	t_data *img;
 	t_2d *img_xy;
 	t_vars *vars;
+	t_2d res;
 	int i;
 	int j;
 	int nbr_img;
@@ -65,6 +66,8 @@ t_sphere *sphe_last(t_sphere *sphere);
 t_square *squ_last(t_square *square);
 t_triangle *tri_last(t_triangle *triangle);
 
+void filter_invert(t_vars *vars, t_data *data, t_2d *xy);
+void filter_psyche(t_vars *vars, t_data *data, t_2d *xy);
 
 int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes);
 int pars_cam(char *str, t_camera **camera);

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/23 12:19:45 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/23 15:45:46 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int key_test(int keycode, t_vars *vars)
 	return (1);
 }
 
-void end_of_mlx(t_all *all)
+int end_of_mlx(t_all *all)
 {
 	int i;
 	i = 0;
@@ -98,32 +98,32 @@ void end_of_mlx(t_all *all)
 	}
 	free(all->img);
 	mlx_destroy_window(all->vars->mlx, all->vars->win);
-	mlx_destroy_display(all->vars->mlx);
+	//mlx_destroy_display(all->vars->mlx);
 	free(all->vars->mlx);
 	exit(0);
+	//fix error
+	// ==18388== Invalid write of size 1
+	// ==18388==    at 0x10A233: ft_strlcpy (get_next_line_utils.c:48)
+	// ==18388==    by 0x109FB7: get_next_line (get_next_line.c:91)
+	// ==18388==    by 0x11023B: parsfile (parsfile.c:270)
+	// ==18388==    by 0x10B02E: main (main.c:212)
+	// ==18388==  Address 0x6989810 is 0 bytes after a block of size 0 alloc'd
+	// ==18388==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+	// ==18388==    by 0x109F43: get_next_line (get_next_line.c:89)
+	// ==18388==    by 0x11023B: parsfile (parsfile.c:270)
+	// ==18388==    by 0x10B02E: main (main.c:212)
+
+	return (1);
 }
 
-void filter_invert(t_vars *vars, t_data *data, t_2d *xy)
+int refresh(t_all *all)
 {
-	t_2d count;
-	count.y = 0;
-	while (count.y < xy->y)
-	{
-		count.x = 0;
-		while (count.x < xy->x)
-		{
-			*(unsigned int *)get_pixel(data, count.x, count.y) = get_opposite(*(unsigned int *)get_pixel(data, count.x, count.y));
-			count.x++;
-		}
-		count.y++;
-	}
-	mlx_put_image_to_window(vars->mlx, vars->win, data->img, 0, 0);
+	mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
+	return (1);
 }
 
 int key_press(int keycode, t_all *all)
 {
-	if (all->j > all->nbr_img)
-		all->j = 0;
 	if (keycode == 45 || keycode == 110)
 	{
 		all->i++;
@@ -135,10 +135,9 @@ int key_press(int keycode, t_all *all)
 	if (keycode == 53 || keycode == 65307)
 		end_of_mlx(all);
 	if (keycode == 113)
-	{
 		filter_invert(all->vars, all->img + all->i, all->img_xy);
-		//mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
-	}
+	if (keycode == 119)
+		filter_psyche(all->vars, all->img + all->i, all->img_xy);
 	return (1);
 }
 
@@ -166,59 +165,73 @@ t_camera *id_cam(t_camera *camera, int i)
 	return (camera);
 }
 
+void set_val_null(t_2d *res, t_shapes *shapes, int *i)
+{
+	res->x = 0;
+	res->y = 0;
+	shapes->ambient = 0;
+	shapes->camera = NULL;
+	shapes->sphere = NULL;
+	shapes->cylinder = NULL;
+	shapes->light = NULL;
+	shapes->plane = NULL;
+	shapes->square = NULL;
+	shapes->triangle = NULL;
+	i = 0;
+}
+
+void set_start(t_all *all, t_data **img, t_shapes *shapes, t_2d *res)
+{
+	all->nbr_img = nbr_cam(shapes->camera);
+	all->i = 0;
+	all->vars->mlx = mlx_init();
+	all->vars->win = mlx_new_window(all->vars->mlx, res->x, res->y, "Saint MiniRT");
+	*img = malloc(sizeof(t_data) * all->nbr_img + 1);
+	all->img_xy = malloc(sizeof(t_2d) * all->nbr_img + 1);
+	all->img = *img;
+}
+
+void process_fullinter(t_vars *vars, t_data *img, t_all *all, t_shapes *shapes)
+{
+	int i;
+	i = 0;
+	while (i <= all->nbr_img)
+	{
+		printf("\nimage %d of %d processing\n", i + 1, all->nbr_img + 1);
+		img[i] = new_img(vars, all->res.y, all->res.x);
+		(all->img_xy + i)->x = img[i].width;
+		(all->img_xy + i)->y = img[i].height;
+		project(img + i, all->res, shapes, id_cam(shapes->camera, i));
+		i++;
+	}
+	ft_putstr_fd("\nfinished\n", 1);
+	end_all_life(shapes);
+}
+
 int main(int argc, char **argv)
 {
 	t_vars vars;
 	t_all all;
 	t_data *img;
-	t_2d res;
 	t_shapes shapes;
-	int i = 0;
-	int nbr_img;
+
 	if (argc != 2)
 	{
 		printf("Error\nhey captain i need a file to work with!");
 		return (0);
 	}
-	res.x = 0;
-	res.y = 0;
-	shapes.ambient = 0;
-	shapes.camera = NULL;
-	shapes.sphere = NULL;
-	shapes.cylinder = NULL;
-	shapes.light = NULL;
-	shapes.plane = NULL;
-	shapes.square = NULL;
-	shapes.triangle = NULL;
-	if (!(parsfile(argv[1], &res, &shapes.ambient, &shapes)))
+	set_val_null(&all.res, &shapes, &all.j);
+	if (!(parsfile(argv[1], &all.res, &shapes.ambient, &shapes)))
 		return (0);
-	all.nbr_img = nbr_cam(shapes.camera);
-	all.i = 0;
-	all.j = 0;
-
 	all.vars = &vars;
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, res.x, res.y, "Saint MiniRT");
-	//vars.data = img;
-	img = malloc(sizeof(t_data) * all.nbr_img + 1);
-	all.img_xy = malloc(sizeof(t_2d) * all.nbr_img + 1);
-	all.img = img;
-	while (i <= all.nbr_img)
-	{
-		printf("\nimage %d of %d processing\n", i + 1, all.nbr_img + 1);
-		img[i] = new_img(&vars, res.y, res.x);
-		(all.img_xy + i)->x = img[i].width;
-		(all.img_xy + i)->y = img[i].height;
-		project(&img[i], res, &shapes, id_cam(shapes.camera, i));
-		i++;
-	}
-	ft_putstr_fd("\nfinished\n", 1);
-	end_all_life(&shapes);
+	set_start(&all, &img, &shapes, &all.res);
+	process_fullinter(&vars, img, &all, &shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
-
-	//key_press(53, &all);
+	key_press(53, &all);
 	//mlx_hook(vars.win, 2, 1L << 0, key_test, &vars);
-	mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
+	//mlx_hook(vars.win, 15, 1L << 16, refresh, &all);
+	//mlx_hook(vars.win, 33, 1L << 17, end_of_mlx, &all);
+	//mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
 	mlx_loop(vars.mlx);
 	return (0);
 }
