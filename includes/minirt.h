@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 17:19:26 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/23 14:58:20 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/25 11:57:03 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ t_sphere *sphe_last(t_sphere *sphere);
 t_square *squ_last(t_square *square);
 t_triangle *tri_last(t_triangle *triangle);
 
+int export(t_shapes *shapes, t_all *all, t_data *img, t_vars *vars);
+int check_error(char *str);
+int nbr_cam(t_camera *camera);
+void process_fullinter(t_vars *vars, t_data *img, t_all *all, t_shapes *shapes);
+
 void filter_invert(t_vars *vars, t_data *data, t_2d *xy);
 void filter_psyche(t_vars *vars, t_data *data, t_2d *xy);
 
@@ -77,7 +82,6 @@ int pars_plane(char *str, t_plane **plane);
 int pars_square(char *str, t_square **square);
 int pars_cylinder(char *str, t_cylinder **cylinder);
 int pars_triangle(char *str, t_triangle **triangle);
-
 
 int create_trgb(int t, int r, int g, int b);
 void change_r(int *trgb, int r);

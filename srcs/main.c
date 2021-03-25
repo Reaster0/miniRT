@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/23 17:48:53 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/25 12:01:33 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,15 +170,20 @@ void set_val_null(t_2d *res, t_shapes *shapes, int *i)
 	i = 0;
 }
 
-void set_start(t_all *all, t_data **img, t_shapes *shapes, t_2d *res)
+int set_startmlx(t_all *all, t_data **img, t_shapes *shapes, t_2d *res)
 {
 	all->nbr_img = nbr_cam(shapes->camera);
 	all->i = 0;
 	all->vars->mlx = mlx_init();
 	all->vars->win = mlx_new_window(all->vars->mlx, res->x, res->y, "Saint MiniRT");
 	*img = malloc(sizeof(t_data) * (all->nbr_img + 1));
+	if (!*img)
+		return (0);
 	all->img_xy = malloc(sizeof(t_2d) * (all->nbr_img + 1));
+	if (!all->img_xy)
+		return (0);
 	all->img = *img;
+	return (1);
 }
 
 void process_fullinter(t_vars *vars, t_data *img, t_all *all, t_shapes *shapes)
@@ -205,16 +210,28 @@ int main(int argc, char **argv)
 	t_data *img;
 	t_shapes shapes;
 
-	if (argc != 2)
+	if (argc < 2)
 	{
 		printf("Error\nhey captain i need a file to work with!");
+		return (0);
+	}
+	if (argc > 3)
+	{
+		printf("Error\nhuu captain i think there is too much arguments hehe...");
 		return (0);
 	}
 	set_val_null(&all.res, &shapes, &all.j);
 	if (!(parsfile(argv[1], &all.res, &shapes.ambient, &shapes)))
 		return (0);
 	all.vars = &vars;
-	set_start(&all, &img, &shapes, &all.res);
+	if (argc == 3)
+	{
+		if (!check_error(argv[2]))
+			return (0);
+		return (export(&shapes, &all, img, &vars));
+	}
+	if (!set_startmlx(&all, &img, &shapes, &all.res))
+		return (0);
 	process_fullinter(&vars, img, &all, &shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
 	//key_press(53, &all);
@@ -223,5 +240,5 @@ int main(int argc, char **argv)
 	mlx_hook(vars.win, 33, 1L << 17, end_of_mlx, &all);
 	mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
 	mlx_loop(vars.mlx);
-	return (0);
+	return (1);
 }

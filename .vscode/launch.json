@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "Debug",
 			"program": "${workspaceFolder}/miniRT",
-			"args": ["scenes/test.rt"],
+			"args": ["scenes/psyche.rt", "--save"],
 			"cwd": "${workspaceFolder}"
 		}
 	]
