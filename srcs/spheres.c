@@ -12,44 +12,51 @@
 
 #include "../includes/minirt.h"
 
-int inter_sphere(t_ray *ray, t_sphere *sphere)
+int const	solutions(t_ray *ray, t_sphere *sphere, t_2d *t)
 {
-	float a;
-	float b;
-	float c;
-	float d;
-	float discriminant;
-	float t1;
-	float t2;
-	t_3d l = sub_product(ray->startpoint, sphere->startpoint);
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+	t_3d	l;
 
+	l = sub_product(ray->startpoint, sphere->startpoint);
 	a = dot_product(ray->endpoint, ray->endpoint);
 	b = 2.f * dot_product(ray->endpoint, l);
 	c = dot_product(l, l) - sqr(sphere->r);
 	discriminant = sqr(b) - 4 * a * c;
 	if (discriminant < 0.0f)
 		return (0);
-	t1 = (-b - sqrt(discriminant)) / (2 * a);
-	t2 = (-b + sqrt(discriminant)) / (2 * a);
-	if (t1 > 0.0001f && t1 < ray->t)
-		ray->t = t1;
-	else if (t2 > 0.0001f && t2 < ray->t)
-		ray->t = t2;
+	t->x = (-b - sqrt(discriminant)) / (2 * a);
+	t->y = (-b + sqrt(discriminant)) / (2 * a);
+	return (1);
+}
+
+int			inter_sphere(t_ray *ray, t_sphere *sphere)
+{
+	t_2d t;
+
+	if (!solutions(ray, sphere, &t))
+		return (0);
+	if (t.x > 0.0001f && t.x < ray->t)
+		ray->t = t.x;
+	else if (t.y > 0.0001f && t.y < ray->t)
+		ray->t = t.y;
 	else
 		return (0);
-
 	ray->shape_point = sphere->startpoint;
 	ray->shape_color = sphere->color;
-
 	ray->shape_normale = sub_product(ray->startpoint, sphere->startpoint);
 	normalize(&ray->shape_normale);
 	return (1);
 }
 
-int inter_spheres(t_ray *ray, t_sphere *sphere)
+int			inter_spheres(t_ray *ray, t_sphere *sphere)
 {
-	int i = 0;
+	int i;
 	int ret;
+
+	i = 0;
 	ret = 0;
 	while (sphere)
 	{

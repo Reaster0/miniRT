@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-t_sphere *sphe_last(t_sphere *sphere)
+t_sphere	*sphe_last(t_sphere *sphere)
 {
 	if (!(sphere))
 		return (0);
@@ -21,20 +21,21 @@ t_sphere *sphe_last(t_sphere *sphere)
 	return (sphere);
 }
 
-void sphe_add(t_sphere **sphere, t_sphere *new)
+void		sphe_add(t_sphere **sphere, t_sphere *new)
 {
 	if (!(*sphere))
 	{
 		*sphere = new;
-		return;
+		return ;
 	}
 	sphe_last(*sphere)->next = new;
 	new->next = 0;
 }
 
-t_sphere *new_sphe()
+t_sphere	*new_sphe(void)
 {
 	t_sphere *sphere;
+
 	sphere = malloc(sizeof(t_sphere));
 	if (!sphere)
 		return (NULL);
@@ -45,12 +46,13 @@ t_sphere *new_sphe()
 	return (sphere);
 }
 
-int pars_sphere(char *str, t_sphere **sphere)
+int			pars_sphere(char *str, t_sphere **sphere)
 {
-	int i;
+	int			i;
+	t_sphere	*sphe;
+	t_3d		color;
+
 	i = 0;
-	t_sphere *sphe;
-	t_3d color;
 	if (!str)
 		return (0);
 	sphe = new_sphe();

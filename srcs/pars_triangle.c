@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-t_triangle *tri_last(t_triangle *triangle)
+t_triangle		*tri_last(t_triangle *triangle)
 {
 	if (!(triangle))
 		return (0);
@@ -21,20 +21,21 @@ t_triangle *tri_last(t_triangle *triangle)
 	return (triangle);
 }
 
-void tri_add(t_triangle **triangle, t_triangle *new)
+void			tri_add(t_triangle **triangle, t_triangle *new)
 {
 	if (!(*triangle))
 	{
 		*triangle = new;
-		return;
+		return ;
 	}
 	tri_last(*triangle)->next = new;
 	new->next = 0;
 }
 
-t_triangle *new_tri()
+t_triangle		*new_tri(void)
 {
 	t_triangle *triangle;
+
 	triangle = malloc(sizeof(t_triangle));
 	if (!triangle)
 		return (NULL);
@@ -46,11 +47,13 @@ t_triangle *new_tri()
 	return (triangle);
 }
 
-int pars_triangle(char *str, t_triangle **triangle)
+int				pars_triangle(char *str, t_triangle **triangle)
 {
-	int i = 0;
-	t_triangle *tri;
-	t_3d color;
+	int			i;
+	t_triangle	*tri;
+	t_3d		color;
+
+	i = 0;
 	if (!str)
 		return (0);
 	tri = new_tri();

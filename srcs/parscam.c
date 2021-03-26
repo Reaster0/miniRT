@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-t_camera *cam_last(t_camera *camera)
+t_camera	*cam_last(t_camera *camera)
 {
 	if (!(camera))
 		return (0);
@@ -21,20 +21,21 @@ t_camera *cam_last(t_camera *camera)
 	return (camera);
 }
 
-void cam_add(t_camera **camera, t_camera *new)
+void		cam_add(t_camera **camera, t_camera *new)
 {
 	if (!(*camera))
 	{
 		*camera = new;
-		return;
+		return ;
 	}
 	cam_last(*camera)->next = new;
 	new->next = 0;
 }
 
-t_camera *new_cam()
+t_camera	*new_cam(void)
 {
 	t_camera *camera;
+
 	camera = malloc(sizeof(t_camera));
 	if (!camera)
 		return (NULL);
@@ -47,11 +48,12 @@ t_camera *new_cam()
 	return (camera);
 }
 
-int pars_cam(char *str, t_camera **camera)
+int			pars_cam(char *str, t_camera **camera)
 {
-	int i;
+	int			i;
+	t_camera	*cam;
+
 	i = 0;
-	t_camera *cam;
 	if (!str)
 		return (0);
 	cam = new_cam();

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:25:08 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/25 12:01:33 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/26 15:53:27 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,17 @@ void process_fullinter(t_vars *vars, t_data *img, t_all *all, t_shapes *shapes)
 	end_all_life(shapes);
 }
 
+void fix_screen(t_vars *vars, t_2d *xy)
+{
+	int x;
+	int y;
+	mlx_get_screen_size(vars->mlx, &x, &y);
+	if (xy->x > x)
+		xy->x = x;
+	if (xy->y > y)
+		xy->y = y;
+}
+
 int main(int argc, char **argv)
 {
 	t_vars vars;
@@ -232,6 +243,7 @@ int main(int argc, char **argv)
 	}
 	if (!set_startmlx(&all, &img, &shapes, &all.res))
 		return (0);
+	fix_screen(&vars, &all.res);
 	process_fullinter(&vars, img, &all, &shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
 	//key_press(53, &all);

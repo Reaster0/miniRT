@@ -6,26 +6,14 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 14:00:51 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/26 11:39:38 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/26 14:15:56 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include <fcntl.h>
 
-int check_error(char *str)
-{
-	if (!str)
-		return (0);
-	if (ft_strncmp(str, "--save", 6) != 0)
-	{
-		printf("Error\nargument must be save, captain");
-		return (0);
-	}
-	return (1);
-}
-
-int set_start(t_all *all, t_data **img, t_shapes *shapes)
+int		set_start(t_all *all, t_data **img, t_shapes *shapes)
 {
 	all->nbr_img = nbr_cam(shapes->camera);
 	all->i = 0;
@@ -39,7 +27,7 @@ int set_start(t_all *all, t_data **img, t_shapes *shapes)
 	all->img = *img;
 }
 
-void file_header(int fd, t_2d wh)
+void	file_header(int fd, t_2d wh)
 {
 	int size;
 	int offset;
@@ -53,9 +41,9 @@ void file_header(int fd, t_2d wh)
 	write(fd, &offset, 4);
 }
 
-void info_header(int fd, t_2d wh, t_data *img)
+void	info_header(int fd, t_2d wh, t_data *img)
 {
-	int values[5];
+	int	values[5];
 
 	values[0] = wh.x;
 	values[1] = wh.y;
@@ -72,12 +60,13 @@ void info_header(int fd, t_2d wh, t_data *img)
 	write(fd, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16);
 }
 
-int save_image(t_data *img, t_2d wh)
+int		save_image(t_data *img, t_2d wh)
 {
-	int fd;
-	int temp;
-	unsigned char color[3];
-	int extrabytes;
+	int				fd;
+	int				temp;
+	unsigned char	color[3];
+	int				extrabytes;
+
 	fd = open("export.bmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (0);
@@ -100,7 +89,7 @@ int save_image(t_data *img, t_2d wh)
 	return (1);
 }
 
-int export_bmp(t_shapes *shapes, t_all *all, t_data *img, t_vars *vars)
+int		export_bmp(t_shapes *shapes, t_all *all, t_data *img, t_vars *vars)
 {
 	if (!set_start(all, &img, shapes))
 		return (0);

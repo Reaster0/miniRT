@@ -12,13 +12,11 @@
 
 #include "../includes/minirt.h"
 
-//problemes sur les triangles qui sont derrieres la camera
-
-static int in_it(t_ray *ray, t_triangle *triangle, float *t, t_3d *normal)
+static int	in_it(t_ray *ray, t_triangle *triangle, float *t, t_3d *normal)
 {
-	t_3d edge1;
-	t_3d edge2;
-	float dDotN;
+	t_3d	edge1;
+	t_3d	edge2;
+	float	ddotn;
 
 	edge1 = sub_product(triangle->b, triangle->a);
 	edge2 = sub_product(triangle->c, triangle->a);
@@ -26,21 +24,23 @@ static int in_it(t_ray *ray, t_triangle *triangle, float *t, t_3d *normal)
 	normalize(normal);
 	if (dot_product(ray->endpoint, *normal) > 0.f)
 		*normal = multiply_v(-1.f, *normal);
-	dDotN = dot_product(ray->endpoint, *normal);
-	if (dDotN == 0.f)
+	ddotn = dot_product(ray->endpoint, *normal);
+	if (ddotn == 0.f)
 		return (0);
-	*t = dot_product(sub_product(triangle->a, ray->startpoint), *normal) / dDotN;
+	*t = dot_product(sub_product(triangle->a, ray->startpoint), *normal) /
+		ddotn;
 	if (*t <= 0.000001f || *t >= ray->t)
 		return (0);
 	return (1);
 }
 
-int inter_triangle2(t_ray *ray, t_triangle *triangle)
+int			inter_triangle2(t_ray *ray, t_triangle *triangle)
 {
-	float area[3];
-	t_3d interp;
-	t_3d normal;
-	float t;
+	float	area[3];
+	t_3d	interp;
+	t_3d	normal;
+	float	t;
+
 	if (!in_it(ray, triangle, &t, &normal) || t <= 0.000001f || t >= ray->t)
 		return (0);
 	interp = add_product(multiply_v(t, ray->endpoint), ray->startpoint);

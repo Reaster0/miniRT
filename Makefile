@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/03/25 11:12:29 by earnaud          ###   ########.fr        #
+#    Updated: 2021/03/26 16:22:44 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,10 @@ FILES		=  get_next_line.c \
 				main.c \
 				mlx_util.c \
 				colors.c \
-				math.c \
 				littlemath.c\
+				littlemath2.c \
+				littlemath3.c \
+				littlemath4.c \
 				shapes.c \
 				matrice.c \
 				ray.c \
@@ -57,7 +59,9 @@ FILES		=  get_next_line.c \
 				pars_square.c \
 				pars_cylinder.c \
 				filters.c \
-				bmp.c
+				bmp.c \
+				bmp_util.c \
+				color2.c
 
 
 SRCS		= $(addprefix $(SRCS_DIR), $(FILES))

@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   littlemath.c                                       :+:      :+:    :+:   */
+/*   color2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/15 13:23:19 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/26 16:04:13 by earnaud          ###   ########.fr       */
+/*   Created: 2021/03/26 14:25:06 by earnaud           #+#    #+#             */
+/*   Updated: 2021/03/26 14:25:30 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-t_3d	add_product(t_3d a, t_3d b)
+int	add_shade(double shade, int color)
 {
-	a.x += b.x;
-	a.y += b.y;
-	a.z += b.z;
-	return (a);
+	return (color * shade);
 }
 
-t_3d	sub_product(t_3d a, t_3d b)
+int	get_t(int trgb)
 {
-	t_3d ret;
-
-	ret.x = a.x - b.x;
-	ret.y = a.y - b.y;
-	ret.z = a.z - b.z;
-	return (ret);
+	return ((trgb >> 24) & 0xFF);
 }
 
-t_ray	calculate(t_ray ray, float t)
+int	get_r(int trgb)
 {
-	t_ray temp;
+	return ((trgb >> 16) & 0xFF);
+}
 
-	temp = ray;
-	temp.endpoint = add_product(multiply_v(t, ray.endpoint), ray.startpoint);
-	return (temp);
+int	get_g(int trgb)
+{
+	return ((trgb >> 8) & 0xFF);
+}
+
+int	get_b(int trgb)
+{
+	return (trgb & 0xFF);
 }

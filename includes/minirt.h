@@ -72,6 +72,7 @@ int				check_error(char *str);
 int				nbr_cam(t_camera *camera);
 void			process_fullinter(t_vars *vars, t_data *img, t_all *all,
 				t_shapes *shapes);
+void			fix_screen(t_vars *vars, t_2d *xy);
 
 void			filter_invert(t_vars *vars, t_data *data, t_2d *xy);
 void			filter_psyche(t_vars *vars, t_data *data, t_2d *xy);
@@ -99,7 +100,6 @@ int				get_opposite(int color);
 int				add_shade(double shade, int color);
 t_data			new_img(t_vars *vars, int y, int x);
 void			img_adress(t_data *data);
-int				next_frame(t_vars *vars);
 void			mlx_pixel_put_fast(t_data *data, int x, int y, int color);
 char			*get_pixel(t_data *data, int x, int y);
 #endif

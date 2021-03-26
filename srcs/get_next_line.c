@@ -12,7 +12,7 @@
 
 #include "../includes/get_next_line.h"
 
-char *ft_afterline(char *s)
+char	*ft_afterline(char *s)
 {
 	char *temp;
 
@@ -23,7 +23,7 @@ char *ft_afterline(char *s)
 	return (temp);
 }
 
-int ft_check_error(char **line, int fd)
+int		ft_check_error(char **line, int fd)
 {
 	char buf[1];
 
@@ -32,7 +32,7 @@ int ft_check_error(char **line, int fd)
 	return (1);
 }
 
-int ft_sendline_next(char **line, char *rest)
+int		ft_sendline_next(char **line, char *rest)
 {
 	size_t len;
 
@@ -46,11 +46,11 @@ int ft_sendline_next(char **line, char *rest)
 	return (1);
 }
 
-int ft_read_buf(char **rest, char **line, int fd)
+int		ft_read_buf(char **rest, char **line, int fd)
 {
-	char buf[1 + 1];
-	int read_ret;
-	int ret;
+	char	buf[1 + 1];
+	int		read_ret;
+	int		ret;
 
 	ret = 1;
 	while (ft_line(*rest) == -1)
@@ -60,7 +60,7 @@ int ft_read_buf(char **rest, char **line, int fd)
 		{
 			if (ft_line(*rest) == -1)
 				ret = 0;
-			break;
+			break ;
 		}
 		buf[read_ret] = '\0';
 		if (!(*rest = ft_strjoin_sp(&*rest, buf)))
@@ -74,10 +74,10 @@ int ft_read_buf(char **rest, char **line, int fd)
 	return (ret);
 }
 
-int get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
-	static char *rest;
-	int ret;
+	static char	*rest;
+	int			ret;
 
 	ret = 1;
 	if (ft_check_error(line, fd) == -1)

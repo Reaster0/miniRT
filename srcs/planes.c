@@ -12,17 +12,18 @@
 
 #include "../includes/minirt.h"
 
-int inter_plane(t_ray *ray, t_plane *plane)
+int		inter_plane(t_ray *ray, t_plane *plane)
 {
-	float dDotN;
+	float ddotn;
 	float t;
 
 	if (dot_product(ray->endpoint, plane->normal) > 0.f)
 		plane->normal = multiply_v(-1.f, plane->normal);
-	dDotN = dot_product(ray->endpoint, plane->normal);
-	if (dDotN == 0.f)
+	ddotn = dot_product(ray->endpoint, plane->normal);
+	if (ddotn == 0.f)
 		return (0);
-	t = dot_product(sub_product(plane->position, ray->startpoint), plane->normal) / dDotN;
+	t = dot_product(sub_product(plane->position,
+				ray->startpoint), plane->normal) / ddotn;
 	if (t <= 0.000001f || t >= ray->t)
 		return (0);
 	ray->shape_color = plane->color;
@@ -32,9 +33,10 @@ int inter_plane(t_ray *ray, t_plane *plane)
 	return (1);
 }
 
-int inter_planes(t_ray *ray, t_plane *plane)
+int		inter_planes(t_ray *ray, t_plane *plane)
 {
 	int ret;
+
 	ret = 0;
 	while (plane)
 	{

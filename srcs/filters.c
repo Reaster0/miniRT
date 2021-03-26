@@ -12,16 +12,18 @@
 
 #include "../includes/minirt.h"
 
-void filter_psyche(t_vars *vars, t_data *data, t_2d *xy)
+void	filter_psyche(t_vars *vars, t_data *data, t_2d *xy)
 {
 	t_2d count;
+
 	count.y = 0;
 	while (count.y < xy->y)
 	{
 		count.x = 0;
 		while (count.x < xy->x)
 		{
-			*(int *)get_pixel(data, count.x, count.y) = add_shade(0.4, *(int *)get_pixel(data, count.x, count.y));
+			*(int *)get_pixel(data, count.x, count.y) = add_shade(0.4,
+					*(int *)get_pixel(data, count.x, count.y));
 			count.x++;
 		}
 		count.y++;
@@ -29,16 +31,18 @@ void filter_psyche(t_vars *vars, t_data *data, t_2d *xy)
 	mlx_put_image_to_window(vars->mlx, vars->win, data->img, 0, 0);
 }
 
-void filter_invert(t_vars *vars, t_data *data, t_2d *xy)
+void	filter_invert(t_vars *vars, t_data *data, t_2d *xy)
 {
 	t_2d count;
+
 	count.y = 0;
 	while (count.y < xy->y)
 	{
 		count.x = 0;
 		while (count.x < xy->x)
 		{
-			*(int *)get_pixel(data, count.x, count.y) = get_opposite(*(int *)get_pixel(data, count.x, count.y));
+			*(int *)get_pixel(data, count.x, count.y) = get_opposite(
+					*(int *)get_pixel(data, count.x, count.y));
 			count.x++;
 		}
 		count.y++;

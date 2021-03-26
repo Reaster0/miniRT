@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-t_cylinder *cy_last(t_cylinder *cylinder)
+t_cylinder	*cy_last(t_cylinder *cylinder)
 {
 	if (!(cylinder))
 		return (0);
@@ -21,20 +21,21 @@ t_cylinder *cy_last(t_cylinder *cylinder)
 	return (cylinder);
 }
 
-void cy_add(t_cylinder **cylinder, t_cylinder *new)
+void		cy_add(t_cylinder **cylinder, t_cylinder *new)
 {
 	if (!(*cylinder))
 	{
 		*cylinder = new;
-		return;
+		return ;
 	}
 	cy_last(*cylinder)->next = new;
 	new->next = 0;
 }
 
-t_cylinder *new_cy()
+t_cylinder	*new_cy(void)
 {
 	t_cylinder *cylinder;
+
 	cylinder = malloc(sizeof(t_cylinder));
 	if (!cylinder)
 		return (NULL);
@@ -47,11 +48,13 @@ t_cylinder *new_cy()
 	return (cylinder);
 }
 
-int pars_cylinder(char *str, t_cylinder **cylinder)
+int			pars_cylinder(char *str, t_cylinder **cylinder)
 {
-	int i = 0;
-	t_cylinder *cy;
-	t_3d color;
+	int			i;
+	t_cylinder	*cy;
+	t_3d		color;
+
+	i = 0;
 	if (!str)
 		return (0);
 	cy = new_cy();

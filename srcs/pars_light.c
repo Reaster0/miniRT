@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-t_light *li_last(t_light *light)
+t_light		*li_last(t_light *light)
 {
 	if (!(light))
 		return (0);
@@ -21,20 +21,21 @@ t_light *li_last(t_light *light)
 	return (light);
 }
 
-void li_add(t_light **light, t_light *new)
+void		li_add(t_light **light, t_light *new)
 {
 	if (!(*light))
 	{
 		*light = new;
-		return;
+		return ;
 	}
 	li_last(*light)->next = new;
 	new->next = 0;
 }
 
-t_light *new_li()
+t_light		*new_li(void)
 {
-	t_light *light;
+	t_light	*light;
+
 	light = malloc(sizeof(t_light));
 	if (!light)
 		return (NULL);
@@ -44,12 +45,13 @@ t_light *new_li()
 	return (light);
 }
 
-int pars_light(char *str, t_light **light)
+int			pars_light(char *str, t_light **light)
 {
-	int i;
+	int		i;
+	t_light	*li;
+	t_3d	color;
+
 	i = 0;
-	t_light *li;
-	t_3d color;
 	if (!str)
 		return (0);
 	li = new_li();

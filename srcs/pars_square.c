@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-t_square *squ_last(t_square *square)
+t_square	*squ_last(t_square *square)
 {
 	if (!(square))
 		return (0);
@@ -21,20 +21,21 @@ t_square *squ_last(t_square *square)
 	return (square);
 }
 
-void squ_add(t_square **square, t_square *new)
+void		squ_add(t_square **square, t_square *new)
 {
 	if (!(*square))
 	{
 		*square = new;
-		return;
+		return ;
 	}
 	squ_last(*square)->next = new;
 	new->next = 0;
 }
 
-t_square *new_squ()
+t_square	*new_squ(void)
 {
 	t_square *square;
+
 	square = malloc(sizeof(t_square));
 	if (!square)
 		return (NULL);
@@ -45,11 +46,13 @@ t_square *new_squ()
 	return (square);
 }
 
-int pars_square(char *str, t_square **square)
+int			pars_square(char *str, t_square **square)
 {
-	int i = 0;
-	t_square *squ;
-	t_3d color;
+	int			i;
+	t_square	*squ;
+	t_3d		color;
+
+	i = 0;
 	if (!str)
 		return (0);
 	squ = new_squ();

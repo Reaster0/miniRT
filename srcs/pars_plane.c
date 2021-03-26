@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-t_plane *pla_last(t_plane *plane)
+t_plane		*pla_last(t_plane *plane)
 {
 	if (!(plane))
 		return (0);
@@ -21,20 +21,21 @@ t_plane *pla_last(t_plane *plane)
 	return (plane);
 }
 
-void pla_add(t_plane **plane, t_plane *new)
+void		pla_add(t_plane **plane, t_plane *new)
 {
 	if (!(*plane))
 	{
 		*plane = new;
-		return;
+		return ;
 	}
 	pla_last(*plane)->next = new;
 	new->next = 0;
 }
 
-t_plane *new_pla()
+t_plane		*new_pla(void)
 {
 	t_plane *plane;
+
 	plane = malloc(sizeof(t_plane));
 	if (!plane)
 		return (NULL);
@@ -45,11 +46,13 @@ t_plane *new_pla()
 	return (plane);
 }
 
-int pars_plane(char *str, t_plane **plane)
+int			pars_plane(char *str, t_plane **plane)
 {
-	int i = 0;
-	t_plane *pla;
-	t_3d color;
+	int		i;
+	t_plane	*pla;
+	t_3d	color;
+
+	i = 0;
 	if (!str)
 		return (0);
 	pla = new_pla();

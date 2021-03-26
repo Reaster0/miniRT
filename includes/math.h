@@ -16,9 +16,6 @@
 
 t_3d		v_matrix(t_3d point, t_matrix4 matrix);
 t_3d		p_matrix(t_3d point, t_matrix4 matrix);
-t_matrix4	rota_x_mtrx(float angle);
-t_matrix4	rota_y_mtrx(float angle);
-t_matrix4	rota_z_mtrx(float angle);
 t_matrix4	cam_to_world(t_camera camera);
 t_ray		make_ray(t_3d origin, t_3d target, t_3d screen, int ambient);
 
