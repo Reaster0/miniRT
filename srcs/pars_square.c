@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 12:33:59 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 11:05:28 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/26 22:07:55 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,24 @@ t_square	*new_squ(void)
 	return (square);
 }
 
+int			pars_square2(char *str, t_3d *color, int *i, t_square *squ)
+{
+	if (str[(*i)] != ' ' && str[(*i)])
+		return (0);
+	skip(i, str);
+	if (!read3d(str, color, i))
+		return (0);
+	fix_3d(color, 0, 255);
+	squ->color = create_trgb(0, color->x, color->y, color->z);
+	while (str[(*i)])
+	{
+		if (str[(*i)] != ' ')
+			return (0);
+		(*i)++;
+	}
+	return (1);
+}
+
 int			pars_square(char *str, t_square **square)
 {
 	int			i;
@@ -57,33 +75,16 @@ int			pars_square(char *str, t_square **square)
 		return (0);
 	squ = new_squ();
 	squ_add(&(*square), squ);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &squ->center, &i))
 		return (0);
 	squ->center.x *= -1;
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &squ->orient, &i))
 		return (0);
 	fix_3d(&squ->orient, -1, 1);
 	normalize(&squ->orient);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	squ->side = itof(str, &i);
-	if (str[i] != ' ' && str[i])
-		return (0);
-	while (str[i] == ' ')
-		i++;
-	if (!read3d(str, &color, &i))
-		return (0);
-	fix_3d(&color, 0, 255);
-	squ->color = create_trgb(0, color.x, color.y, color.z);
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
+	return (pars_square2(str, &color, &i, squ));
 }

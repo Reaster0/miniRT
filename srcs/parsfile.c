@@ -6,12 +6,18 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/26 15:03:33 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/26 22:06:38 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include <fcntl.h>
+
+void skip(int *i, char *str)
+{
+	while (str[(*i)] == ' ')
+		(*i)++;
+}
 
 void fix_3d(t_3d *d3, float min, float max)
 {

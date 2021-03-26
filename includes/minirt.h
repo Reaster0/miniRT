@@ -68,6 +68,7 @@ t_triangle		*tri_last(t_triangle *triangle);
 
 int				export_bmp(t_shapes *shapes, t_all *all, t_data *img,
 				t_vars *vars);
+void			skip(int *i, char *str);
 int				check_error(char *str);
 int				nbr_cam(t_camera *camera);
 void			process_fullinter(t_vars *vars, t_data *img, t_all *all,

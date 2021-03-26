@@ -47,7 +47,7 @@ int			cy_assign(t_cylinder *cylinder, t_3d hitpoint, t_ray *ray, int t)
 	return (1);
 }
 
-int const	solutions(t_ray *ray, t_cylinder *cylinder, t_2d *t)
+static int	solutions(t_ray *ray, t_cylinder *cylinder, t_2d *t)
 {
 	t_3d	oc;
 	t_3d	dir;

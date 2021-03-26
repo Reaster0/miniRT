@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "Debug",
 			"program": "${workspaceFolder}/miniRT",
-			"args": ["scenes/legacy.rt", "--save"],
+			"args": ["scenes/tower_square.rt"],
 			"cwd": "${workspaceFolder}"
 		}
 	]

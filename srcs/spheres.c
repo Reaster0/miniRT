@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-int const	solutions(t_ray *ray, t_sphere *sphere, t_2d *t)
+static int	solutions(t_ray *ray, t_sphere *sphere, t_2d *t)
 {
 	float	a;
 	float	b;

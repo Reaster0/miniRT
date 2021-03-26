@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 10:14:52 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 15:27:06 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/26 22:23:53 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,22 @@ t_camera	*new_cam(void)
 	return (camera);
 }
 
+int			pars_cam2(char *str, t_camera *cam, int *i)
+{
+	normalize(&cam->forward);
+	skip(i, str);
+	cam->fov = fix_float(itof(str, i) / 2 * M_PI / 180.f, 0, 180);
+	cam->startpoint.x *= -1;
+	cam->forward.x *= -1;
+	while (str[(*i)])
+	{
+		if (str[(*i)] != ' ')
+			return (0);
+		(*i)++;
+	}
+	return (1);
+}
+
 int			pars_cam(char *str, t_camera **camera)
 {
 	int			i;
@@ -58,26 +74,12 @@ int			pars_cam(char *str, t_camera **camera)
 		return (0);
 	cam = new_cam();
 	cam_add(&(*camera), cam);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &cam->startpoint, &i))
 		return (0);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &cam->forward, &i))
 		return (0);
 	fix_3d(&cam->forward, -1, 1);
-	normalize(&cam->forward);
-	while (str[i] == ' ')
-		i++;
-	cam->fov = fix_float(itof(str, &i) / 2 * M_PI / 180.f, 0, 180);
-	cam->startpoint.x *= -1;
-	cam->forward.x *= -1;
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
+	return (pars_cam2(str, cam, &i));
 }
