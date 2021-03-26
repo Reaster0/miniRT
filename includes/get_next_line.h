@@ -14,7 +14,6 @@
 # define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
-//# include <limits.h>
 # include "minirt.h"
 
 int			get_next_line(int fd, char **line);

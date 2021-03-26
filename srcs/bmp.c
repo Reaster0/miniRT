@@ -100,7 +100,7 @@ int save_image(t_data *img, t_2d wh)
 	return (1);
 }
 
-int export(t_shapes *shapes, t_all *all, t_data *img, t_vars *vars)
+int export_bmp(t_shapes *shapes, t_all *all, t_data *img, t_vars *vars)
 {
 	if (!set_start(all, &img, shapes))
 		return (0);

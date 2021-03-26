@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 	{
 		if (!check_error(argv[2]))
 			return (0);
-		return (export(&shapes, &all, img, &vars));
+		return (export_bmp(&shapes, &all, img, &vars));
 	}
 	if (!set_startmlx(&all, &img, &shapes, &all.res))
 		return (0);
