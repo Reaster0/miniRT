@@ -6,13 +6,13 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 13:19:19 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 11:10:15 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/26 22:33:57 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-t_cylinder	*cy_last(t_cylinder *cylinder)
+t_cylinder		*cy_last(t_cylinder *cylinder)
 {
 	if (!(cylinder))
 		return (0);
@@ -21,7 +21,7 @@ t_cylinder	*cy_last(t_cylinder *cylinder)
 	return (cylinder);
 }
 
-void		cy_add(t_cylinder **cylinder, t_cylinder *new)
+void			cy_add(t_cylinder **cylinder, t_cylinder *new)
 {
 	if (!(*cylinder))
 	{
@@ -32,7 +32,7 @@ void		cy_add(t_cylinder **cylinder, t_cylinder *new)
 	new->next = 0;
 }
 
-t_cylinder	*new_cy(void)
+t_cylinder		*new_cy(void)
 {
 	t_cylinder *cylinder;
 
@@ -48,7 +48,30 @@ t_cylinder	*new_cy(void)
 	return (cylinder);
 }
 
-int			pars_cylinder(char *str, t_cylinder **cylinder)
+int				pars_cylinder2(char *str, t_cylinder *cy, t_3d *color, int *i)
+{
+	skip(i, str);
+	cy->height = itof(str, i);
+	if (str[(*i)] != ' ' && str[(*i)])
+		return (0);
+	skip(i, str);
+	if (!read3d(str, color, i))
+		return (0);
+	fix_3d(color, 0, 255);
+	cy->color = create_trgb(0, color->x, color->y, color->z);
+	cy->orient.x *= -1;
+	normalize(&cy->orient);
+	cy->point.x *= -1;
+	while (str[(*i)])
+	{
+		if (str[(*i)] != ' ')
+			return (0);
+		(*i)++;
+	}
+	return (1);
+}
+
+int				pars_cylinder(char *str, t_cylinder **cylinder)
 {
 	int			i;
 	t_cylinder	*cy;
@@ -59,39 +82,16 @@ int			pars_cylinder(char *str, t_cylinder **cylinder)
 		return (0);
 	cy = new_cy();
 	cy_add(&(*cylinder), cy);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &cy->point, &i))
 		return (0);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &cy->orient, &i))
 		return (0);
 	fix_3d(&cy->orient, -1, 1);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	cy->rayon = itof(str, &i);
 	if (str[i] != ' ' && str[i])
 		return (0);
-	while (str[i] == ' ')
-		i++;
-	cy->height = itof(str, &i);
-	if (str[i] != ' ' && str[i])
-		return (0);
-	while (str[i] == ' ')
-		i++;
-	if (!read3d(str, &color, &i))
-		return (0);
-	fix_3d(&color, 0, 255);
-	cy->color = create_trgb(0, color.x, color.y, color.z);
-	cy->orient.x *= -1;
-	normalize(&cy->orient);
-	cy->point.x *= -1;
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
+	return (pars_cylinder2(str, cy, &color, &i));
 }
