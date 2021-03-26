@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 14:00:51 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/25 14:30:10 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/26 11:39:38 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,42 +39,65 @@ int set_start(t_all *all, t_data **img, t_shapes *shapes)
 	all->img = *img;
 }
 
-void save_image(t_data *img, t_2d wh)
+void file_header(int fd, t_2d wh)
 {
-	int div[7];
-	div[0] = open("export.bmp", O_RDWR | O_TRUNC | O_CREAT, 0777);
-	//maybe +4;
-	div[1] = wh.x;
-	div[2] = wh.y;
-	div[3] = div[1] * div[2];
-	div[4] = 54 + 4 * (int)wh.x * (int)wh.y;
+	int size;
+	int offset;
+	int sizeall;
 
-	write(div[0], "BM", 2);
-	write(div[0], &div[4], 4);
-	write(div[0], "\0\0\0\0", 4);
-	write(div[0], (char *)54, 1);
-	//write(div[0], "\0\0\0\0", 4);
-	write(div[0], (char *)40, 1);
-	write(div[0], &div[1], 4);
-	write(div[0], &div[2], 4);
-	write(div[0], (char *)1, 2);
-	write(div[0], &img->bits_per_pixel, 2);
-	write(div[0], "\0\0\0\0", 4);
-	write(div[0], &div[3], 4);
-	write(div[0], "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16);
-	div[5] = 0;
-	while (div[5] < div[2])
+	offset = 54;
+	sizeall = (54 + (int)wh.x * (int)wh.y * 4) + ((int)wh.x % 4) * (int)wh.x;
+	write(fd, "BM", 2);
+	write(fd, &sizeall, 4);
+	write(fd, "\0\0\0\0", 4);
+	write(fd, &offset, 4);
+}
+
+void info_header(int fd, t_2d wh, t_data *img)
+{
+	int values[5];
+
+	values[0] = wh.x;
+	values[1] = wh.y;
+	values[2] = 40;
+	values[3] = (int)wh.x * (int)wh.y * 4;
+	values[4] = 1;
+	write(fd, &values[2], 4);
+	write(fd, &values[0], 4);
+	write(fd, &values[1], 4);
+	write(fd, &values[4], 2);
+	write(fd, &img->bits_per_pixel, 2);
+	write(fd, "\0\0\0\0", 4);
+	write(fd, &values[3], 4);
+	write(fd, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16);
+}
+
+int save_image(t_data *img, t_2d wh)
+{
+	int fd;
+	int temp;
+	unsigned char color[3];
+	int extrabytes;
+	fd = open("export.bmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
+	if (fd == -1)
+		return (0);
+	file_header(fd, wh);
+	info_header(fd, wh, img);
+	while ((int)wh.y)
 	{
-		div[6] = 0;
-		while (div[6] < div[1])
+		temp = 0;
+		while (temp < (int)wh.x)
 		{
-			int temp = 255;
-			write(div[0], &temp, 4);
-			//write(div[0], get_pixel(img, div[6], div[5]), 4);
-			div[6]++;
+			color[0] = get_b(*(int *)get_pixel(img, temp, wh.y));
+			color[1] = get_g(*(int *)get_pixel(img, temp, wh.y));
+			color[2] = get_r(*(int *)get_pixel(img, temp, wh.y));
+			write(fd, color, 3);
+			write(fd, "\0", 1);
+			temp++;
 		}
-		div[5]++;
+		wh.y--;
 	}
+	return (1);
 }
 
 int export(t_shapes *shapes, t_all *all, t_data *img, t_vars *vars)
@@ -83,6 +106,5 @@ int export(t_shapes *shapes, t_all *all, t_data *img, t_vars *vars)
 		return (0);
 	process_fullinter(all->vars, img, all, shapes);
 	printf("\nsaving the image captain");
-	save_image(img, *all->img_xy);
-	return (1);
+	return (save_image(img, *all->img_xy));
 }
