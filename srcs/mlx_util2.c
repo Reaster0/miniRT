@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-void set_val_null(t_2d *res, t_shapes *shapes, int *i)
+void	set_val_null(t_2d *res, t_shapes *shapes, int *i)
 {
 	res->x = 0;
 	res->y = 0;
@@ -27,12 +27,13 @@ void set_val_null(t_2d *res, t_shapes *shapes, int *i)
 	i = 0;
 }
 
-int set_startmlx(t_all *all, t_data **img, t_shapes *shapes, t_2d *res)
+int		set_startmlx(t_all *all, t_data **img, t_shapes *shapes, t_2d *res)
 {
 	all->nbr_img = nbr_cam(shapes->camera);
 	all->i = 0;
 	all->vars->mlx = mlx_init();
-	all->vars->win = mlx_new_window(all->vars->mlx, res->x, res->y, "Saint MiniRT");
+	all->vars->win = mlx_new_window(all->vars->mlx, res->x, res->y,
+			"Saint MiniRT");
 	*img = malloc(sizeof(t_data) * (all->nbr_img + 1));
 	if (!*img)
 		return (0);
@@ -43,10 +44,11 @@ int set_startmlx(t_all *all, t_data **img, t_shapes *shapes, t_2d *res)
 	return (1);
 }
 
-void fix_screen(t_vars *vars, t_2d *xy)
+void	fix_screen(t_vars *vars, t_2d *xy)
 {
 	int x;
 	int y;
+
 	mlx_get_screen_size(vars->mlx, &x, &y);
 	if (xy->x > x)
 		xy->x = x;
@@ -54,9 +56,10 @@ void fix_screen(t_vars *vars, t_2d *xy)
 		xy->y = y;
 }
 
-int end_of_mlx(t_all *all)
+int		end_of_mlx(t_all *all)
 {
 	int i;
+
 	i = 0;
 	while (i <= all->nbr_img)
 	{
@@ -69,12 +72,12 @@ int end_of_mlx(t_all *all)
 	free(all->img_xy);
 	free(all->vars->mlx);
 	exit(0);
-
 	return (1);
 }
 
-int refresh(t_all *all)
+int		refresh(t_all *all)
 {
-	mlx_put_image_to_window(all->vars->mlx, all->vars->win, (all->img + all->i)->img, 0, 0);
+	mlx_put_image_to_window(all->vars->mlx, all->vars->win,
+			(all->img + all->i)->img, 0, 0);
 	return (1);
 }

@@ -58,7 +58,7 @@ t_camera	*id_cam(t_camera *camera, int i)
 	return (camera);
 }
 
-static int	check_error(int argc)
+static int	check_error_main(int argc)
 {
 	if (argc < 2)
 	{
@@ -80,6 +80,8 @@ int			main(int argc, char **argv)
 	t_data		*img;
 	t_shapes	shapes;
 
+	if (!check_error_main(argc))
+		return (0);
 	set_val_null(&all.res, &shapes, &all.j);
 	if (!(parsfile(argv[1], &all.res, &shapes.ambient, &shapes)))
 		return (0);
@@ -95,9 +97,6 @@ int			main(int argc, char **argv)
 	fix_screen(&vars, &all.res);
 	process_fullinter(&vars, img, &all, &shapes);
 	mlx_put_image_to_window(vars.mlx, vars.win, all.img->img, 0, 0);
-	mlx_hook(vars.win, 15, 1L << 16, refresh, &all);
-	mlx_hook(vars.win, 33, 1L << 17, end_of_mlx, &all);
-	mlx_hook(vars.win, 2, 1L << 0, key_press, &all);
-	mlx_loop(vars.mlx);
+	mlx_run(&vars, &all);
 	return (1);
 }

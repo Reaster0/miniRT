@@ -56,6 +56,10 @@ float			itof(char *str, int *i);
 int				read3d(char *str, t_3d *value, int *i);
 float			fix_float(float nbr, float max, float min);
 void			fix_3d(t_3d *d3, float min, float max);
+int				parsline(char *str, t_2d *res, int *ambi, t_shapes *shapes);
+int				pars_res(char *str, t_2d *res);
+int				pars_ambient(char *str, int *ambi);
+int				check_name(char *file);
 
 void			end_all_life(t_shapes *shapes);
 int				refresh(t_all *all);
@@ -65,6 +69,7 @@ int				set_startmlx(t_all *all, t_data **img,
 				t_shapes *shapes, t_2d *res);
 void			set_val_null(t_2d *res, t_shapes *shapes, int *i);
 int				key_press(int keycode, t_all *all);
+void			mlx_run(t_vars *vars, t_all *all);
 
 t_camera		*cam_last(t_camera *camera);
 t_cylinder		*cy_last(t_cylinder *cylinder);

@@ -6,7 +6,7 @@
 #    By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/06 14:15:36 by earnaud           #+#    #+#              #
-#    Updated: 2021/03/27 13:33:05 by earnaud          ###   ########.fr        #
+#    Updated: 2021/03/27 16:08:22 by earnaud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,10 @@ FILES		=  get_next_line.c \
 				bmp_util.c \
 				color2.c \
 				inter.c \
-				mlx_util2.c
+				mlx_util2.c \
+				parsfile_util.c \
+				parsfile_util2.c \
+				parsfile_util3.c
 
 
 

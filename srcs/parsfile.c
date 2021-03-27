@@ -6,39 +6,18 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 14:51:12 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/26 22:06:38 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/27 16:13:48 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include <fcntl.h>
 
-void skip(int *i, char *str)
+int		pars_res(char *str, t_2d *res)
 {
-	while (str[(*i)] == ' ')
-		(*i)++;
-}
+	int i;
 
-void fix_3d(t_3d *d3, float min, float max)
-{
-	d3->w = fix_float(d3->w, min, max);
-	d3->x = fix_float(d3->x, min, max);
-	d3->y = fix_float(d3->y, min, max);
-	d3->z = fix_float(d3->z, min, max);
-}
-
-float fix_float(float nbr, float min, float max)
-{
-	if (nbr > max)
-		return (max);
-	if (nbr < min)
-		return (min);
-	return (nbr);
-}
-
-int pars_res(char *str, t_2d *res)
-{
-	int i = 0;
+	i = 0;
 	if (!str)
 		return (0);
 	while (str[i] == ' ')
@@ -58,70 +37,13 @@ int pars_res(char *str, t_2d *res)
 	return (1);
 }
 
-float itof(char *str, int *i)
+int		pars_ambient(char *str, int *ambi)
 {
-	float result;
-	int isneg;
-	int flag;
-	int j;
-	isneg = 0;
-	j = 0;
-	flag = 0;
-	result = 0;
-	if (str[*i] == '-')
-	{
-		isneg = 1;
-		(*i)++;
-	}
-	while (str[*i] && (ft_isdigit(str[*i]) || str[*i] == '.'))
-	{
-		if (ft_isdigit(str[*i]))
-		{
-			result = (result * 10) + str[*i] - '0';
-			if (flag)
-				j--;
-		}
-		else if (str[*i] == '.')
-		{
-			if (flag)
-				return (0);
-			flag = 1;
-		}
-		else
-			return (0);
-		(*i)++;
-	}
-	result *= pow(10, j);
-	if (isneg)
-		result *= -1;
-	return (result);
-}
+	int		i;
+	float	intens;
+	t_3d	color;
 
-int read3d(char *str, t_3d *value, int *i)
-{
-	int error;
-	error = 1;
-	value->x = itof(str, i);
-	if (str[*i] == ',')
-		(*i)++;
-	else
-		return (0);
-	value->y = itof(str, i);
-	if (str[*i] == ',')
-		(*i)++;
-	else
-		return (0);
-	value->z = itof(str, i);
-	value->w = 0;
-	return (1);
-}
-
-int pars_ambient(char *str, int *ambi)
-{
-	int i;
 	i = 0;
-	t_3d color;
-	float intens;
 	if (!str)
 		return (0);
 	while (str[i] == ' ')
@@ -144,106 +66,7 @@ int pars_ambient(char *str, int *ambi)
 	return (1);
 }
 
-int parsline(char *str, t_2d *res, int *ambi, t_shapes *shapes)
-{
-	int ret;
-	int i;
-	ret = 0;
-	i = 0;
-	if (*str == 'R' && !res->x && str[1] == ' ')
-		ret = pars_res(str + 1, res);
-	else if (*str == 'A' && !*ambi && str[1] == ' ')
-		ret = pars_ambient(str + 1, ambi);
-	else if (*str == 'c' && str[1] == ' ')
-		ret = pars_cam(str + 1, &shapes->camera);
-	else if (*str == 'l' && str[1] == ' ')
-		ret = pars_light(str + 1, &shapes->light);
-	else if (*str == 's' && str[1] == 'p')
-		ret = pars_sphere(str + 2, &shapes->sphere);
-	else if (*str == 'p' && str[1] == 'l')
-		ret = pars_plane(str + 2, &shapes->plane);
-	else if (*str == 's' && str[1] == 'q')
-		ret = pars_square(str + 2, &shapes->square);
-	else if (*str == 'c' && str[1] == 'y')
-		ret = pars_cylinder(str + 2, &shapes->cylinder);
-	else if (*str == 't' && str[1] == 'r')
-		ret = pars_triangle(str + 2, &shapes->triangle);
-	else if (!*str)
-		ret = 1;
-	return (ret);
-}
-
-void end_life(void *p)
-{
-	free(p);
-	p = NULL;
-}
-
-void end_all_life(t_shapes *shapes)
-{
-	void *p;
-	while (shapes->camera)
-	{
-		p = (void *)shapes->camera->next;
-		end_life((void *)shapes->camera);
-		shapes->camera = (t_camera *)p;
-	}
-	while (shapes->cylinder)
-	{
-		p = (void *)shapes->cylinder->next;
-		end_life((void *)shapes->cylinder);
-		shapes->cylinder = (t_cylinder *)p;
-	}
-	while (shapes->light)
-	{
-		p = (void *)shapes->light->next;
-		end_life((void *)shapes->light);
-		shapes->light = (t_light *)p;
-	}
-	while (shapes->plane)
-	{
-		p = (void *)shapes->plane->next;
-		end_life((void *)shapes->plane);
-		shapes->plane = (t_plane *)p;
-	}
-	while (shapes->sphere)
-	{
-		p = (void *)shapes->sphere->next;
-		end_life((void *)shapes->sphere);
-		shapes->sphere = (t_sphere *)p;
-	}
-	while (shapes->square)
-	{
-		p = (void *)shapes->square->next;
-		end_life((void *)shapes->square);
-		shapes->square = (t_square *)p;
-	}
-	while (shapes->triangle)
-	{
-		p = (void *)shapes->triangle->next;
-		end_life((void *)shapes->triangle);
-		shapes->triangle = (t_triangle *)p;
-	}
-}
-
-int check_name(char *file)
-{
-	int i;
-	i = ft_strlen(file);
-	if (i <= 3)
-	{
-		printf("Error\n%s what a strange file...but i can't read that captain", file);
-		return (0);
-	}
-	if (file[i - 1] != 't' || file[i - 2] != 'r' || file[i - 3] != '.')
-	{
-		printf("Error\nhey your thing don't have a .rt captain, are you trying to make me read a weird thing to break me?");
-		return (0);
-	}
-	return (1);
-}
-
-int error_file(t_shapes *shapes, t_2d *res)
+int		error_file(t_shapes *shapes, t_2d *res)
 {
 	if (!shapes->camera)
 	{
@@ -252,43 +75,49 @@ int error_file(t_shapes *shapes, t_2d *res)
 	}
 	if (!res->x || !res->y)
 	{
-		printf("Error\nCaptain captain! did you've forget to add a screen size? or are you trying to make me a 0/0 window?");
+		printf("Error\nCaptain! did you've forget to add a screen size?");
 		return (0);
 	}
 	return (1);
 }
 
-int parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
+int		check_pars_error(char *path, int *fd)
 {
-	char *str;
-	int fd;
-	int ret;
-	int line;
-	ret = 1;
-	line = 1;
-	if ((fd = open(path, O_RDONLY)) == -1)
+	if ((*fd = open(path, O_RDONLY)) == -1)
 	{
-		printf("Error\nhey i can't read this ...thing(%s)? are you trying to make me read a dir captain?", path);
+		printf("Error\nhey i can't read this ...thing(%s) captain?", path);
 		return (0);
 	}
 	if (!check_name(path))
 		return (0);
-	while ((ret = get_next_line(fd, &str)) != -1)
+	return (1);
+}
+
+int		parsfile(char *path, t_2d *res, int *ambi, t_shapes *shapes)
+{
+	char	*str;
+	int		fd_re_li[3];
+
+	fd_re_li[1] = 1;
+	fd_re_li[2] = 1;
+	if (!check_pars_error(path, &fd_re_li[0]))
+		return (0);
+	while ((fd_re_li[1] = get_next_line(fd_re_li[0], &str)) != -1)
 	{
 		if (!parsline(str, res, ambi, shapes))
 		{
-			printf("Error\ncaptain captain! i won't say that you'r dumb but check the line %d\n", line);
+			printf("Error\ncaptain captain! check the line %d\n", fd_re_li[2]);
 			end_all_life(shapes);
-			ret = -1;
-			break;
+			fd_re_li[1] = -1;
+			break ;
 		}
-		line++;
+		fd_re_li[2]++;
 		free(str);
-		if (!ret)
-			break;
+		if (!fd_re_li[1])
+			break ;
 	}
-	if (ret == -1)
+	if (fd_re_li[1] == -1)
 		return (0);
-	close(fd);
+	close(fd_re_li[0]);
 	return (error_file(shapes, res));
 }

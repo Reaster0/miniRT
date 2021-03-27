@@ -12,6 +12,14 @@
 
 #include "../includes/minirt.h"
 
+void	mlx_run(t_vars *vars, t_all *all)
+{
+	mlx_hook(vars->win, 15, 1L << 16, refresh, all);
+	mlx_hook(vars->win, 33, 1L << 17, end_of_mlx, all);
+	mlx_hook(vars->win, 2, 1L << 0, key_press, all);
+	mlx_loop(vars->mlx);
+}
+
 void	img_adress(t_data *data)
 {
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
