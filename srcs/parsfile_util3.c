@@ -42,12 +42,10 @@ float	itof(char *str, int *i)
 {
 	float	result;
 	int		isneg;
-	int		flag;
 	int		j;
 
 	isneg = 0;
 	j = 0;
-	flag = 0;
 	result = 0;
 	if (str[*i] == '-')
 	{

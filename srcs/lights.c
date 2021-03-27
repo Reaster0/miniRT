@@ -36,13 +36,13 @@ void		inter_light(t_ray *ray, t_light *light, t_shapes *shapes)
 	intersections(&l_ray, shapes, 0);
 	if (sqr(l_ray.t) >= length2(sub_product(light->point, light->hit.endpoint)))
 	{
-		rgb[0] = intens_color(ray, light, all_color(get_r(ray->shape_color),
+		rgb[0] = intens_color(light, all_color(get_r(ray->shape_color),
 					get_r(ray->color), (light->intens / 255)
 					* get_r(light->color)));
-		rgb[1] = intens_color(ray, light, all_color(get_g(ray->shape_color),
+		rgb[1] = intens_color(light, all_color(get_g(ray->shape_color),
 					get_g(ray->color), (light->intens / 255)
 					* get_g(light->color)));
-		rgb[2] = intens_color(ray, light, all_color(get_b(ray->shape_color),
+		rgb[2] = intens_color(light, all_color(get_b(ray->shape_color),
 					get_b(ray->color), (light->intens / 255)
 					* get_b(light->color)));
 		ray->color = create_trgb(get_t(ray->shape_color),

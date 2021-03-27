@@ -37,9 +37,6 @@ float	fix_float(float nbr, float min, float max)
 
 int		read3d(char *str, t_3d *value, int *i)
 {
-	int error;
-
-	error = 1;
 	value->x = itof(str, i);
 	if (str[*i] == ',')
 		(*i)++;

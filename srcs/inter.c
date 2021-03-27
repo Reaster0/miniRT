@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-int			intens_color(t_ray *ray, t_light *light, t_3d all_color)
+int			intens_color(t_light *light, t_3d all_color)
 {
 	float	temp;
 	int		result;
@@ -53,7 +53,6 @@ int			intersections(t_ray *ray, t_shapes *shapes, int inter_l)
 
 void		project(t_data *data, t_2d res, t_shapes *shapes, t_camera *camera)
 {
-	float	i;
 	t_2d	count;
 	t_3d	screen_coord;
 	t_ray	ray;

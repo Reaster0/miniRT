@@ -82,7 +82,7 @@ int			main(int argc, char **argv)
 
 	if (!check_error_main(argc))
 		return (0);
-	set_val_null(&all.res, &shapes, &all.j);
+	set_val_null(&all.res, &shapes);
 	if (!(parsfile(argv[1], &all.res, &shapes.ambient, &shapes)))
 		return (0);
 	all.vars = &vars;
@@ -90,7 +90,7 @@ int			main(int argc, char **argv)
 	{
 		if (!check_error(argv[2]))
 			return (0);
-		return (export_bmp(&shapes, &all, img, &vars));
+		return (export_bmp(&shapes, &all, img));
 	}
 	if (!set_startmlx(&all, &img, &shapes, &all.res))
 		return (0);

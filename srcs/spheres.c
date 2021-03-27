@@ -53,10 +53,8 @@ int			inter_sphere(t_ray *ray, t_sphere *sphere)
 
 int			inter_spheres(t_ray *ray, t_sphere *sphere)
 {
-	int i;
 	int ret;
 
-	i = 0;
 	ret = 0;
 	while (sphere)
 	{

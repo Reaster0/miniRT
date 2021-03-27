@@ -20,7 +20,7 @@ t_matrix4	cam_to_world(t_camera camera);
 t_ray		make_ray(t_3d origin, t_3d target, t_3d screen, int ambient);
 
 void		inter_lights(t_ray *ray, t_light *light, t_shapes *shapes);
-int			intens_color(t_ray *ray, t_light *light, t_3d all_color);
+int			intens_color(t_light *light, t_3d all_color);
 
 int			inside_cyl(t_cylinder *cylinder, t_ray *ray, float t);
 int			inter_cylinders(t_ray *ray, t_cylinder *cylinder);

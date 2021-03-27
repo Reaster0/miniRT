@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-void	set_val_null(t_2d *res, t_shapes *shapes, int *i)
+void	set_val_null(t_2d *res, t_shapes *shapes)
 {
 	res->x = 0;
 	res->y = 0;
@@ -24,7 +24,6 @@ void	set_val_null(t_2d *res, t_shapes *shapes, int *i)
 	shapes->plane = NULL;
 	shapes->square = NULL;
 	shapes->triangle = NULL;
-	i = 0;
 }
 
 int		set_startmlx(t_all *all, t_data **img, t_shapes *shapes, t_2d *res)

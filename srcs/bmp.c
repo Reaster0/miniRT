@@ -25,11 +25,11 @@ int		set_start(t_all *all, t_data **img, t_shapes *shapes)
 	if (!all->img_xy)
 		return (0);
 	all->img = *img;
+	return (1);
 }
 
 void	file_header(int fd, t_2d wh)
 {
-	int size;
 	int offset;
 	int sizeall;
 
@@ -65,7 +65,6 @@ int		save_image(t_data *img, t_2d wh)
 	int				fd;
 	int				temp;
 	unsigned char	color[3];
-	int				extrabytes;
 
 	fd = open("export.bmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
@@ -89,7 +88,7 @@ int		save_image(t_data *img, t_2d wh)
 	return (1);
 }
 
-int		export_bmp(t_shapes *shapes, t_all *all, t_data *img, t_vars *vars)
+int		export_bmp(t_shapes *shapes, t_all *all, t_data *img)
 {
 	if (!set_start(all, &img, shapes))
 		return (0);

@@ -75,10 +75,8 @@ int			inter_triangle(t_ray *ray, t_triangle *triangle)
 
 int			inter_triangles(t_ray *ray, t_triangle *triangle)
 {
-	int	i;
 	int	ret;
 
-	i = 0;
 	ret = 0;
 	while (triangle)
 	{
