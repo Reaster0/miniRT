@@ -58,6 +58,14 @@ float			fix_float(float nbr, float max, float min);
 void			fix_3d(t_3d *d3, float min, float max);
 
 void			end_all_life(t_shapes *shapes);
+int				refresh(t_all *all);
+int				end_of_mlx(t_all *all);
+void			fix_screen(t_vars *vars, t_2d *xy);
+int				set_startmlx(t_all *all, t_data **img,
+				t_shapes *shapes, t_2d *res);
+void			set_val_null(t_2d *res, t_shapes *shapes, int *i);
+int				key_press(int keycode, t_all *all);
+
 t_camera		*cam_last(t_camera *camera);
 t_cylinder		*cy_last(t_cylinder *cylinder);
 t_light			*li_last(t_light *light);
@@ -65,6 +73,8 @@ t_plane			*pla_last(t_plane *plane);
 t_sphere		*sphe_last(t_sphere *sphere);
 t_square		*squ_last(t_square *square);
 t_triangle		*tri_last(t_triangle *triangle);
+t_camera		*id_cam(t_camera *camera, int i);
+int				nbr_cam(t_camera *camera);
 
 int				export_bmp(t_shapes *shapes, t_all *all, t_data *img,
 				t_vars *vars);

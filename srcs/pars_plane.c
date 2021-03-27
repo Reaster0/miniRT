@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 11:22:18 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 11:03:02 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/27 12:26:06 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,23 @@ t_plane		*new_pla(void)
 	return (plane);
 }
 
+int			pars_plane2(char *str, t_plane *pla, t_3d *color, int *i)
+{
+	skip(i, str);
+	if (!read3d(str, color, i))
+		return (0);
+	fix_3d(color, 0, 255);
+	pla->color = create_trgb(0, color->x, color->y, color->z);
+	pla->position.x *= -1;
+	while (str[(*i)])
+	{
+		if (str[(*i)] != ' ')
+			return (0);
+		(*i)++;
+	}
+	return (1);
+}
+
 int			pars_plane(char *str, t_plane **plane)
 {
 	int		i;
@@ -57,28 +74,13 @@ int			pars_plane(char *str, t_plane **plane)
 		return (0);
 	pla = new_pla();
 	pla_add(&(*plane), pla);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &pla->position, &i))
 		return (0);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &pla->normal, &i))
 		return (0);
 	fix_3d(&pla->normal, -1, 1);
 	normalize(&pla->normal);
-	while (str[i] == ' ')
-		i++;
-	if (!read3d(str, &color, &i))
-		return (0);
-	fix_3d(&color, 0, 255);
-	pla->color = create_trgb(0, color.x, color.y, color.z);
-	pla->position.x *= -1;
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
+	return (pars_plane2(str, pla, &color, &i));
 }

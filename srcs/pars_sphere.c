@@ -6,13 +6,13 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 10:35:52 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/19 11:06:21 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/27 12:33:46 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-t_sphere	*sphe_last(t_sphere *sphere)
+t_sphere		*sphe_last(t_sphere *sphere)
 {
 	if (!(sphere))
 		return (0);
@@ -21,7 +21,7 @@ t_sphere	*sphe_last(t_sphere *sphere)
 	return (sphere);
 }
 
-void		sphe_add(t_sphere **sphere, t_sphere *new)
+void			sphe_add(t_sphere **sphere, t_sphere *new)
 {
 	if (!(*sphere))
 	{
@@ -32,7 +32,7 @@ void		sphe_add(t_sphere **sphere, t_sphere *new)
 	new->next = 0;
 }
 
-t_sphere	*new_sphe(void)
+t_sphere		*new_sphe(void)
 {
 	t_sphere *sphere;
 
@@ -46,7 +46,24 @@ t_sphere	*new_sphe(void)
 	return (sphere);
 }
 
-int			pars_sphere(char *str, t_sphere **sphere)
+int				pars_sphere2(char *str, t_sphere *sphe, t_3d *color, int *i)
+{
+	skip(i, str);
+	if (!read3d(str, color, i))
+		return (0);
+	fix_3d(color, 0, 255);
+	sphe->color = create_trgb(0, color->x, color->y, color->z);
+	sphe->startpoint.x *= -1;
+	while (str[(*i)])
+	{
+		if (str[(*i)] != ' ')
+			return (0);
+		(*i)++;
+	}
+	return (1);
+}
+
+int				pars_sphere(char *str, t_sphere **sphere)
 {
 	int			i;
 	t_sphere	*sphe;
@@ -57,29 +74,14 @@ int			pars_sphere(char *str, t_sphere **sphere)
 		return (0);
 	sphe = new_sphe();
 	sphe_add(&(*sphere), sphe);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &sphe->startpoint, &i))
 		return (0);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	sphe->r = itof(str, &i);
 	if (str[i] != ' ' && str[i])
 		return (0);
 	if (str[i] != ' ' && str[i])
 		return (0);
-	while (str[i] == ' ')
-		i++;
-	if (!read3d(str, &color, &i))
-		return (0);
-	fix_3d(&color, 0, 255);
-	sphe->color = create_trgb(0, color.x, color.y, color.z);
-	sphe->startpoint.x *= -1;
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
+	return (pars_sphere2(str, sphe, &color, &i));
 }

@@ -6,7 +6,7 @@
 /*   By: earnaud <earnaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 12:23:04 by earnaud           #+#    #+#             */
-/*   Updated: 2021/03/12 16:20:21 by earnaud          ###   ########.fr       */
+/*   Updated: 2021/03/27 12:39:02 by earnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,25 @@ t_triangle		*new_tri(void)
 	return (triangle);
 }
 
+int				pars_triangle2(char *str, t_triangle *tri, t_3d *color, int *i)
+{
+	skip(i, str);
+	if (!read3d(str, color, i))
+		return (0);
+	fix_3d(color, 0, 255);
+	tri->color = create_trgb(0, color->x, color->y, color->z);
+	tri->a.x *= -1;
+	tri->b.x *= -1;
+	tri->c.x *= -1;
+	while (str[(*i)])
+	{
+		if (str[(*i)] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int				pars_triangle(char *str, t_triangle **triangle)
 {
 	int			i;
@@ -58,32 +77,14 @@ int				pars_triangle(char *str, t_triangle **triangle)
 		return (0);
 	tri = new_tri();
 	tri_add(&(*triangle), tri);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &tri->a, &i))
 		return (0);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &tri->b, &i))
 		return (0);
-	while (str[i] == ' ')
-		i++;
+	skip(&i, str);
 	if (!read3d(str, &tri->c, &i))
 		return (0);
-	while (str[i] == ' ')
-		i++;
-	if (!read3d(str, &color, &i))
-		return (0);
-	fix_3d(&color, 0, 255);
-	tri->color = create_trgb(0, color.x, color.y, color.z);
-	tri->a.x *= -1;
-	tri->b.x *= -1;
-	tri->c.x *= -1;
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
+	return (pars_triangle2(str, tri, &color, &i));
 }

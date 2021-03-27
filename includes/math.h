@@ -26,7 +26,7 @@ int			intens_color(t_ray *ray, t_light *light, int color,
 int			inside_cyl(t_cylinder *cylinder, t_ray *ray, float t);
 int			inter_cylinders(t_ray *ray, t_cylinder *cylinder);
 int			inter_squares(t_ray *ray, t_square *square);
-int			inter_triangle2(t_ray *ray, t_triangle *triangle);
+int			inter_triangle(t_ray *ray, t_triangle *triangle);
 int			inter_triangles(t_ray *ray, t_triangle *triangle);
 int			inter_plane(t_ray *ray, t_plane *plane);
 int			inter_planes(t_ray *ray, t_plane *plane);
