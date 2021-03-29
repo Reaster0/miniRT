@@ -90,9 +90,13 @@ int		save_image(t_data *img, t_2d wh)
 
 int		export_bmp(t_shapes *shapes, t_all *all, t_data *img)
 {
+	int ret;
+
 	if (!set_start(all, &img, shapes))
 		return (0);
 	process_fullinter(all->vars, img, all, shapes);
 	printf("\nsaving the image captain");
-	return (save_image(img, *all->img_xy));
+	ret = save_image(img, *all->img_xy);
+	end_of_mlx2(all);
+	return (ret);
 }

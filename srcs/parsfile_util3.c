@@ -77,3 +77,21 @@ int		check_name(char *file)
 	}
 	return (1);
 }
+
+int		end_of_mlx2(t_all *all)
+{
+	int i;
+
+	i = 0;
+	while (i <= all->nbr_img)
+	{
+		mlx_destroy_image(all->vars->mlx, (all->img + i)->img);
+		i++;
+	}
+	free(all->img);
+	mlx_destroy_display(all->vars->mlx);
+	free(all->img_xy);
+	free(all->vars->mlx);
+	exit(0);
+	return (1);
+}

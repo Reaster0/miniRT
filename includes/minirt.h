@@ -64,6 +64,7 @@ int				check_name(char *file);
 void			end_all_life(t_shapes *shapes);
 int				refresh(t_all *all);
 int				end_of_mlx(t_all *all);
+int				end_of_mlx2(t_all *all);
 void			fix_screen(t_vars *vars, t_2d *xy);
 int				set_startmlx(t_all *all, t_data **img,
 				t_shapes *shapes, t_2d *res);
